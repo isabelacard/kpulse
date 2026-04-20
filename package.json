@@ -9,7 +9,7 @@
   "scripts": {
     "prepare": "husky",
     "format": "prettier --write .",
-    "dev": "concurrently -k -n OUTPUT,SCREEN -c red,cyan \"npm run dev --prefix output\" \"npm run dev --prefix screen\""
+    "dev": "concurrently -k -n SCREEN,CONTROLLER,SERVER -c cyan,green,red \"npm run dev --prefix screen\" \"npm run dev --prefix controller\" \"npm run dev --prefix server\""
   },
   "repository": {
     "type": "git",
