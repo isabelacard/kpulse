@@ -1,9 +1,9 @@
 import { createBrowserRouter } from "react-router";
 import Onboarding from "../pages/onboarding/onboarding";
-import Instructions from "../pages/instructions/instructions";
 import Games from "../pages/games/games";
 import Forms from "../pages/form/form";
 import Survey from "../pages/survey/survey";
+import Instructions1 from "../pages/instructions/Desktop/Instructios1";
 
 const router = createBrowserRouter([
     {
@@ -11,8 +11,8 @@ const router = createBrowserRouter([
         element: <Onboarding />,
     },
     {
-        path: "/instructions",
-        element: <Instructions />,
+        path: "/instructions1",
+        element: <Instructions1 />,
     },
     {
         path: "/game",
