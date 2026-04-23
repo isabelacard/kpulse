@@ -4,6 +4,9 @@ import Games from "../pages/games/games";
 import Forms from "../pages/form/form";
 import Survey from "../pages/survey/survey";
 import Instructions1 from "../pages/instructions/Desktop/Instructios1";
+import Instructions2 from "../pages/instructions/Desktop/Instructios2";
+import Instructions3 from "../pages/instructions/Desktop/Instructios3";
+import Instructions4 from "../pages/instructions/Desktop/Instructios4";
 
 const router = createBrowserRouter([
     {
@@ -13,6 +16,18 @@ const router = createBrowserRouter([
     {
         path: "/instructions1",
         element: <Instructions1 />,
+    },
+    {
+        path: "/instructions2",
+        element: <Instructions2 />,
+    },
+    {
+        path: "/instructions3",
+        element: <Instructions3 />,
+    },
+    {
+        path: "/instructions4",
+        element: <Instructions4 />,
     },
     {
         path: "/game",
