@@ -8,6 +8,8 @@ import Instructions2 from "../pages/instructions/Desktop/Instructios2";
 import Instructions3 from "../pages/instructions/Desktop/Instructios3";
 import Instructions4 from "../pages/instructions/Desktop/Instructios4";
 import Calibration1 from "../pages/instructions/Desktop/Calibration1";
+import Calibration2 from "../pages/instructions/Desktop/Calibration2";
+import InstructionsFinal from "../pages/instructions/Desktop/InstructionsFinal";
 
 const router = createBrowserRouter([
     {
@@ -33,6 +35,14 @@ const router = createBrowserRouter([
     {
         path: "/calibration1",
         element: <Calibration1 />,
+    },
+    {
+        path: "/calibration2",
+        element: <Calibration2 />,
+    },
+    {
+        path: "/instructionsfinal",
+        element: <InstructionsFinal />,
     },
     {
         path: "/game",
