@@ -5,7 +5,7 @@ function LoadingBar() {
     const [ready, setReady] = useState(false);
 
     useEffect(() => {
-        const duration = 4000;
+        const duration = 7000;
         const interval = 50;
         const step = (interval / duration) * 100;
 
@@ -28,13 +28,12 @@ function LoadingBar() {
     return (
         <div className="border-2 border-[#FFB349] w-100 h-9.5 rounded-4xl absolute mt-18 top-48 overflow-hidden">
             <div
-                className="absolute top-0 left-0 h-7.5 rounded-4xl mt-0.5 transition-all opacity-50"
+                className="absolute top-0 left-0 h-7.5 rounded-4xl mt-0.5 transition-all
+                bg-linear-to-l from-[#DBA030] to-transparent"
                 style={{
-                    width: `${progress + 1}%`,
-                    background: "linear-gradient(to right, #3a2a00, #FFB349)",
+                    width: `${progress + 5}%`,
                 }}
             />
-
             <div
                 className="absolute top-0.5 h-7.5 w-7.5 bg-[#F6CF84] rounded-4xl transition-all"
                 style={{

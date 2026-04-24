@@ -40,11 +40,6 @@ function Instructions4() {
                         </h1>
                     </div>
 
-                    {/* <div className="border-2 border-[#FFB349] w-100 h-9.5 rounded-4xl absolute mt-18 top-48">
-                        <div className="bg-[#F6CF84] w-7.5 h-7.5 rounded-4xl mt-0.5 ml-0.5"></div>
-                        <p className="text-[#F6CF84]/70 text-[15px] mt-1.5 flex justify-center">Wait a few seconds</p>
-                    </div> */}
-
                     <LoadingBar></LoadingBar>
                 </div>
             </div>
