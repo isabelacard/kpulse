@@ -31,8 +31,6 @@ export default function Onboarding() {
                     className="absolute bottom-0 right-70 h-[92%] z-0"
                 />
 
-                {/* --- FORMA DEL TOPE SUPERIOR (El "Notch" recortado) --- */}
-                {/* Lo centramos con left-1/2 y -translate-x-1/2, pegado al top-0 */}
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-91.5px h-[42px]">
                     <svg 
                         viewBox="0 0 366 59" 
