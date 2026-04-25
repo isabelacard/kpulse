@@ -1,12 +1,14 @@
 import { InfoCard } from "./components/InfoCard";
+import { Qrcode } from "./components/QrCode";
 import imagendefondo from "../../assets/imagendefondo.png";
 import circuloamarillo from "../../assets/circuloamarillo.png";
-import grupodecorativo2 from "../../assets/grupodecorativo2.png"
-import grupodecorativo1 from "../../assets/grupodecorativo1.png"
+import grupodecorativo2 from "../../assets/grupodecorativo2.png";
+import grupodecorativo1 from "../../assets/grupodecorativo1.png";
+import granny from "../../assets/granny.png";
 
 export default function Onboarding() {
     return (
-        <div className="h-screen w-full flex items-center justify-center p-5 bg-green-400">
+        <div className="h-screen w-full flex items-center justify-center p-5 bg-white">
             <section
                 className="relative w-full h-full rounded-[55px] overflow-hidden flex flex-col justify-center p-8 md:p-16"
                 style={{
@@ -15,33 +17,81 @@ export default function Onboarding() {
                     backgroundPosition: "center",
                 }}
             >
-                {/* Círculo Amarillo Decorativo */}
-                <img src={circuloamarillo} alt="Decoración" className="absolute bottom-0 right-0 w-[88.5%] opacity-90 object-contain" />
+                {/* --- CAPA DE FONDO DECORATIVA (Z-Index 0) --- */}
+                <img 
+                    src={circuloamarillo} 
+                    alt="Decoración" 
+                    className="absolute bottom-0 right-0 w-[88.5%] opacity-90 object-contain z-0" 
+                />
+                <img
+                    src={granny}
+                    alt="abuelita"
+                    className="absolute bottom-0 right-75 h-[92%] z-0"
+                />
 
-                <div className="relative z-10 max-w-2xl">
-                    <header className="mb-10">
-                        <div className="text-[#f38d16] text-4xl mb-4 font-bold">★</div>
-                        <h1 className="text-white text-[90px] font-bold leading-[1.05] tracking-tight">
-                            <span className="flex items-center">
-                                <img src={grupodecorativo1} alt="icono de bienvenida" className="ml-4 w-12 object-contain" />
-                                Welcome
-                            </span>
-                            <br />
-                            {/* texto e imagen */}
-                            <span className="inline-flex items-center">
-                                <span className="bg-linear-to-b from-white to-cyan-400 bg-clip-text text-transparent">K-Pulse</span>
-                                <img src={grupodecorativo2} alt="icono2" className="ml-4 w-12 object-contain" />
-                            </span>
-                        </h1>
-                        <p className="text-white/90 mt-5 text-[17px] max-w-md leading-relaxed font-medium">Transform traditional arm rehabilitation into an immersive game experience that tracks movement and progress.</p>
-                    </header>
+                {/* --- CAPA DE CONTENIDO PRINCIPAL --- */}
+                {/* Agregamos justify-between para empujar el QR a la derecha */}
+                <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-12 w-full max-w-7xl ml-7 pr-10">
+                    
+                    {/* 1. Textos e InfoCards (Ahora a la Izquierda) */}
+                    <div className="max-w-2xl relative z-10">
+                        <header className="mb-10">
+                            <h1 className="text-white text-[90px] font-bold leading-[1.05] tracking-tight">
+                                <span className="relative inline-block">
+                                    <img 
+                                        src={grupodecorativo1} 
+                                        alt="icono de bienvenida" 
+                                        className="absolute top-1/2 -translate-y-1/2 -left-22 w-20 object-contain" 
+                                    />
+                                    Welcome to
+                                </span>
+                                <br />
 
-                    {/* Listado de Tarjetas */}
-                    <div className="flex flex-col gap-1">
-                        <InfoCard icon="?" title="What is K-pulse?" description="K-Pulse is the first 'Smart Rehab' ball designed for the modern Korean hospital." />
-                        <InfoCard icon="◎" title="What can you do?" description="K-pulse guides patients through a full upper limb rehabilitation session, combining smart ball technology and immersive minigames." />
-                        <InfoCard icon="🏆" title="Choose your game!" description="The smart ball controls the action on screen, guiding the user through a series of dynamic minigames powered by real movement." />
+                                <span className="inline-flex items-center">
+                                    <span className="bg-linear-to-b from-white to-cyan-400 bg-clip-text text-transparent">K-Pulse</span>
+                                    <img 
+                                        src={grupodecorativo2} 
+                                        alt="icono2" 
+                                        className="ml-4 w-12 object-contain" 
+                                    />
+                                </span>
+                            </h1>
+                            <p className="text-white/90 mt-5 text-[17px] max-w-md leading-relaxed font-medium">
+                                Transform traditional arm rehabilitation into an immersive game experience that tracks movement and progress.
+                            </p>
+                        </header>
+
+                        <div className="flex flex-col gap-1">
+                            <InfoCard 
+                                icon="?" 
+                                title="What is K-pulse?" 
+                                description="K-Pulse is the first 'Smart Rehab' ball designed for the modern Korean hospital." 
+                            />
+                            <InfoCard 
+                                icon="◎" 
+                                title="What can you do?" 
+                                description="K-pulse guides patients through a full upper limb rehabilitation session, combining smart ball technology and immersive minigames." 
+                            />
+                            <InfoCard 
+                                icon="🏆" 
+                                title="Choose your game!" 
+                                description="The smart ball controls the action on screen, guiding the user through a series of dynamic minigames powered by real movement." 
+                            />
+                        </div>
                     </div>
+
+                    {/* 2. Código QR (Ahora a la Derecha, Z-Index 50 para asegurar que quede al frente) */}
+                    <div className="relative z-50 shrink-0 mt-35 translate-x-20">
+                        <Qrcode 
+                            icon={
+                                <div className="w-full h-full flex items-center justify-center text-gray-400 text-sm rounded-lg">
+                                    [Aqui va el qr]
+                                </div>
+                            } 
+                            description="Scan the QR to start your experience"
+                        />
+                    </div>
+
                 </div>
             </section>
         </div>
