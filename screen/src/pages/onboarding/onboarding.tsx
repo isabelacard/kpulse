@@ -25,7 +25,6 @@ export default function Onboarding() {
                             <span className="flex items-center">
                                 <img src={grupodecorativo1} alt="icono de bienvenida" className="ml-4 w-12 object-contain" />
                                 Welcome
-                                {/* Ajusta ml-4 y w-12 según necesites para el tamaño y separación */}
                             </span>
                             <br />
                             {/* texto e imagen */}
