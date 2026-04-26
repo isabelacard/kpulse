@@ -2,7 +2,7 @@ import { createBrowserRouter } from "react-router";
 import Onboarding from "../pages/onboarding/onboarding";
 import Instructions from "../pages/instructions/instructions";
 import Games from "../pages/games/games";
-import Forms from "../pages/form/form";
+import Forms from "../pages/questionnaire/form1";
 import Survey from "../pages/survey/survey";
 
 const router = createBrowserRouter([
