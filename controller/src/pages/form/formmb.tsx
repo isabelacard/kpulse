@@ -19,7 +19,7 @@ export default function MobileForm() {
             <div className="z-1">
                 {/* Barrita */}
                 <div className="w-60 h-2 bg-gray-200 rounded-full mt-30 overflow-hidden mx-auto">
-                    <div className="w-20 h-full bg-yellow-400 rounded-full" />
+                    <div className="w-10 h-full bg-yellow-300 rounded-full" />
                 </div>
 
                 {/* Preguntapp */}
