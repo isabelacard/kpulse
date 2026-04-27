@@ -1,6 +1,6 @@
-import ImagenFondoCelular from "../../../assets/fondocelularinstructions.png";
+import ImagenFondoCelular from "../../assets/fondocelularinstructions.png";
 
-function Instructions2Mobile() {
+function Instructions2Controller() {
     return (
         <div className="flex items-center justify-center w-full h-screen p-4 overflow-hidden">
             <div className="relative flex items-center justify-center">
@@ -18,4 +18,4 @@ function Instructions2Mobile() {
     );
 }
 
-export default Instructions2Mobile;
+export default Instructions2Controller;

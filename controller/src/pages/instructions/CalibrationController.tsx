@@ -1,8 +1,8 @@
-import ImagenFondoCelular from "../../../assets/fondocelularinstructions.png";
+import ImagenFondoCelular from "../../assets/fondocelularinstructions.png";
 
-function CalibratingMobile() {
+function CalibratingController() {
     return (
-        <div className="flex items-center justify-center w-full h-screen p-4 overflow-hidden">
+        <div className="flex items-center justify-center w-full h-screen p-6 overflow-hidden">
             <div className="relative flex items-center justify-center">
                 <img className="max-w-full max-h-full object-contain" src={ImagenFondoCelular} />
                 <div className="absolute z-10 flex flex-col items-center h-full top-80">
@@ -15,4 +15,4 @@ function CalibratingMobile() {
     );
 }
 
-export default CalibratingMobile;
+export default CalibratingController;

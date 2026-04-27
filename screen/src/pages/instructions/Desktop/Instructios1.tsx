@@ -5,7 +5,7 @@ import Celular1 from "../../../assets/celular1.png";
 function Instructions1() {
     return (
         <div className="flex items-center justify-center w-full h-screen">
-            <div className="relative w-294 h-162 shrink-0 overflow-hidden rounded-xl">
+            <div className="relative w-294 h-162 shrink-0 overflow-hidden rounded-b-4xl">
                 <img className="absolute z-10 w-200 right-150 top-20" src={Pelota1}></img>
                 <img className="absolute z-10 w-120 left-195 top-40" src={Celular1}></img>
                 <img className="absolute" src={ImagenFondo} />
