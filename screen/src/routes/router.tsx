@@ -1,6 +1,5 @@
 import { createBrowserRouter } from "react-router";
 import Onboarding from "../pages/onboarding/onboarding";
-import Games from "../pages/games/games";
 import Forms from "../pages/form/form";
 import Survey from "../pages/survey/survey";
 import Instructions1 from "../pages/instructions/Desktop/Instructios1";
@@ -10,6 +9,8 @@ import Instructions4 from "../pages/instructions/Desktop/Instructios4";
 import Calibration1 from "../pages/instructions/Desktop/Calibration1";
 import Calibration2 from "../pages/instructions/Desktop/Calibration2";
 import InstructionsFinal from "../pages/instructions/Desktop/InstructionsFinal";
+import PreGameOne from "../pages/games/PreGameOne";
+import GameOne from "../pages/games/GameOne";
 
 const router = createBrowserRouter([
     {
@@ -45,8 +46,12 @@ const router = createBrowserRouter([
         element: <InstructionsFinal />,
     },
     {
-        path: "/game",
-        element: <Games />,
+        path: "/pregameone",
+        element: <PreGameOne />,
+    },
+    {
+        path: "/gameone",
+        element: <GameOne />,
     },
     {
         path: "/forms",
