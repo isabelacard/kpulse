@@ -1,3 +1,4 @@
+@import "tailwindcss";
 @font-face {
     font-family: "Poppins";
     font-weight: 500;
@@ -20,4 +21,12 @@
     font-family: "McLaren";
     font-weight: normal;
     src: url("/fonts/McLaren-Regular.ttf") format("truetype");
+}
+
+.font-poppins {
+    font-family: "Poppins", sans-serif;
+}
+
+.font-mclaren {
+    font-family: "McLaren", cursive;
 }
