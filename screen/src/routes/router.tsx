@@ -11,6 +11,7 @@ import Calibration2 from "../pages/instructions/Desktop/Calibration2";
 import InstructionsFinal from "../pages/instructions/Desktop/InstructionsFinal";
 import PreGameOne from "../pages/games/PreGameOne";
 import GameOne from "../pages/games/GameOne";
+import StatsGameOne from "../pages/games/StatsGameOne";
 
 const router = createBrowserRouter([
     {
@@ -52,6 +53,10 @@ const router = createBrowserRouter([
     {
         path: "/gameone",
         element: <GameOne />,
+    },
+    {
+        path: "/statsgameone",
+        element: <StatsGameOne />,
     },
     {
         path: "/forms",

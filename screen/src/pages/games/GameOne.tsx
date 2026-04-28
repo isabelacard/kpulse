@@ -4,7 +4,7 @@ import PatronJuegoUno from "../../assets/patronjuego1.png";
 
 function GameOne() {
     const [pos, setPos] = useState({ x: 0, y: 0 });
-    const [inside, setInside] = useState(false);
+    const [inside, setInside] = useState(true);
     const zoneRef = useRef<HTMLDivElement>(null);
 
     const handleMouseMove = (e: React.MouseEvent) => {
