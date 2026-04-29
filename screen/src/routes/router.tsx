@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router";
-import Onboarding1 from "../pages/onboarding/Onboarding1";
+import Onboarding from "../pages/onboarding/Onboarding";
 import Instructions from "../pages/instructions/instructions";
 import Games from "../pages/games/games";
 import Forms from "../pages/form/form";
@@ -11,7 +11,7 @@ import Onboarding4 from "../pages/onboarding/Onboarding4";
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <Onboarding1 />,
+        element: <Onboarding />,
     },
     {
         path: "/onboarding2",
