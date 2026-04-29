@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router";
-import Onboarding1 from "../pages/onboarding/onboarding1";
+import Onboarding1 from "../pages/onboarding/Onboarding1";
 import Instructions from "../pages/instructions/instructions";
 import Games from "../pages/games/games";
 import Forms from "../pages/form/form";
