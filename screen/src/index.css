@@ -1,5 +1,5 @@
 @import "tailwindcss";
-<<<<<<< HEAD @keyframes ripple {
+@keyframes ripple {
     0% {
         transform: scale(0.8);
         opacity: 1;
@@ -16,7 +16,7 @@
     opacity: 0;
 }
 
-=======>>>>>>>5e33fb62a5be55e787b5ba1ea6baf233bdb6dbf7 @font-face {
+@font-face {
     font-family: "Poppins";
     font-weight: 500;
     src: url("/fonts/Poppins-Medium.ttf") format("truetype");
