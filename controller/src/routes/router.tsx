@@ -4,6 +4,7 @@ import Instructions from "../pages/instructions/instructions";
 import Game from "../pages/games/games";
 import Forms from "../pages/form/form";
 import Survey from "../pages/survey/survey";
+import EndindMb from "../pages/ending/EndingMb";
 
 const router = createBrowserRouter([
     {
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
     {
         path: "/survey",
         element: <Survey />,
+    },
+    {
+        path: "/ending",
+        element: <EndindMb />,
     },
 ]);
 
