@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import { useLocation } from "react-router-dom";
 import ImagenFondoCalibration from "../../assets/calibration1.png";
 import squarestats from "../../assets/squaregameone.png";
 import LoadingBar from "../../components/LoadingBar";
@@ -7,6 +8,16 @@ function StatsGameOne() {
     const [pos, setPos] = useState({ x: 0, y: 0 });
     const [inside, setInside] = useState(false);
     const zoneRef = useRef<HTMLDivElement>(null);
+
+    const location = useLocation();
+    const { totalTime, outTime } = location.state ?? { totalTime: 0, outTime: 0 };
+
+    const formatTime = (ms: number) => {
+        const minutes = Math.floor(ms / 60000);
+        const seconds = Math.floor((ms % 60000) / 1000);
+        const milli = ms % 1000;
+        return `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}.${milli.toString().padStart(3, "0")}`;
+    };
 
     const handleMouseMove = (e: React.MouseEvent) => {
         const rect = zoneRef.current?.getBoundingClientRect();
@@ -58,8 +69,8 @@ function StatsGameOne() {
                             <p className="text-white text-[20px] absolute top-5 w-50">of the line</p>
                         </div>
                         <div className="absolute">
-                            <h1 className="text-white text-[15px] absolute left-40 top-54">Number</h1>
-                            <h1 className="text-white text-[15px] absolute left-40 top-76">Number</h1>
+                            <h1 className="text-white text-[15px] absolute left-40 top-54">{formatTime(totalTime)}</h1>
+                            <h1 className="text-white text-[15px] absolute left-40 top-76">{formatTime(outTime)}</h1>
                         </div>
                     </div>
                 </div>
