@@ -28,7 +28,7 @@ const router = createBrowserRouter([
         element: <Survey />,
     },
     {
-        path: "/ending",
+        path: "/allset",
         element: <AllSet />,
     },
 ]);

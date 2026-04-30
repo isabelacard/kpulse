@@ -1,21 +1,20 @@
-import graciasfondo from "../../assets/graciasfondo.png";
+import allsetfondo from "../../assets/allsetfondo.png"
 
 export default function AllSet() {
     return (
         <div className="flex items-center justify-center w-full h-screen relative bg-black/5 overflow-hidden">
-            <img src={graciasfondo} alt="Fondo final" className="w-full h-screen object-contain z-0 absolute" />
+            <img src={allsetfondo} alt="correo" className="w-full h-screen object-contain z-0 absolute" />
 
-            <div className="z-10 flex w-full flex-col lg:flex-row items-center justify-between px-6 md:px-20 lg:px-42">
-                <div className="w-full max-w-2xl lg:translate-x-9">
-                    <header className="mb-6 md:mb-10 text-left">
-                        <h1 className="text-white text-[60px] md:text-[80px] font-bold leading-[1.05] tracking-tight">
-                            <span className="relative inline-block font-poppins font-medium mt-2 md:mt-5">Thanks for</span>
-                            <br />
-                            <span className="inline-flex items-center">
-                                <span className="bg-linear-to-b from-white to-cyan-300 bg-clip-text text-transparent font-poppins font-medium pb-4">Playing</span>
-                            </span>
-                        </h1>
+            <div className="z-10 flex w-full flex-col items-center justify-center px-6 md:px-20 lg:px-42">
+                
+                <div className="w-full max-w-2xl flex justify-center">
+                    
+                    <header className="mb-6 md:mb-10 text-center font-poppins font-medium text-white text-2xl">
+                        <p className="bg-linear-to-b from-white to-yellow-400 bg-clip-text text-transparent">You're all set!</p>
+                        <p>enter your email to</p>
+                        <p>recieve your results.</p>
                     </header>
+                    
                 </div>
             </div>
         </div>
