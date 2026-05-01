@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom"; 
 import { InfoCard } from "./components/InfoCard";
 import { Qrcode } from "./components/QrCode";
 import { HelpCircle, Target, Trophy } from "lucide-react";
@@ -5,6 +7,16 @@ import { HelpCircle, Target, Trophy } from "lucide-react";
 import fondo from "../../assets/fondo.png";
 
 export default function Onboarding() {
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            navigate("/onboarding2"); 
+        }, 10000);
+
+        return () => clearTimeout(timer);
+    }, [navigate]);
+
     return (
         <div className="flex items-center justify-center w-full h-screen relative bg-black/5 overflow-hidden">
             <img src={fondo} alt="Fondo Onboarding" className="w-full h-screen object-contain z-0 absolute" />
