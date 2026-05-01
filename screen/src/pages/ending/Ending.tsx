@@ -12,7 +12,7 @@ export default function Ending() {
                             <span className="relative inline-block font-poppins font-medium mt-2 md:mt-5">Thanks for</span>
                             <br />
                             <span className="inline-flex items-center">
-                                <span className="bg-linear-to-b from-white to-cyan-300 bg-clip-text text-transparent font-poppins font-medium pb-4">Playing</span>
+                                <span className="bg-linear-to-b from-white to-cyan-300 bg-clip-text text-transparent font-poppins font-medium pb-4">Playing!</span>
                             </span>
                         </h1>
                     </header>
