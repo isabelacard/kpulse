@@ -31,7 +31,7 @@ export default function Onboarding() {
                                 <span className="bg-linear-to-b from-white to-cyan-300 bg-clip-text text-transparent font-poppins font-medium">K-Pulse</span>
                             </span>
                         </h1>
-                        <p className="font-poppins font-light text-white/90 mt-5 md:mt-5 md:text-sm max-w-sm mx-auto lg:mx-0">Transform traditional arm rehabilitation into an immersive game experience that tracks movement and progress.</p>
+                        <p className="font-mclaren text-white/90 mt-10 md:mt-10 md:text-sm max-w-sm mx-auto lg:mx-0">Transform traditional arm rehabilitation into an immersive game experience that tracks movement and progress.</p>
                     </header>
 
                     <div className="flex flex-col gap-3 md:gap-4">

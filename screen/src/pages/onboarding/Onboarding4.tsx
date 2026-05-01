@@ -27,10 +27,10 @@ export default function Onboarding4() {
                     <header className="text-center md:text-left lg:text-left">
                         <h1 className="text-white text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.05] tracking-tight font-poppins mb-10 mr-10">
                             <span className="block mb-2 md:mb-3 font-poppins font-bold">
-                                Setup
+                                Connected 
                             </span>
                             <span className="bg-linear-to-b from-white to-orange-400 bg-clip-text text-transparent font-poppins font-bold">
-                                Complete
+                                succesfully
                             </span>
                         </h1>
                     </header>
