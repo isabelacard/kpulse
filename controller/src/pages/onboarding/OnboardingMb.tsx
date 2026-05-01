@@ -19,7 +19,7 @@ export default function OnboardingMb() {
             <div className="flex flex-col items-center justify-between w-full h-full max-w-97.5 pt-[20%] pb-[15%] px-6">
                 <div className="flex flex-col items-center text-center mt-12">
                     <h1 className="text-white text-3xl font-poppins font-medium tracking-wide">Welcome to</h1>
-                    <h2 className="text-white text-4xl font-poppins font-bold mt-2">K-Pulse</h2>
+                    <h2 className="text-white text-4xl font-poppins font-medium mt-2">K-Pulse</h2>
                     <div className="w-48 h-1 bg-white mt-6 rounded-full"></div>
                 </div>
 
