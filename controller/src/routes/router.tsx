@@ -15,6 +15,7 @@ import Instructions1Controller from "../pages/instructions/Instructions1Controll
 import Instructions2Controller from "../pages/instructions/Instructions2Controller";
 import Instructions3Controller from "../pages/instructions/Instructions3Controller";
 import GameOneMobile from "../pages/games/GameOne";
+import GameTwo from "../pages/games/gametwo/gametwo";
 
 const router = createBrowserRouter([
     {
@@ -80,6 +81,10 @@ const router = createBrowserRouter([
     {
         path: "/survey",
         element: <Survey />,
+    },
+    {
+        path: "/gametwo",
+        element: <GameTwo />,
     },
 ]);
 

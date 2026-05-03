@@ -6,6 +6,9 @@ import Forms3 from "../pages/questionnaire/form3";
 import Forms4 from "../pages/questionnaire/form4";
 import Forms5 from "../pages/questionnaire/form5";
 import Formsfinal from "../pages/questionnaire/formfinal";
+import GameTwo from "../pages/games/gametwo/gametwo";
+import CalibrateTwo from "../pages/games/gametwo/calibratetwo";
+import StatsTwo from "../pages/games/gametwo/statstwo";
 import Survey from "../pages/survey/survey";
 import Onboarding2 from "../pages/onboarding/Onboarding2";
 import Onboarding3 from "../pages/onboarding/Onboarding3";
@@ -77,6 +80,18 @@ const router = createBrowserRouter([
     {
         path: "/statsgameone",
         element: <StatsGameOne />,
+    },
+    {
+        path: "/gametwo",
+        element: <GameTwo />,
+    },
+    {
+        path: "/calibratetwo",
+        element: <CalibrateTwo />,
+    },
+    {
+        path: "/statstwo",
+        element: <StatsTwo />,
     },
     {
         path: "/forms",
