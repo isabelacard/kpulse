@@ -1,5 +1,4 @@
 import { createBrowserRouter } from "react-router-dom";
-import Game from "../pages/games/games";
 import Forms from "../pages/form/formmb";
 import Forms2 from "../pages/form/form2mb";
 import Forms3 from "../pages/form/form3mb";
@@ -15,6 +14,7 @@ import CalibratingController from "../pages/instructions/CalibrationController";
 import Instructions1Controller from "../pages/instructions/Instructions1Controller";
 import Instructions2Controller from "../pages/instructions/Instructions2Controller";
 import Instructions3Controller from "../pages/instructions/Instructions3Controller";
+import GameOneMobile from "../pages/games/GameOne";
 
 const router = createBrowserRouter([
     {
@@ -50,8 +50,8 @@ const router = createBrowserRouter([
         element: <CalibratingController />,
     },
     {
-        path: "/game",
-        element: <Game />,
+        path: "/gameonemobile",
+        element: <GameOneMobile />,
     },
     {
         path: "/forms",
