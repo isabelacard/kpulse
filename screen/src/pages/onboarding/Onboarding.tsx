@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 import { InfoCard } from "./components/InfoCard";
 import { Qrcode } from "./components/QrCode";
 import { HelpCircle, Target, Trophy } from "lucide-react";
@@ -11,7 +11,7 @@ export default function Onboarding() {
 
     useEffect(() => {
         const timer = setTimeout(() => {
-            navigate("/onboarding2"); 
+            navigate("/onboarding2");
         }, 10000);
 
         return () => clearTimeout(timer);

@@ -1,4 +1,4 @@
-import qrmobile from "../../../assets/qrmobile.png"
+import qrmobile from "../../../assets/qrmobile.png";
 
 export default function Qr() {
     return (
@@ -6,7 +6,6 @@ export default function Qr() {
             {/* 2. Contenedor de la foto de fondo */}
             <div className="relative w-full h-full bg-gray-200 rounded-xl overflow-hidden flex items-center justify-center">
                 <img src={qrmobile} alt="Fondo clínica" className="absolute inset-0 w-full h-full object-cover" />
-
             </div>
         </div>
     );

@@ -8,23 +8,22 @@ import OnboardingMb2 from "../pages/onboarding/OnboardingMb2";
 import OnboardingMb3 from "../pages/onboarding/OnboardingMb3";
 import OnboardingMb4 from "../pages/onboarding/OnboardingMb4";
 
-
 const router = createBrowserRouter([
     {
         path: "/",
-        element: < OnboardingMb />,
+        element: <OnboardingMb />,
     },
     {
         path: "/onboarding2",
-        element: < OnboardingMb2 />,
+        element: <OnboardingMb2 />,
     },
     {
         path: "/onboarding3",
-        element: < OnboardingMb3 />,
+        element: <OnboardingMb3 />,
     },
     {
         path: "/onboarding4",
-        element: < OnboardingMb4 />,
+        element: <OnboardingMb4 />,
     },
     {
         path: "/instructions",

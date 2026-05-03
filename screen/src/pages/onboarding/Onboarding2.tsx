@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 import { ProgressBar } from "./components/ProgressBar";
 import fondocarga from "../../assets/fondocarga.png";
 
@@ -8,7 +8,7 @@ export default function Onboarding2() {
 
     useEffect(() => {
         const timer = setTimeout(() => {
-            navigate("/onboarding3"); 
+            navigate("/onboarding3");
         }, 10000);
 
         return () => clearTimeout(timer);
@@ -16,23 +16,14 @@ export default function Onboarding2() {
 
     return (
         <div className="flex items-center justify-center w-full h-screen relative bg-white overflow-hidden">
-            <img 
-                src={fondocarga} 
-                alt="Fondo Carga" 
-                className="w-full h-screen object-contain z-0 absolute" 
-            />
+            <img src={fondocarga} alt="Fondo Carga" className="w-full h-screen object-contain z-0 absolute" />
 
             <div className="z-10 flex w-full flex-col px-6 md:px-20 lg:px-42">
                 <div className="w-full max-w-lg md:max-w-xl lg:max-w-2xl md:translate-x-8 lg:translate-x-16">
-                    
                     <header className="text-center md:text-left lg:text-left">
                         <h1 className="text-white text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.05] tracking-tight font-poppins mb-10 mr-10">
-                            <span className="block mb-2 md:mb-3 font-poppins font-medium">
-                                Are you
-                            </span>
-                            <span className="bg-linear-to-b from-white to-orange-400 bg-clip-text text-transparent font-poppins font-medium">
-                                in now?
-                            </span>
+                            <span className="block mb-2 md:mb-3 font-poppins font-medium">Are you</span>
+                            <span className="bg-linear-to-b from-white to-orange-400 bg-clip-text text-transparent font-poppins font-medium">in now?</span>
                         </h1>
                     </header>
 
