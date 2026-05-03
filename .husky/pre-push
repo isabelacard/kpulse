@@ -1,3 +1,3 @@
 echo "🏗️ Building project..."
-cd controller && npx tsc -b && npx vite build && cd ..
-cd screen && npx tsc -b && npx vite build && cd ..
+(cd controller && npx tsc -b && npx vite build)
+(cd screen && npx tsc -b && npx vite build)
