@@ -1,6 +1,5 @@
 import { createBrowserRouter } from "react-router";
 import Onboarding from "../pages/onboarding/Onboarding";
-import Instructions from "../pages/instructions/instructions";
 import Games from "../pages/games/games";
 import Forms from "../pages/questionnaire/form1";
 import Forms2 from "../pages/questionnaire/form2";
@@ -12,6 +11,13 @@ import Survey from "../pages/survey/survey";
 import Onboarding2 from "../pages/onboarding/Onboarding2";
 import Onboarding3 from "../pages/onboarding/Onboarding3";
 import Onboarding4 from "../pages/onboarding/Onboarding4";
+import Instructions1 from "../pages/instructions/Desktop/Instructios1";
+import Instructions2 from "../pages/instructions/Desktop/Instructios2";
+import Instructions3 from "../pages/instructions/Desktop/Instructios3";
+import Instructions4 from "../pages/instructions/Desktop/Instructios4";
+import Calibration1 from "../pages/instructions/Desktop/Calibration1";
+import Calibration2 from "../pages/instructions/Desktop/Calibration2";
+import InstructionsFinal from "../pages/instructions/Desktop/InstructionsFinal";
 
 const router = createBrowserRouter([
     {
@@ -31,8 +37,32 @@ const router = createBrowserRouter([
         element: <Onboarding4 />,
     },
     {
-        path: "/instructions",
-        element: <Instructions />,
+        path: "/instructions1",
+        element: <Instructions1 />,
+    },
+    {
+        path: "/instructions2",
+        element: <Instructions2 />,
+    },
+    {
+        path: "/instructions3",
+        element: <Instructions3 />,
+    },
+    {
+        path: "/instructions4",
+        element: <Instructions4 />,
+    },
+    {
+        path: "/calibration1",
+        element: <Calibration1 />,
+    },
+    {
+        path: "/calibration2",
+        element: <Calibration2 />,
+    },
+    {
+        path: "/instructionsfinal",
+        element: <InstructionsFinal />,
     },
     {
         path: "/game",
