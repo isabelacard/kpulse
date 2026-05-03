@@ -23,6 +23,7 @@ import InstructionsFinal from "../pages/instructions/Desktop/InstructionsFinal";
 import PreGameOne from "../pages/games/PreGameOne";
 import GameOne from "../pages/games/GameOne";
 import StatsGameOne from "../pages/games/StatsGameOne";
+import AllSet from "../pages/allset/AllSet";
 
 const router = createBrowserRouter([
     {
@@ -120,6 +121,10 @@ const router = createBrowserRouter([
     {
         path: "/survey",
         element: <Survey />,
+    },
+    {
+        path: "/allset",
+        element: <AllSet />,
     },
 ]);
 
