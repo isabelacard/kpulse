@@ -17,6 +17,7 @@ import Instructions3Controller from "../pages/instructions/Instructions3Controll
 import GameOneMobile from "../pages/games/GameOne";
 import GameTwo from "../pages/games/gametwo/gametwo";
 import AllSetMb from "../pages/allset/AllSetMb";
+import EndindMb from "../pages/ending/EndingMb";
 
 const router = createBrowserRouter([
     {
@@ -90,6 +91,10 @@ const router = createBrowserRouter([
     {
         path: "/allset",
         element: <AllSetMb />,
+    },
+    {
+        path: "/ending",
+        element: <EndindMb />,
     },
 ]);
 

@@ -24,6 +24,7 @@ import PreGameOne from "../pages/games/PreGameOne";
 import GameOne from "../pages/games/GameOne";
 import StatsGameOne from "../pages/games/StatsGameOne";
 import AllSet from "../pages/allset/AllSet";
+import Ending from "../pages/ending/Ending";
 
 const router = createBrowserRouter([
     {
@@ -125,6 +126,10 @@ const router = createBrowserRouter([
     {
         path: "/allset",
         element: <AllSet />,
+    },
+    {
+        path: "/final",
+        element: <Ending />,
     },
 ]);
 
