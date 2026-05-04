@@ -1,21 +1,27 @@
-import { useEffect } from "react";
+// import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import fondomobile from "../../assets/fondomobile1.png";
 import Qr from "./components/Qr";
+import { socket } from "../../socket";
 
 export default function OnboardingMb() {
     const navigate = useNavigate();
 
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            navigate("/onboarding2");
-        }, 10000);
+    // useEffect(() => {
+    //     const timer = setTimeout(() => {
+    //         navigate("/onboarding2");
+    //     }, 10000);
 
-        return () => clearTimeout(timer);
-    }, [navigate]);
+    //     return () => clearTimeout(timer);
+    // }, [navigate]);
+
+    const handleTap = () => {
+        socket.emit("changePage", "/onboarding2");
+        navigate("/onboarding2");
+    };
 
     return (
-        <div className="relative w-full h-screen flex flex-col items-center bg-center bg-cover bg-no-repeat overflow-hidden" style={{ backgroundImage: `url(${fondomobile})` }}>
+        <div onClick={handleTap} className="relative w-full h-screen flex flex-col items-center bg-center bg-cover bg-no-repeat overflow-hidden cursor-pointer" style={{ backgroundImage: `url(${fondomobile})` }}>
             <div className="flex flex-col items-center justify-between w-full h-full max-w-97.5 pt-[20%] pb-[15%] px-6">
                 <div className="flex flex-col items-center text-center mt-12">
                     <h1 className="text-white text-3xl font-poppins font-medium tracking-wide">Welcome to</h1>

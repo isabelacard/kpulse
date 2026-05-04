@@ -1,18 +1,18 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+// import { useEffect } from "react";
+// import { useNavigate } from "react-router-dom";
 import { ProgressBar } from "./components/ProgressBar";
 import fondocarga from "../../assets/fondocarga.png";
 
 export default function Onboarding2() {
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            navigate("/onboarding3");
-        }, 10000);
+    // useEffect(() => {
+    //     const timer = setTimeout(() => {
+    //         navigate("/onboarding3");
+    //     }, 10000);
 
-        return () => clearTimeout(timer);
-    }, [navigate]);
+    //     return () => clearTimeout(timer);
+    // }, [navigate]);
 
     return (
         <div className="flex items-center justify-center w-full h-screen relative bg-white overflow-hidden">

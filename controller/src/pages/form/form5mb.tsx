@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Square, Circle, Triangle, Star } from "lucide-react";
 import fondoform from "../../assets/fondoteform.png";
+import { socket } from "../../socket";
 
 const options = [
     { color: "bg-[#F88888]", icon: Square },
@@ -11,9 +13,15 @@ const options = [
 
 export default function MobileForm5() {
     const [selected, setSelected] = useState<string | null>(null);
+    const navigate = useNavigate();
+
+    const handleTap = () => {
+        socket.emit("changePage", "/formsfinal");
+        navigate("/formsfinal");
+    };
 
     return (
-        <div className="relative flex flex-col items-center w-full min-h-screen bg- overflow-hidden font-sans">
+        <div onClick={handleTap} className="relative flex flex-col items-center w-full min-h-screen overflow-hidden font-sans cursor-pointer">
             <img src={fondoform} className="max-w-full max-h-full object-contain z-0 absolute" alt="" />
 
             <div className="z-1">

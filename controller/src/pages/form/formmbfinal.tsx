@@ -1,8 +1,17 @@
+import { useNavigate } from "react-router-dom";
 import fondoform from "../../assets/fondoteform.png";
+import { socket } from "../../socket";
 
 export default function MobileFormFinal() {
+    const navigate = useNavigate();
+
+    const handleTap = () => {
+        socket.emit("changePage", "/instructions1");
+        navigate("/instructions1mobile");
+    };
+
     return (
-        <div className="relative flex flex-col items-center w-full min-h-screen bg- overflow-hidden font-sans">
+        <div onClick={handleTap} className="relative flex flex-col items-center w-full min-h-screen overflow-hidden font-sans cursor-pointer">
             <img src={fondoform} className="max-w-full max-h-full object-contain z-0 absolute" alt="" />
 
             <div className="z-1">

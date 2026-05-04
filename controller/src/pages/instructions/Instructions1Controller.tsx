@@ -1,8 +1,17 @@
+import { useNavigate } from "react-router-dom";
 import ImagenFondoCelular from "../../assets/fondocelularinstructions.png";
+import { socket } from "../../socket";
 
 function Instructions1Controller() {
+    const navigate = useNavigate();
+
+    const handleTap = () => {
+        socket.emit("changePage", "/instructions2");
+        navigate("/instructions2mobile");
+    };
+
     return (
-        <div className="flex items-center justify-center w-full h-screen p-4 overflow-hidden">
+        <div onClick={handleTap} className="flex items-center justify-center w-full h-screen p-4 overflow-hidden cursor-pointer">
             <div className="relative flex items-center justify-center">
                 <img className="max-w-full max-h-full object-contain" src={ImagenFondoCelular} />
                 <div className="absolute z-10 flex flex-col items-center h-full top-80">
