@@ -15,13 +15,8 @@ export default function MobileForm() {
     const [selected, setSelected] = useState<string | null>(null);
     const navigate = useNavigate();
 
-    const handleTap = () => {
-        socket.emit("changePage", "/forms2");
-        navigate("/forms2");
-    };
-
     return (
-        <div onClick={handleTap} className="relative flex flex-col items-center w-full min-h-screen overflow-hidden font-sans cursor-pointer">
+        <div className="relative flex flex-col items-center w-full min-h-screen overflow-hidden font-sans cursor-pointer">
             <img src={fondoform} className="max-w-full max-h-full object-contain z-0 absolute" alt="" />
 
             <div className="z-1">
@@ -38,7 +33,11 @@ export default function MobileForm() {
                     {options.map(({ color, icon: Icon }) => (
                         <button
                             key={color}
-                            onClick={() => setSelected(color)}
+                            onClick={() => {
+                                socket.emit("changePage", "/forms2");
+                                navigate("/forms2");
+                                setSelected(color);
+                            }}
                             className={`
                 ${color} aspect-square rounded-[30px] flex flex-col items-center justify-center p-4
                 transition-all duration-200 active:scale-90

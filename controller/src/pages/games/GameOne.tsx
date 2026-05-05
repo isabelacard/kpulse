@@ -1,6 +1,25 @@
+import { useNavigate } from "react-router-dom";
 import ImagenFondoCelular from "../../assets/fondocelularinstructions.png";
+import { useEffect } from "react";
+import { socket } from "../../socket.ts";
 
 function GameOneMobile() {
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const handleSync = (path: string) => {
+            if (path === "/calibratetwo") {
+                navigate("/gametwo");
+            }
+        };
+
+        socket.on("syncPage", handleSync);
+
+        return () => {
+            socket.off("syncPage", handleSync);
+        };
+    }, [navigate]);
+
     return (
         <div className="flex items-center justify-center w-full h-screen p-4 overflow-hidden">
             <div className="relative flex items-center justify-center">

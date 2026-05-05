@@ -2,8 +2,20 @@ import ImagenFondo2 from "../../../assets/instrucciones2.png";
 import Esfera1 from "../../../assets/esfera1.png";
 import Check1 from "../../../assets/check1.png";
 import Abuela1 from "../../../assets/Abuela1.png";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Instructions3() {
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            navigate("/instructions4");
+        }, 10000);
+
+        return () => clearTimeout(timer);
+    }, [navigate]);
+
     return (
         <div className="flex items-center justify-center w-full h-screen">
             <div className="relative w-294 h-162 shrink-0 overflow-hidden rounded-xl">

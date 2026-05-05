@@ -1,12 +1,22 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ImagenFondoCalibration from "../../../assets/calibration1.png";
 import CalibrationLines from "../../../assets/Lines1.png";
 import LoadingBarLines from "../../../components/LoadingBarLines";
+import { useNavigate } from "react-router-dom";
 
 function Calibration2() {
     const [pos, setPos] = useState({ x: 0, y: 0 });
     const [inside, setInside] = useState(false);
     const zoneRef = useRef<HTMLDivElement>(null);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            navigate("/instructionsfinal");
+        }, 13000);
+
+        return () => clearTimeout(timer);
+    }, [navigate]);
 
     const handleMouseMove = (e: React.MouseEvent) => {
         const rect = zoneRef.current?.getBoundingClientRect();

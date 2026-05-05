@@ -1,6 +1,25 @@
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import fondogametwo from "../../../assets/fondotegametwo.png";
+import { socket } from "../../../socket";
 
 export default function GameTwo() {
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const handleSync = (path: string) => {
+            if (path === "/allset") {
+                navigate("/allset");
+            }
+        };
+
+        socket.on("syncPage", handleSync);
+
+        return () => {
+            socket.off("syncPage", handleSync);
+        };
+    }, [navigate]);
+
     return (
         <div className="flex items-center justify-center w-full h-screen p-4 overflow-hidden">
             <div className="relative flex items-center justify-center">

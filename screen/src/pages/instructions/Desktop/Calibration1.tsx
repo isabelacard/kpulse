@@ -1,19 +1,38 @@
 import { useRef, useState } from "react";
 import ImagenFondoCalibration from "../../../assets/calibration1.png";
 import BreathingCircle from "../../../components/BreathingCircle";
+import { useNavigate } from "react-router-dom";
 
 function Calibration1() {
     const [pos, setPos] = useState({ x: 0, y: 0 });
     const [inside, setInside] = useState(false);
+    const circleRef = useRef<HTMLDivElement>(null);
     const zoneRef = useRef<HTMLDivElement>(null);
+    const navigate = useNavigate();
 
     const handleMouseMove = (e: React.MouseEvent) => {
         const rect = zoneRef.current?.getBoundingClientRect();
         if (!rect) return;
-        setPos({
-            x: e.clientX - rect.left,
-            y: e.clientY - rect.top,
-        });
+
+        const x = e.clientX - rect.left - 8;
+        const y = e.clientY - rect.top - 8;
+        setPos({ x, y });
+
+        // Obtener centro del BreathingCircle en coordenadas del contenedor
+        const circleRect = circleRef.current?.getBoundingClientRect();
+        if (!circleRect) return;
+
+        const circleCenterX = circleRect.left + circleRect.width / 2 - rect.left;
+        const circleCenterY = circleRect.top + circleRect.height / 2 - rect.top + 100;
+
+        const dx = x - circleCenterX;
+        const dy = y - circleCenterY;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        // Si la bolita toca el círculo (ajusta el radio según el tamaño de tu BreathingCircle)
+        if (distance < 10) {
+            navigate("/calibration2");
+        }
     };
 
     return (
@@ -28,7 +47,9 @@ function Calibration1() {
                         </h1>
                         <h1 className="text-white text-4xl text-center">of the screen to start the calibration</h1>
                     </div>
-                    <BreathingCircle></BreathingCircle>
+                    <div ref={circleRef}>
+                        <BreathingCircle />
+                    </div>
                     <div className="absolute border-b-2 w-30 border-white top-132"></div>
                     <p className="flex mt-50 text-white">Waiting for your move</p>
                 </div>

@@ -1,8 +1,20 @@
+import { useEffect } from "react";
 import ImagenFondo from "../../../assets/Instrucciones1.png";
 import Check1 from "../../../assets/check1.png";
 import LoadingBar from "../../../components/LoadingBar";
+import { useNavigate } from "react-router-dom";
 
 function Instructions4() {
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            navigate("/calibration1");
+        }, 7000);
+
+        return () => clearTimeout(timer);
+    }, [navigate]);
+
     return (
         <div className="flex items-center justify-center w-full h-screen">
             <div className="relative w-294 h-162 shrink-0 overflow-hidden rounded-xl">

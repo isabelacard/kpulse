@@ -1,13 +1,24 @@
-import { useRef, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import ImagenFondoCalibration from "../../../assets/fondote.png";
 import squarestats from "../../../assets/squaregameone.png";
 import LoadingBar from "../../../components/LoadingBar";
+import { socket } from "../../../socket";
 
 function StatsTwo() {
     const [pos, setPos] = useState({ x: 0, y: 0 });
     const [inside, setInside] = useState(false);
     const zoneRef = useRef<HTMLDivElement>(null);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            socket.emit("changePage", "/allset");
+            navigate("/allset");
+        }, 7000);
+
+        return () => clearTimeout(timer);
+    }, [navigate]);
 
     const location = useLocation();
     const { strayBalls, caughtBalls } = location.state ?? {

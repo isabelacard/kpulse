@@ -1,7 +1,19 @@
+import { useEffect } from "react";
 import allsetmb from "../../assets/allsetmb.png";
 import { Mail } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export default function AllSetMb() {
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            navigate("/ending");
+        }, 10000);
+
+        return () => clearTimeout(timer);
+    }, [navigate]);
+
     return (
         <div className="relative w-full h-screen flex flex-col items-center bg-center bg-cover bg-no-repeat overflow-hidden" style={{ backgroundImage: `url(${allsetmb})` }}>
             <div className="flex flex-col items-center justify-between w-full h-full max-w-97.5 pt-[20%] pb-[15%] px-6">

@@ -1,6 +1,18 @@
+import { useNavigate } from "react-router-dom";
 import allsetfondo from "../../assets/allsetfondo.png";
+import { useEffect } from "react";
 
 export default function AllSet() {
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            navigate("/final");
+        }, 10000);
+
+        return () => clearTimeout(timer);
+    }, [navigate]);
+
     return (
         <div className="flex items-center justify-center w-full h-screen relative bg-black/5 overflow-hidden">
             <img src={allsetfondo} alt="correo" className="w-full h-screen object-contain z-0 absolute" />

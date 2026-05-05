@@ -1,6 +1,25 @@
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import ImagenFondoCelular from "../../assets/fondocelularinstructions.png";
+import { socket } from "../../socket";
 
 function CalibratingController() {
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const handleSync = (path: string) => {
+            if (path === "/pregameone") {
+                navigate("/gameonemobile");
+            }
+        };
+
+        socket.on("syncPage", handleSync);
+
+        return () => {
+            socket.off("syncPage", handleSync);
+        };
+    }, [navigate]);
+
     return (
         <div className="flex items-center justify-center w-full h-screen p-6 overflow-hidden">
             <div className="relative flex items-center justify-center">

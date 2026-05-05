@@ -1,7 +1,19 @@
 import ImagenFondo from "../../../assets/Instrucciones1.png";
 import Pelota2 from "../../../assets/pelota2.png";
+import { useEffect } from "react";
+import { useNavigate } from "react-router";
 
 function Instructions2() {
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            navigate("/instructions3");
+        }, 10000);
+
+        return () => clearTimeout(timer);
+    }, [navigate]);
+
     return (
         <div className="flex items-center justify-center w-full h-screen">
             <div className="relative w-294 h-162 shrink-0 overflow-hidden rounded-xl">

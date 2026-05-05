@@ -1,11 +1,23 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ImagenFondoCalibration from "../../../assets/calibration1.png";
 import LoadingBar from "../../../components/LoadingBar";
+import { useNavigate } from "react-router-dom";
+import { socket } from "../../../socket";
 
 function InstructionsFinal() {
     const [pos, setPos] = useState({ x: 0, y: 0 });
     const [inside, setInside] = useState(false);
     const zoneRef = useRef<HTMLDivElement>(null);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            socket.emit("changePage", "/pregameone");
+            navigate("/pregameone");
+        }, 8000);
+
+        return () => clearTimeout(timer);
+    }, [navigate]);
 
     const handleMouseMove = (e: React.MouseEvent) => {
         const rect = zoneRef.current?.getBoundingClientRect();

@@ -1,16 +1,27 @@
-import { useRef, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import ImagenFondoCalibration from "../../assets/calibration1.png";
 import squarestats from "../../assets/squaregameone.png";
 import LoadingBar from "../../components/LoadingBar";
+import { socket } from "../../socket";
 
 function StatsGameOne() {
     const [pos, setPos] = useState({ x: 0, y: 0 });
     const [inside, setInside] = useState(false);
     const zoneRef = useRef<HTMLDivElement>(null);
+    const navigate = useNavigate();
 
     const location = useLocation();
     const { totalTime, outTime } = location.state ?? { totalTime: 0, outTime: 0 };
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            socket.emit("changePage", "/calibratetwo");
+            navigate("/calibratetwo");
+        }, 7000);
+
+        return () => clearTimeout(timer);
+    }, [navigate]);
 
     const formatTime = (ms: number) => {
         const minutes = Math.floor(ms / 60000);

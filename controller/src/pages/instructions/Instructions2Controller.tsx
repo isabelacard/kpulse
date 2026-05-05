@@ -1,6 +1,18 @@
 import ImagenFondoCelular from "../../assets/fondocelularinstructions.png";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Instructions2Controller() {
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            navigate("/instructions3mobile");
+        }, 10000);
+
+        return () => clearTimeout(timer);
+    }, [navigate]);
+
     return (
         <div className="flex items-center justify-center w-full h-screen p-4 overflow-hidden">
             <div className="relative flex items-center justify-center">
