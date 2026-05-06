@@ -10,7 +10,8 @@ export default function AllSetMb() {
     const [email, setEmailInput] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    const { session } = useSession();
+    const sessionCtx = useSession()!;
+    const { session } = sessionCtx;
     const navigate = useNavigate();
 
     const handleSubmit = async () => {
