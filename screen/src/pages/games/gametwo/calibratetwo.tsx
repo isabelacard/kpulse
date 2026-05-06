@@ -5,7 +5,7 @@ import BreathingCircle from "../../../components/BreathingCircle";
 
 function PreGameOne() {
     const [pos, setPos] = useState({ x: 0, y: 0 });
-    const [sensorPos, setSensorPos] = useState({ x: 0, y: 0 });
+    const [sensorPos] = useState({ x: 0, y: 0 });
     const [inside, setInside] = useState(false);
     const zoneRef = useRef<HTMLDivElement>(null);
     const circleRef = useRef<HTMLDivElement>(null);
@@ -24,9 +24,6 @@ function PreGameOne() {
 
         const circleCenterX = circleRect.left + circleRect.width / 2 - rect.left;
         const circleCenterY = circleRect.top + circleRect.height / 2 - rect.top + 170;
-
-        //VISTA SENSOR
-        setSensorPos({ x: circleCenterX, y: circleCenterY });
 
         const dx = x - circleCenterX;
         const dy = y - circleCenterY;

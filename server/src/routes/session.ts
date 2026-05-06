@@ -8,7 +8,10 @@ router.post("/", async (req, res) => {
 
     const { data, error } = await supabase.from("sessions").insert({ room_code }).select().single();
 
-    if (error) return res.status(500).json({ error });
+    if (error) {
+        console.error("[POST /session] Supabase error:", error);
+        return res.status(500).json({ error });
+    }
     res.json(data);
 });
 
@@ -17,7 +20,10 @@ router.patch("/:id/end", async (req, res) => {
 
     const { data, error } = await supabase.from("sessions").update({ ended_at: new Date().toISOString() }).eq("id", id).select().single();
 
-    if (error) return res.status(500).json({ error });
+    if (error) {
+        console.error("[PATCH /session/:id/end] Supabase error:", error);
+        return res.status(500).json({ error });
+    }
     res.json(data);
 });
 

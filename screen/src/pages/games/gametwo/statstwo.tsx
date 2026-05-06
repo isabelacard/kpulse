@@ -72,13 +72,13 @@ function StatsTwo() {
                             <h1 className="text-white font-medium text-[20px] absolute w-200">Total</h1>
                         </div>
                         <div className="absolute top-55 right-140">
-                            <h1 className="text-white font-bold text-[20px] absolute w-200">Balls Caught</h1>
+                            <h1 className="text-white font-bold text-[20px] absolute w-200">Balls Inside</h1>
                         </div>
                         <div className="absolute top-74 right-140">
                             <h1 className="text-white font-medium text-[20px] absolute w-200">Total</h1>
                         </div>
                         <div className="absolute top-80 right-140">
-                            <p className="text-white text-[20px] absolute w-50 font-bold">Balls Stray</p>
+                            <p className="text-white text-[20px] absolute w-50 font-bold">Balls Outside</p>
                         </div>
 
                         {/* Valores */}
@@ -87,7 +87,7 @@ function StatsTwo() {
                                 <span className="font-medium text-[30px]">{caughtBalls}</span> <span className="text-[20px] text-white font-medium">balls</span>
                             </h1>
                             <h1 className="flex items-baseline gap-2 text-white absolute left-40 top-75 whitespace-nowrap">
-                                <span className="font-medium text-[30px]">{strayBalls}</span> <span className="text-[20px] text-white font-medium">seg</span>
+                                <span className="font-medium text-[30px]">{strayBalls}</span> <span className="text-[20px] text-white font-medium">balls</span>
                             </h1>
                         </div>
                     </div>

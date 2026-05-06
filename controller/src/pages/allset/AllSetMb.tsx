@@ -30,7 +30,8 @@ export default function AllSetMb() {
 
             socket.emit("changePage", "/final");
             navigate("/ending");
-        } catch {
+        } catch (err) {
+            console.error("Error detallado al enviar datos:", err);
             setError("Something went wrong. Please try again.");
         } finally {
             setLoading(false);

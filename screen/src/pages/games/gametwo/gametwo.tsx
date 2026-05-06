@@ -28,6 +28,7 @@ function GameTwo() {
     const [barX, setBarX] = useState(0); // centro de la barra
     const [balls, setBalls] = useState<Ball[]>([]);
     const [strayBalls, setStrayBalls] = useState(0);
+    const [caughtBalls, setCaughtBalls] = useState(0);
     const [timeLeft, setTimeLeft] = useState(GAME_DURATION);
     const [started, setStarted] = useState(false);
     const [containerSize, setContainerSize] = useState({ w: 0, h: 0 });
@@ -48,7 +49,7 @@ function GameTwo() {
     useEffect(() => {
         if (!started) return;
         if (timeLeft <= 0) {
-            navigate("/statstwo");
+            navigate("/statstwo", { state: { strayBalls, caughtBalls } });
             return;
         }
         const id = setTimeout(() => setTimeLeft((t) => t - 1), 1000);
@@ -112,7 +113,7 @@ function GameTwo() {
                     const hitBar = newY + BALL_RADIUS >= barY && newY - BALL_RADIUS <= barY + BAR_HEIGHT && ball.x >= barLeft && ball.x <= barRight;
 
                     if (hitBar) {
-                        // Bola atrapada — desaparece
+                        setCaughtBalls((c) => c + 1);
                         continue;
                     }
 

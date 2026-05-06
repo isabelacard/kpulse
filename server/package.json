@@ -6,7 +6,7 @@
     "type": "module",
     "scripts": {
         "dev": "nodemon --exec tsx --env-file=.env.development ./src/main.ts",
-        "start": "tsx --env-file=.env.production ./src/main.ts"
+        "start": "nodemon --exec tsx --env-file=.env.production ./src/main.ts"
     },
     "keywords": [],
     "author": "",

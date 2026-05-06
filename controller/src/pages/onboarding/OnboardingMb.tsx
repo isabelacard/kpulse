@@ -1,4 +1,4 @@
-// import { useEffect } from "react";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import fondomobile from "../../assets/fondomobile1.png";
 import Qr from "./components/Qr";
@@ -10,15 +10,30 @@ import { api } from "../../services/api";
 export default function OnboardingMb() {
     const navigate = useNavigate();
     const sessionCtx = useSession();
+    const [processing, setProcessing] = useState(false);
+    const sessionCreated = useRef(false);
 
     const handleTap = async () => {
+        // Evitar múltiples taps simultáneos
+        if (processing || sessionCreated.current) {
+            socket.emit("changePage", "/onboarding2");
+            navigate("/onboarding2");
+            return;
+        }
+        setProcessing(true);
         try {
-            const newSession = await api.createSession("KPULSE_ROOM_1");
+            const randomCode = "KPULSE_" + Date.now() + "_" + Math.floor(Math.random() * 10000);
+            const newSession = await api.createSession(randomCode);
             if (newSession && newSession.id) {
                 sessionCtx?.setSessionId(newSession.id);
+                sessionCreated.current = true;
+            } else {
+                console.error("createSession no devolvió id:", newSession);
             }
         } catch (error) {
             console.error("Error al crear sesión:", error);
+        } finally {
+            setProcessing(false);
         }
 
         socket.emit("changePage", "/onboarding2");

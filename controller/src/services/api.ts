@@ -1,4 +1,13 @@
-export const BASE_URL = import.meta.env.VITE_API_URL ?? "http://localhost:8080";
+export const BASE_URL = "https://9kjbhqxg-3001.use2.devtunnels.ms";
+
+async function safeJson(res: Response) {
+    const text = await res.text();
+    try {
+        return JSON.parse(text);
+    } catch {
+        throw new Error(`Server error ${res.status}: ${text.slice(0, 200)}`);
+    }
+}
 
 export const api = {
     submitSurvey: (session_id: string | number, responses: { question: string; answer: string }[]) =>
@@ -6,31 +15,31 @@ export const api = {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ session_id, responses }),
-        }).then((r) => r.json()),
+        }).then(safeJson),
 
     linkPatient: (session_id: string | number, email: string) =>
         fetch(`${BASE_URL}/patient`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ session_id, email }),
-        }).then((r) => r.json()),
+        }).then(safeJson),
 
     submitResults: (session_id: string | number, game_number: number, score: number, duration_seconds: number) =>
         fetch(`${BASE_URL}/results`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ session_id, game_number, score, duration_seconds }),
-        }).then((r) => r.json()),
+        }).then(safeJson),
 
     createSession: (room_code: string) =>
         fetch(`${BASE_URL}/session`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ room_code }),
-        }).then((r) => r.json()),
+        }).then(safeJson),
 
     endSession: (session_id: string | number) =>
         fetch(`${BASE_URL}/session/${session_id}/end`, {
             method: "PATCH",
-        }).then((r) => r.json()),
+        }).then(safeJson),
 };
