@@ -13,7 +13,6 @@ export default function OnboardingMb() {
 
     const handleTap = async () => {
         try {
-            // Crear sesión en la DB al primer toque
             const newSession = await api.createSession("KPULSE_ROOM_1");
             if (newSession && newSession.id) {
                 sessionCtx?.setSessionId(newSession.id);

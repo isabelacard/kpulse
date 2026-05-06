@@ -1,18 +1,9 @@
-// import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import fondomobile from "../../assets/fondomobile1.png";
 import { socket } from "../../socket";
 
 export default function OnboardingMb3() {
     const navigate = useNavigate();
-
-    // useEffect(() => {
-    //     const timer = setTimeout(() => {
-    //         navigate("/onboarding4");
-    //     }, 10000);
-
-    //     return () => clearTimeout(timer);
-    // }, [navigate]);
 
     const handleTap = () => {
         socket.emit("changePage", "/onboarding4");

@@ -1,8 +1,8 @@
 import { createContext, useContext, useState } from "react";
 
 interface SessionData {
-    session_id: string;
-    patient_id: string;
+    session_id: string | number;
+    patient_id: string | number;
     survey: { question: string; answer: string }[];
 }
 

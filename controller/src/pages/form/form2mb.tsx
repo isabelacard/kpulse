@@ -6,10 +6,10 @@ import { socket } from "../../socket";
 import { useSession } from "../../context/Sessioncontext";
 
 const options = [
-    { color: "bg-[#F88888]", icon: Square, label: "Option 1" },
-    { color: "bg-[#A6CFFF]", icon: Circle, label: "Option 2" },
-    { color: "bg-[#E8D676]", icon: Triangle, label: "Option 3" },
-    { color: "bg-[#F7A3FF]", icon: Star, label: "Option 4" },
+    { color: "bg-[#F88888]", icon: Square, label: "Post-surgery recovery" },
+    { color: "bg-[#A6CFFF]", icon: Circle, label: "Muscle or joint injury" },
+    { color: "bg-[#E8D676]", icon: Triangle, label: "Neurological condition" },
+    { color: "bg-[#F7A3FF]", icon: Star, label: "No diagnosed condition" },
 ];
 
 export default function MobileForm2() {

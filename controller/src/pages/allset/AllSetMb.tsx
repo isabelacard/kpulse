@@ -23,6 +23,9 @@ export default function AllSetMb() {
             if (session.survey.length > 0) {
                 await api.submitSurvey(session.session_id, session.survey);
             }
+
+            await api.linkPatient(session.session_id, email);
+
             await api.endSession(session.session_id);
 
             socket.emit("changePage", "/final");

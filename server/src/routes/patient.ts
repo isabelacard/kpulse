@@ -4,9 +4,9 @@ import { supabase } from "../db";
 const router = Router();
 
 router.post("/", async (req, res) => {
-    const { name, age, session_id } = req.body;
+    const { email, session_id } = req.body;
 
-    const { data: patient, error: patientError } = await supabase.from("patients").insert({ name, age }).select().single();
+    const { data: patient, error: patientError } = await supabase.from("patients").insert({ email }).select().single();
 
     if (patientError) return res.status(500).json({ error: patientError });
 
