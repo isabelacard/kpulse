@@ -2,22 +2,27 @@
     "name": "server",
     "version": "1.0.0",
     "description": "",
-    "main": "index.js",
+    "main": "index.ts",
     "type": "module",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "dev": "nodemon index.js",
-        "start": "node index.js"
+        "dev": "nodemon --exec tsx --env-file=.env.development ./src/main.ts",
+        "start": "tsx --env-file=.env.production ./src/main.ts"
     },
     "keywords": [],
     "author": "",
     "license": "ISC",
     "dependencies": {
+        "@supabase/supabase-js": "^2.105.3",
         "cors": "^2.8.6",
         "express": "^5.2.1",
         "socket.io": "^4.8.3"
     },
     "devDependencies": {
-        "nodemon": "^3.1.14"
+        "@types/cors": "^2.8.19",
+        "@types/express": "^5.0.6",
+        "@types/node": "^25.6.0",
+        "nodemon": "^3.1.14",
+        "tsx": "^4.21.0",
+        "typescript": "^6.0.3"
     }
 }

@@ -4,18 +4,24 @@ import fondomobile from "../../assets/fondomobile1.png";
 import Qr from "./components/Qr";
 import { socket } from "../../socket";
 
+import { useSession } from "../../context/Sessioncontext";
+import { api } from "../../services/api";
+
 export default function OnboardingMb() {
     const navigate = useNavigate();
+    const sessionCtx = useSession();
 
-    // useEffect(() => {
-    //     const timer = setTimeout(() => {
-    //         navigate("/onboarding2");
-    //     }, 10000);
+    const handleTap = async () => {
+        try {
+            // Crear sesión en la DB al primer toque
+            const newSession = await api.createSession("KPULSE_ROOM_1");
+            if (newSession && newSession.id) {
+                sessionCtx?.setSessionId(newSession.id);
+            }
+        } catch (error) {
+            console.error("Error al crear sesión:", error);
+        }
 
-    //     return () => clearTimeout(timer);
-    // }, [navigate]);
-
-    const handleTap = () => {
         socket.emit("changePage", "/onboarding2");
         navigate("/onboarding2");
     };

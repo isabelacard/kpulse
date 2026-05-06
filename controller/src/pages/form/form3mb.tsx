@@ -3,15 +3,17 @@ import { useNavigate } from "react-router-dom";
 import { Square, Circle, Triangle, Star } from "lucide-react";
 import fondoform from "../../assets/fondoteform.png";
 import { socket } from "../../socket";
+import { useSession } from "../../context/Sessioncontext";
 
 const options = [
-    { color: "bg-[#F88888]", icon: Square },
-    { color: "bg-[#A6CFFF]", icon: Circle },
-    { color: "bg-[#E8D676]", icon: Triangle },
-    { color: "bg-[#F7A3FF]", icon: Star },
+    { color: "bg-[#F88888]", icon: Square, label: "Option 1" },
+    { color: "bg-[#A6CFFF]", icon: Circle, label: "Option 2" },
+    { color: "bg-[#E8D676]", icon: Triangle, label: "Option 3" },
+    { color: "bg-[#F7A3FF]", icon: Star, label: "Option 4" },
 ];
 
 export default function MobileForm3() {
+    const sessionCtx = useSession();
     const [selected, setSelected] = useState<string | null>(null);
     const navigate = useNavigate();
 
@@ -30,10 +32,11 @@ export default function MobileForm3() {
 
                 {/* Contenedor */}
                 <div className="grid grid-cols-2 gap-4 mt-12 px-10 w-full max-w-sm">
-                    {options.map(({ color, icon: Icon }) => (
+                    {options.map(({ color, icon: Icon, label }) => (
                         <button
                             key={color}
                             onClick={() => {
+                                sessionCtx?.addSurveyAnswer("What is your main rehabilitation goal?", label);
                                 socket.emit("changePage", "/forms4");
                                 navigate("/forms4");
                                 setSelected(color);

@@ -1,4 +1,5 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate, Outlet } from "react-router-dom";
+import SocketListener from "../components/SocketListener";
 import Forms from "../pages/form/formmb";
 import Forms2 from "../pages/form/form2mb";
 import Forms3 from "../pages/form/form3mb";
@@ -21,80 +22,33 @@ import EndindMb from "../pages/ending/EndingMb";
 
 const router = createBrowserRouter([
     {
-        path: "/",
-        element: <OnboardingMb />,
-    },
-    {
-        path: "/onboarding2",
-        element: <OnboardingMb2 />,
-    },
-    {
-        path: "/onboarding3",
-        element: <OnboardingMb3 />,
-    },
-    {
-        path: "/onboarding4",
-        element: <OnboardingMb4 />,
-    },
-    {
-        path: "/instructions1mobile",
-        element: <Instructions1Controller />,
-    },
-    {
-        path: "/instructions2mobile",
-        element: <Instructions2Controller />,
-    },
-    {
-        path: "/instructions3mobile",
-        element: <Instructions3Controller />,
-    },
-    {
-        path: "/calibratingmobile",
-        element: <CalibratingController />,
-    },
-    {
-        path: "/gameonemobile",
-        element: <GameOneMobile />,
-    },
-    {
-        path: "/forms",
-        element: <Forms />,
-    },
-    {
-        path: "/forms2",
-        element: <Forms2 />,
-    },
-    {
-        path: "/forms3",
-        element: <Forms3 />,
-    },
-    {
-        path: "/forms4",
-        element: <Forms4 />,
-    },
-    {
-        path: "/forms5",
-        element: <Forms5 />,
-    },
-    {
-        path: "/formsfinal",
-        element: <Formsfinal />,
-    },
-    {
-        path: "/survey",
-        element: <Survey />,
-    },
-    {
-        path: "/gametwo",
-        element: <GameTwo />,
-    },
-    {
-        path: "/allset",
-        element: <AllSetMb />,
-    },
-    {
-        path: "/ending",
-        element: <EndindMb />,
+        element: (
+            <SocketListener>
+                <Outlet />
+            </SocketListener>
+        ),
+        children: [
+            { path: "/", element: <OnboardingMb /> },
+            { path: "/onboarding2", element: <OnboardingMb2 /> },
+            { path: "/onboarding3", element: <OnboardingMb3 /> },
+            { path: "/onboarding4", element: <OnboardingMb4 /> },
+            { path: "/instructions1mobile", element: <Instructions1Controller /> },
+            { path: "/instructions2mobile", element: <Instructions2Controller /> },
+            { path: "/instructions3mobile", element: <Instructions3Controller /> },
+            { path: "/calibratingmobile", element: <CalibratingController /> },
+            { path: "/gameonemobile", element: <GameOneMobile /> },
+            { path: "/gametwo", element: <GameTwo /> },
+            { path: "/forms", element: <Forms /> },
+            { path: "/forms2", element: <Forms2 /> },
+            { path: "/forms3", element: <Forms3 /> },
+            { path: "/forms4", element: <Forms4 /> },
+            { path: "/forms5", element: <Forms5 /> },
+            { path: "/formsfinal", element: <Formsfinal /> },
+            { path: "/survey", element: <Survey /> },
+            { path: "/allset", element: <AllSetMb /> },
+            { path: "/ending", element: <EndindMb /> },
+            { path: "*", element: <Navigate to="/" replace /> },
+        ],
     },
 ]);
 
