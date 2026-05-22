@@ -1,9 +1,9 @@
 export interface SensorPayload {
     orientation: {
-        x: number; 
+        x: number;
         y: number;
     };
-    aceleration: {
+    acceleration: {
         x: number;
         y: number;
         z: number;
