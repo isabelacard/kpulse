@@ -1,5 +1,7 @@
 import { Server } from "socket.io";
 import { Server as HttpServer } from "http";
+import { data } from "react-router-dom";
+import path from "path";
 
 export const initSocket = (httpServer: HttpServer) => {
     const io = new Server(httpServer, {
@@ -12,6 +14,18 @@ export const initSocket = (httpServer: HttpServer) => {
         socket.on("changePage", (data) => {
             console.log("Recibido changePage con data:", data);
             io.emit("syncPage", data);
+        });
+
+        //puente de sensores
+        socket.on("sensor:data", (data) => {
+            socket.broadcast.emit("screen: data", data);
+        });
+
+        //Sincronicacion post calibración
+        socket.on("calibración:completada", (path) => {
+            console.log("Calibración completada, sincronizando hacia:", path);
+            
+            io.emit("syncpage", path);
         });
 
         socket.on("disconnect", () => {
