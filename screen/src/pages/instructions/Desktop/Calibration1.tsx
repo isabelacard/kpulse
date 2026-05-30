@@ -1,44 +1,55 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import ImagenFondoCalibration from "../../../assets/calibration1.png";
 import BreathingCircle from "../../../components/BreathingCircle";
 import { useNavigate } from "react-router-dom";
+import { socket } from "../../../socket";
+
+export interface SensorPayload {
+    orientation: { x: number; y: number; };
+}
 
 function Calibration1() {
     const [pos, setPos] = useState({ x: 0, y: 0 });
-    const [inside, setInside] = useState(false);
     const circleRef = useRef<HTMLDivElement>(null);
     const zoneRef = useRef<HTMLDivElement>(null);
     const navigate = useNavigate();
 
-    const handleMouseMove = (e: React.MouseEvent) => {
-        const rect = zoneRef.current?.getBoundingClientRect();
-        if (!rect) return;
+    useEffect(() => {
+        const moveDot = (data: SensorPayload) => {
+            const zone = zoneRef.current?.getBoundingClientRect();
+            const circle = circleRef.current?.getBoundingClientRect();
+            
+            if (!zone || !circle) return;
 
-        const x = e.clientX - rect.left - 8;
-        const y = e.clientY - rect.top - 8;
-        setPos({ x, y });
+            const percentageX = (data.orientation.x + 45) / 90; 
+            const percentageY = (data.orientation.y + 45) / 90;
 
-        // Obtener centro del BreathingCircle en coordenadas del contenedor
-        const circleRect = circleRef.current?.getBoundingClientRect();
-        if (!circleRect) return;
+            const posX = percentageX * zone.width;
+            const posY = percentageY * zone.height;
 
-        const circleCenterX = circleRect.left + circleRect.width / 2 - rect.left;
-        const circleCenterY = circleRect.top + circleRect.height / 2 - rect.top + 100;
+            setPos({ x: posX, y: posY });
 
-        const dx = x - circleCenterX;
-        const dy = y - circleCenterY;
-        const distance = Math.sqrt(dx * dx + dy * dy);
+            const circleCenterX = circle.left + circle.width / 2 - zone.left;
+            const circleCenterY = circle.top + circle.height / 2 - zone.top + 100;
 
-        // Si la bolita toca el círculo (ajusta el radio según el tamaño de tu BreathingCircle)
-        if (distance < 10) {
-            navigate("/calibration2");
-        }
-    };
+            const distance = Math.hypot(posX - circleCenterX, posY - circleCenterY);
+
+            if (distance < 15) {
+                navigate("/calibration2");
+            }
+        };
+
+        socket.on("screen:data", moveDot);
+
+        return () => {
+            socket.off("screen:data", moveDot);
+        };
+    }, [navigate]);
 
     return (
         <div className="flex items-center justify-center w-full h-screen">
-            <div onMouseMove={handleMouseMove} ref={zoneRef} onMouseEnter={() => setInside(true)} onMouseLeave={() => setInside(false)} className="relative w-294 h-162 shrink-0 overflow-hidden rounded-xl">
-                <img className="absolute" src={ImagenFondoCalibration} />
+            <div ref={zoneRef} className="relative w-294 h-162 shrink-0 overflow-hidden rounded-xl">
+                <img className="absolute" src={ImagenFondoCalibration} alt="Calibration Background" />
                 <div className="relative z-10 flex flex-col items-center mt-20 h-full">
                     <div className="flex flex-col absolute">
                         <h1 className="text-white text-4xl text-center">
@@ -53,13 +64,11 @@ function Calibration1() {
                     <div className="absolute border-b-2 w-30 border-white top-132"></div>
                     <p className="flex mt-50 text-white">Waiting for your move</p>
                 </div>
-                {inside && (
-                    <div
-                        style={{ left: pos.x, top: pos.y }}
-                        className={`absolute w-5 h-5 bg-[#FFB143] rounded-4xl
-                            z-15`}
-                    ></div>
-                )}
+                
+                <div
+                    style={{ left: pos.x, top: pos.y }}
+                    className="absolute w-5 h-5 bg-[#FFB143] rounded-4xl z-15"
+                ></div>
             </div>
         </div>
     );
