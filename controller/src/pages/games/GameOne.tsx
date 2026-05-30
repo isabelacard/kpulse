@@ -5,16 +5,13 @@ import { socket } from "../../socket.ts";
 
 function GameOneMobile() {
     const navigate = useNavigate();
-
     useEffect(() => {
         const handleSync = (path: string) => {
             if (path === "/calibratetwo") {
                 navigate("/gametwo");
             }
         };
-
         socket.on("syncPage", handleSync);
-
         return () => {
             socket.off("syncPage", handleSync);
         };
