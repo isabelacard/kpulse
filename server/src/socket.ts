@@ -1,7 +1,5 @@
 import { Server } from "socket.io";
 import { Server as HttpServer } from "http";
-import { data } from "react-router-dom";
-import path from "path";
 
 export const initSocket = (httpServer: HttpServer) => {
     const io = new Server(httpServer, {
@@ -9,27 +7,29 @@ export const initSocket = (httpServer: HttpServer) => {
     });
 
     io.on("connection", (socket) => {
-        console.log("Cliente conectado:", socket.id);
+        console.log("Client connected:", socket.id);
 
+        // General page synchronization
         socket.on("changePage", (data) => {
-            console.log("Recibido changePage con data:", data);
+            console.log("Received changePage with data:", data);
             io.emit("syncPage", data);
         });
 
-        //puente de sensores
+        // Sensor bridge
         socket.on("sensor:data", (data) => {
-            socket.broadcast.emit("screen: data", data);
+            // FIXED: Removed the extra space, now it perfectly matches your React code
+            socket.broadcast.emit("screen:data", data);
         });
 
-        //Sincronicacion post calibración
-        socket.on("calibración:completada", (path) => {
-            console.log("Calibración completada, sincronizando hacia:", path);
-            
-            io.emit("syncpage", path);
+        // Post-calibration synchronization
+        socket.on("calibration:completed", (path) => {
+            console.log("Calibration completed, syncing to:", path);
+            // FIXED: Capital "P" in syncPage
+            io.emit("syncPage", path);
         });
 
         socket.on("disconnect", () => {
-            console.log("Cliente desconectado:", socket.id);
+            console.log("Client disconnected:", socket.id);
         });
     });
 

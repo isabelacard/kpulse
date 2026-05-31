@@ -28,11 +28,9 @@ function Calibration2() {
             const zone = zoneRef.current?.getBoundingClientRect();
             if (!zone) return;
 
-            // Convert degrees (-45 to 45) to percentages (0 to 1)
             const percentageX = (data.orientation.x + 45) / 90;
             const percentageY = (data.orientation.y + 45) / 90;
 
-            // Multiply by container size to get exact pixel position
             const posX = percentageX * zone.width;
             const posY = percentageY * zone.height;
 
