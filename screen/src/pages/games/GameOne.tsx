@@ -1,8 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
 import ImagenFondoCalibration from "../../assets/calibration1.png";
 import PatronJuegoUno from "../../assets/patronjuego1.png";
+import { socket } from "../../socket";
+
+type SensorPayload = {
+    orientation: { x: number; y: number; };
+};
 
 function GameOne() {
     const navigate = useNavigate();
@@ -10,7 +14,6 @@ function GameOne() {
     const zoneRef = useRef<HTMLDivElement>(null);
     const patternImgRef = useRef<HTMLImageElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
-
     const finishBallRef = useRef<HTMLDivElement>(null);
 
     const [pos, setPos] = useState({ x: 0, y: 0 });
@@ -23,7 +26,6 @@ function GameOne() {
     const [isOut, setIsOut] = useState(false);
     const [finished, setFinished] = useState(false);
 
-    // dibujar mapa de colision
     const buildCollisionMap = () => {
         const img = patternImgRef.current;
         const canvas = canvasRef.current;
@@ -54,7 +56,6 @@ function GameOne() {
         };
     }, []);
 
-    // destectar si esta sobre la linea
     const isBallInsideLine = (ballX: number, ballY: number) => {
         const img = patternImgRef.current;
         const canvas = canvasRef.current;
@@ -75,10 +76,8 @@ function GameOne() {
 
         for (let x = -radius; x <= radius; x++) {
             for (let y = -radius; y <= radius; y++) {
-                // aplican solamente los pixeles del circulo
                 if (x * x + y * y <= radius * radius) {
                     const px = ballX + radius + x - (imgRect.left - zoneRect.left);
-
                     const py = ballY + radius + y - (imgRect.top - zoneRect.top);
 
                     if (px < 0 || py < 0 || px >= canvas.width || py >= canvas.height) {
@@ -102,7 +101,7 @@ function GameOne() {
         }
         return true;
     };
-    // Timer
+
     useEffect(() => {
         if (!started || finished) return;
 
@@ -116,7 +115,6 @@ function GameOne() {
         return () => clearInterval(interval);
     }, [started, isOut, finished]);
 
-    // Formato 00:00.000
     const formatTime = (ms: number) => {
         const minutes = Math.floor(ms / 60000);
         const seconds = Math.floor((ms % 60000) / 1000);
@@ -125,7 +123,6 @@ function GameOne() {
         return `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}.${milli.toString().padStart(3, "0")}`;
     };
 
-    // Detectar final
     const checkFinishCollision = (ballX: number, ballY: number) => {
         const finish = finishBallRef.current;
         const zone = zoneRef.current;
@@ -155,32 +152,45 @@ function GameOne() {
         }
     };
 
-    // Movimiento mouse
-    const handleMouseMove = (e: React.MouseEvent) => {
-        const rect = zoneRef.current?.getBoundingClientRect();
-        if (!rect || finished) return;
+    // Connection with the Controller's physical sensors
+    useEffect(() => {
+        const handleSensorMove = (data: SensorPayload) => {
+            const zone = zoneRef.current?.getBoundingClientRect();
+            if (!zone || finished) return;
 
-        const x = e.clientX - rect.left - 12;
-        const y = e.clientY - rect.top - 12;
+            // Map orientation (-45 to 45) to container percentages
+            const percentageX = (data.orientation.x + 45) / 90;
+            const percentageY = (data.orientation.y + 45) / 90;
 
-        if (!started) setStarted(true);
+            // Calculate exact position in pixels minus half the dot size
+            const posX = percentageX * zone.width - 10;
+            const posY = percentageY * zone.height - 10;
 
-        setShowBall(true);
-        setPos({ x, y });
+            if (!started) setStarted(true);
 
-        const inside = isBallInsideLine(x, y);
+            setShowBall(true);
+            setPos({ x: posX, y: posY });
 
-        setIsOut(!inside);
+            // Execute the existing logic for line out and finish collision
+            const inside = isBallInsideLine(posX, posY);
+            setIsOut(!inside);
+            checkFinishCollision(posX, posY);
+        };
 
-        checkFinishCollision(x, y);
-    };
+        socket.on("screen:data", handleSensorMove);
+
+        return () => {
+            socket.off("screen:data", handleSensorMove);
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [started, finished, totalMs, outMs, isOut]);
 
     return (
         <div className="flex items-center justify-center w-full h-screen">
-            <div ref={zoneRef} onMouseMove={handleMouseMove} className="relative w-294 h-162 shrink-0 overflow-hidden rounded-xl">
-                <img className="absolute" src={ImagenFondoCalibration} />
+            <div ref={zoneRef} className="relative w-294 h-162 shrink-0 overflow-hidden rounded-xl">
+                <img className="absolute" src={ImagenFondoCalibration} alt="Background" />
 
-                <img ref={patternImgRef} className="absolute w-235 top-40 left-30" src={PatronJuegoUno} onLoad={buildCollisionMap} />
+                <img ref={patternImgRef} className="absolute w-235 top-40 left-30" src={PatronJuegoUno} onLoad={buildCollisionMap} alt="Level Map" />
 
                 <canvas ref={canvasRef} className="hidden" />
 
@@ -205,6 +215,7 @@ function GameOne() {
                         </h1>
                     </div>
                 </div>
+                
                 <div
                     ref={finishBallRef}
                     className="absolute w-10 h-10 bg-[#FF9900] rounded-full z-20"
@@ -213,11 +224,13 @@ function GameOne() {
                         right: "204px",
                     }}
                 />
+                
                 {showBall && (
                     <div
                         style={{
                             left: pos.x,
                             top: pos.y,
+                            transition: "left 0.05s linear, top 0.05s linear"
                         }}
                         className={`absolute w-5 h-5 rounded-full z-20 ${isOut ? "bg-red-500" : "bg-[#FFB143]"}`}
                     />
@@ -226,4 +239,5 @@ function GameOne() {
         </div>
     );
 }
+
 export default GameOne;
