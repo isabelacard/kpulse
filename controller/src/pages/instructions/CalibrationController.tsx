@@ -8,7 +8,7 @@ function CalibratingController() {
     const navigate = useNavigate();
     const { sensorData, hasPermission, requestAccess } = useSensors();
 
-    // 1. Listen for server sync to switch to the game
+    // Listen for server sync to switch to the game
     useEffect(() => {
         const handleSync = (path: string) => {
             if (path === "/pregameone") {
@@ -19,7 +19,7 @@ function CalibratingController() {
         return () => { socket.off("syncPage", handleSync); };
     }, [navigate]);
 
-    // 2. Send sensor data every 50ms
+    // Send sensor data every 50ms
     useEffect(() => {
         if (!hasPermission) return;
         
@@ -30,7 +30,7 @@ function CalibratingController() {
         return () => clearInterval(interval);
     }, [hasPermission, sensorData]);
 
-    // 3. Clear permission screen (Shown at startup)
+    // Clear permission screen (Shown at startup)
     if (!hasPermission) {
         return (
             <div className="flex flex-col items-center justify-center min-h-screen bg-[#0A3D44] text-white p-6">
@@ -48,7 +48,7 @@ function CalibratingController() {
         );
     }
 
-    // 4. Calibration screen (Shown only after granting permission)
+    // Calibration screen (Shown only after granting permission)
     return (
         <div className="flex items-center justify-center w-full h-screen p-6 overflow-hidden bg-[#0A3D44]">
             <div className="relative flex items-center justify-center">
