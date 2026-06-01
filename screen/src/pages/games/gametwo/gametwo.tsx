@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ImagenFondo from "../../../assets/fondote.png";
+import { socket } from "../../../socket";
 
 const GAME_DURATION = 15;
 const BALL_RADIUS = 22;
@@ -10,12 +11,16 @@ const BALL_SPEED_MIN = 3;
 const BALL_SPEED_MAX = 6;
 const MAX_BALLS_ALIVE = 5;
 
-interface Ball {
+type Ball = {
     id: number;
     x: number;
     y: number;
     speed: number;
-}
+};
+
+type SensorPayload = {
+    orientation: { x: number; y: number; };
+};
 
 let ballIdCounter = 0;
 
@@ -25,7 +30,7 @@ function GameTwo() {
     const animFrameRef = useRef<number>(0);
     const lastSpawnRef = useRef<number>(0);
 
-    const [barX, setBarX] = useState(0); // centro de la barra
+    const [barX, setBarX] = useState(0); 
     const [balls, setBalls] = useState<Ball[]>([]);
     const [strayBalls, setStrayBalls] = useState(0);
     const [caughtBalls, setCaughtBalls] = useState(0);
@@ -33,7 +38,7 @@ function GameTwo() {
     const [started, setStarted] = useState(false);
     const [containerSize, setContainerSize] = useState({ w: 0, h: 0 });
 
-    // Medir contenedor
+    // Measure container
     useEffect(() => {
         const el = containerRef.current;
         if (!el) return;
@@ -54,37 +59,51 @@ function GameTwo() {
         }
         const id = setTimeout(() => setTimeLeft((t) => t - 1), 1000);
         return () => clearTimeout(id);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [started, timeLeft, navigate]);
 
-    // Mouse move → mover barra
-    const handleMouseMove = useCallback(
-        (e: React.MouseEvent) => {
-            const rect = containerRef.current?.getBoundingClientRect();
-            if (!rect) return;
+    // Controller movement -> move bar
+    useEffect(() => {
+        const handleSensorMove = (data: SensorPayload) => {
+            const el = containerRef.current;
+            if (!el) return;
+            
             if (!started) setStarted(true);
-            const x = e.clientX - rect.left;
-            setBarX(Math.max(BAR_WIDTH / 2, Math.min(rect.width - BAR_WIDTH / 2, x)));
-        },
-        [started]
-    );
 
-    // Ref mutable para barX (accesible dentro del loop sin stale closure)
+            // Map the horizontal orientation (-45 to 45) to container percentages
+            const percentageX = (data.orientation.x + 45) / 90;
+            
+            // Calculate pixel position
+            const x = percentageX * el.clientWidth;
+            
+            // Keep the bar strictly within the container bounds
+            setBarX(Math.max(BAR_WIDTH / 2, Math.min(el.clientWidth - BAR_WIDTH / 2, x)));
+        };
+
+        socket.on("screen:data", handleSensorMove);
+
+        return () => {
+            socket.off("screen:data", handleSensorMove);
+        };
+    }, [started]);
+
+    // Mutable ref for barX (accessible inside the loop without stale closure)
     const barXRef = useRef(barX);
     useEffect(() => {
         barXRef.current = barX;
     }, [barX]);
 
-    // Game loop — spawn + física
+    // Game loop — spawn + physics
     useEffect(() => {
         if (!started || timeLeft <= 0) return;
 
         const { w, h } = containerSize;
         if (!w || !h) return;
 
-        const barY = h - 60; // posición Y fija de la barra
+        const barY = h - 60; // Fixed Y position of the bar
 
         const loop = (timestamp: number) => {
-            // Spawn nueva bola cada ~1.2s si hay menos de MAX_BALLS_ALIVE
+            // Spawn new ball every ~1.2s if below MAX_BALLS_ALIVE
             if (timestamp - lastSpawnRef.current > 1200) {
                 lastSpawnRef.current = timestamp;
                 setBalls((prev) => {
@@ -99,7 +118,7 @@ function GameTwo() {
                 });
             }
 
-            // Mover bolas y detectar colisiones
+            // Move balls and detect collisions
             setBalls((prev) => {
                 const surviving: Ball[] = [];
                 let dropped = 0;
@@ -107,7 +126,7 @@ function GameTwo() {
                 for (const ball of prev) {
                     const newY = ball.y + ball.speed;
 
-                    // ¿Colisiona con la barra?
+                    // Collides with the bar?
                     const barLeft = barXRef.current - BAR_WIDTH / 2;
                     const barRight = barXRef.current + BAR_WIDTH / 2;
                     const hitBar = newY + BALL_RADIUS >= barY && newY - BALL_RADIUS <= barY + BAR_HEIGHT && ball.x >= barLeft && ball.x <= barRight;
@@ -118,7 +137,7 @@ function GameTwo() {
                     }
 
                     if (newY - BALL_RADIUS > h) {
-                        // Cayó al suelo
+                        // Fell to the ground
                         dropped++;
                         continue;
                     }
@@ -141,11 +160,11 @@ function GameTwo() {
 
     return (
         <div className="flex items-center justify-center w-full h-screen">
-            <div ref={containerRef} onMouseMove={handleMouseMove} className="relative w-294 h-162 shrink-0 overflow-hidden rounded-xl cursor-none">
-                {/* Fondo */}
-                <img className="absolute" src={ImagenFondo} />
+            <div ref={containerRef} className="relative w-294 h-162 shrink-0 overflow-hidden rounded-xl cursor-none">
+                {/* Background */}
+                <img className="absolute" src={ImagenFondo} alt="Background" />
 
-                {/* UI superior */}
+                {/* Top UI */}
                 <div className="relative z-1 flex flex-col items-center pt-15">
                     <h1 className="text-white text-[50px] font-medium text-center">
                         Level <span className="text-[#FFB143] font-bold">Two</span>
@@ -162,11 +181,11 @@ function GameTwo() {
                         <p>{strayBalls}</p>
                     </div>
 
-                    {/* Línea divisoria */}
+                    {/* Divider line */}
                     <div className="absolute top-50 left-8 right-8 border-t border-white/40" />
                 </div>
 
-                {/* Bolas */}
+                {/* Balls */}
                 {balls.map((ball) => (
                     <div
                         key={ball.id}
@@ -180,7 +199,7 @@ function GameTwo() {
                     />
                 ))}
 
-                {/* Barra */}
+                {/* Bar */}
                 <div
                     className="absolute z-20 rounded-full bg-[#FFB143]"
                     style={{
@@ -188,13 +207,14 @@ function GameTwo() {
                         height: BAR_HEIGHT,
                         left: barX - BAR_WIDTH / 2,
                         top: barY,
+                        transition: "left 0.05s linear" 
                     }}
                 />
 
-                {/* Waiting message si no ha empezado */}
+                {/* Waiting message if not started */}
                 {!started && (
                     <div className="absolute inset-0 flex items-center justify-center z-30">
-                        <p className="text-white text-2xl animate-pulse">Move your mouse to start</p>
+                        <p className="text-white text-2xl animate-pulse">Move your device to start</p>
                     </div>
                 )}
             </div>

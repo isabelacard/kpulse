@@ -158,7 +158,6 @@ function GameOne() {
             const zone = zoneRef.current?.getBoundingClientRect();
             if (!zone || finished) return;
 
-            // Map orientation (-45 to 45) to container percentages
             const percentageX = (data.orientation.x + 45) / 90;
             const percentageY = (data.orientation.y + 45) / 90;
 

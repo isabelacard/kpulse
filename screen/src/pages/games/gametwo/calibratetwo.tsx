@@ -1,42 +1,84 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ImagenFondoCalibration from "../../../assets/fondote.png";
 import BreathingCircle from "../../../components/BreathingCircle";
+import { socket } from "../../../socket";
 
-function PreGameOne() {
+type SensorPayload = {
+    orientation: { x: number; y: number; };
+};
+
+function PreGameTwo() {
     const [pos, setPos] = useState({ x: 0, y: 0 });
     const [sensorPos] = useState({ x: 0, y: 0 });
     const [inside, setInside] = useState(false);
+    const [isCentering, setIsCentering] = useState(false);
+    
     const zoneRef = useRef<HTMLDivElement>(null);
     const circleRef = useRef<HTMLDivElement>(null);
     const navigate = useNavigate();
 
-    const handleMouseMove = (e: React.MouseEvent) => {
-        const rect = zoneRef.current?.getBoundingClientRect();
-        if (!rect) return;
+    // 1. Movimiento con Sensores
+    useEffect(() => {
+        const handleSensorMove = (data: SensorPayload) => {
+            const rect = zoneRef.current?.getBoundingClientRect();
+            const circleRect = circleRef.current?.getBoundingClientRect();
+            
+            if (!rect || !circleRect) return;
 
-        const x = e.clientX - rect.left - 8;
-        const y = e.clientY - rect.top - 8;
-        setPos({ x, y });
+            // Forzar 'inside' a true ya que no usamos el onMouseEnter del ratón
+            setInside(true);
 
-        const circleRect = circleRef.current?.getBoundingClientRect();
-        if (!circleRect) return;
+            // Convertir grados a porcentajes y luego a píxeles
+            const percentageX = (data.orientation.x + 45) / 90;
+            const percentageY = (data.orientation.y + 45) / 90;
 
-        const circleCenterX = circleRect.left + circleRect.width / 2 - rect.left;
-        const circleCenterY = circleRect.top + circleRect.height / 2 - rect.top + 170;
+            const x = percentageX * rect.width - 8;
+            const y = percentageY * rect.height - 8;
+            
+            setPos({ x, y });
 
-        const dx = x - circleCenterX;
-        const dy = y - circleCenterY;
-        const distance = Math.sqrt(dx * dx + dy * dy);
+            // Cálculos originales de colisión exactos a tu código (+170)
+            const circleCenterX = circleRect.left + circleRect.width / 2 - rect.left;
+            const circleCenterY = circleRect.top + circleRect.height / 2 - rect.top + 170;
 
-        if (distance < 10) {
-            navigate("/gametwo");
+            const dx = x - circleCenterX;
+            const dy = y - circleCenterY;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            // Control del estado para el temporizador
+            if (distance < 10) {
+                setIsCentering(true);
+            } else {
+                setIsCentering(false);
+            }
+        };
+
+        socket.on("screen:data", handleSensorMove);
+
+        return () => {
+            socket.off("screen:data", handleSensorMove);
+        };
+    }, []);
+
+    // 2. Temporizador de 6 segundos continuos
+    useEffect(() => {
+        let timer: ReturnType<typeof setTimeout>;
+
+        if (isCentering) {
+            timer = setTimeout(() => {
+                navigate("/gametwo");
+            }, 6000);
         }
-    };
+
+        return () => {
+            if (timer) clearTimeout(timer);
+        };
+    }, [isCentering, navigate]);
 
     return (
         <div className="flex items-center justify-center w-full h-screen">
-            <div onMouseMove={handleMouseMove} ref={zoneRef} onMouseEnter={() => setInside(true)} onMouseLeave={() => setInside(false)} className="relative w-294 h-162 shrink-0 overflow-hidden rounded-xl">
+            <div ref={zoneRef} className="relative w-294 h-162 shrink-0 overflow-hidden rounded-xl">
                 <img className="absolute" src={ImagenFondoCalibration} />
                 <div className="relative z-10 flex flex-col items-center mt-20 h-full">
                     <div className="flex flex-col absolute -top-10">
@@ -47,7 +89,7 @@ function PreGameOne() {
                     </div>
                     <div className="flex flex-col absolute top-14">
                         <h1 className="text-white text-2xl text-center">
-                            {inside && <div style={{ left: pos.x, top: pos.y }} className="absolute w-5 h-5 bg-[#FFB143] rounded-4xl z-15" />}
+                            {inside && <div style={{ left: pos.x, top: pos.y, transition: "left 0.05s linear, top 0.05s linear" }} className="absolute w-5 h-5 bg-[#FFB143] rounded-4xl z-15" />}
                             {inside && (
                                 <div style={{ left: sensorPos.x, top: sensorPos.y }} className="absolute z-20 flex h-7 w-7 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 border-red-500 bg-red-500/30">
                                     <div className="h-2 w-2 rounded-full bg-red-500" />
@@ -62,10 +104,10 @@ function PreGameOne() {
                         <BreathingCircle />
                     </div>
                 </div>
-                {inside && <div style={{ left: pos.x, top: pos.y }} className="absolute w-5 h-5 bg-[#FFB143] rounded-4xl z-15" />}
+                {inside && <div style={{ left: pos.x, top: pos.y, transition: "left 0.05s linear, top 0.05s linear" }} className="absolute w-5 h-5 bg-[#FFB143] rounded-4xl z-15" />}
             </div>
         </div>
     );
 }
 
-export default PreGameOne;
+export default PreGameTwo;
