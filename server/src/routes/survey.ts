@@ -6,6 +6,11 @@ const router = Router();
 router.post("/", async (req, res) => {
     const { session_id, responses } = req.body;
 
+    if (!session_id) {
+        // Si no hay session_id (ej. pruebas aisladas), no guardamos
+        return res.json({ success: true, warning: "No session_id provided, skipped" });
+    }
+
     const rows = responses.map((r: { question: string; answer: string }) => ({
         session_id,
         ...r,

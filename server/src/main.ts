@@ -7,6 +7,7 @@ import sessionRouter from "./routes/session";
 import patientRouter from "./routes/patient";
 import surveyRouter from "./routes/survey";
 import resultsRouter from "./routes/results";
+import reportRouter from "./routes/report";
 
 const app = express();
 
@@ -30,11 +31,12 @@ app.use("/session", sessionRouter);
 app.use("/patient", patientRouter);
 app.use("/survey", surveyRouter);
 app.use("/results", resultsRouter);
+app.use("/report", reportRouter);
 
 const httpServer = createServer(app);
 initSocket(httpServer);
 
-const PORT = 3002;
+const PORT = 3001;
 httpServer.listen(PORT, () => {
     console.log(`Server corriendo en puerto ${PORT}`);
 });

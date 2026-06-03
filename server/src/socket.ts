@@ -31,6 +31,12 @@ export const initSocket = (httpServer: HttpServer) => {
             socket.broadcast.emit("screen:data", data);
         });
 
+        // Game results bridge
+        socket.on("game:results", (data) => {
+            console.log("Broadcasting game results:", data);
+            socket.broadcast.emit("game:results", data);
+        });
+
         // Post-calibration synchronization
         socket.on("calibration:completed", (path) => {
             console.log("Calibration completed, syncing to:", path);

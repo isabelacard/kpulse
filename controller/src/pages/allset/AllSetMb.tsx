@@ -26,6 +26,9 @@ export default function AllSetMb() {
 
             await api.linkPatient(session.session_id, email);
 
+            // Generar y enviar reporte
+            await api.sendReport(session.session_id, email);
+
             await api.endSession(session.session_id);
 
             socket.emit("changePage", "/final");

@@ -42,4 +42,11 @@ export const api = {
         fetch(`${BASE_URL}/session/${session_id}/end`, {
             method: "PATCH",
         }).then(safeJson),
+
+    sendReport: (session_id: string | number, email: string) =>
+        fetch(`${BASE_URL}/report`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ session_id, email }),
+        }).then(safeJson),
 };

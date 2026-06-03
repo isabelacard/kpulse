@@ -19,13 +19,20 @@ function StatsGameOne() {
     const { totalTime, outTime } = location.state ?? { totalTime: 0, outTime: 0 };
 
     useEffect(() => {
+        // Emitir resultados del juego 1 al cargar la pantalla de stats
+        socket.emit("game:results", {
+            game_number: 1,
+            score: outTime,
+            duration_seconds: Math.round(totalTime / 1000)
+        });
+
         const timer = setTimeout(() => {
             socket.emit("changePage", "/calibratetwo");
             navigate("/calibratetwo");
         }, 7000);
 
         return () => clearTimeout(timer);
-    }, [navigate]);
+    }, [navigate, outTime, totalTime]);
 
     // Listen for sensor data from the controller
     useEffect(() => {

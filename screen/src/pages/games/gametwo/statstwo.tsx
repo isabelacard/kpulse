@@ -15,20 +15,27 @@ function StatsTwo() {
     const zoneRef = useRef<HTMLDivElement>(null);
     const navigate = useNavigate();
 
+    
+    const location = useLocation();
+    const { strayBalls, caughtBalls } = location.state ?? {
+        strayBalls: 0,
+        caughtBalls: 0,
+    };
     useEffect(() => {
+        // Emitir resultados del juego 2 al cargar la pantalla de stats
+        socket.emit("game:results", {
+            game_number: 2,
+            score: caughtBalls,
+            duration_seconds: strayBalls
+        });
+
         const timer = setTimeout(() => {
             socket.emit("changePage", "/allset");
             navigate("/allset");
         }, 7000);
 
         return () => clearTimeout(timer);
-    }, [navigate]);
-
-    const location = useLocation();
-    const { strayBalls, caughtBalls } = location.state ?? {
-        strayBalls: 0,
-        caughtBalls: 0,
-    };
+    }, [navigate, caughtBalls, strayBalls]);
 
     // Listen for sensor data from the controller
     useEffect(() => {

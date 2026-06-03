@@ -17,14 +17,14 @@ router.post("/", async (req, res) => {
 
 router.patch("/:id/end", async (req, res) => {
     const { id } = req.params;
-
-    const { data, error } = await supabase.from("sessions").update({ ended_at: new Date().toISOString() }).eq("id", id).select().single();
-
-    if (error) {
-        console.error("[PATCH /session/:id/end] Supabase error:", error);
-        return res.status(500).json({ error });
+    
+    if (!id || id === "undefined" || id === "") {
+        return res.json({ success: true, warning: "No valid session ID to end" });
     }
-    res.json(data);
+
+    const { error } = await supabase.from("sessions").update({ ended_at: new Date() }).eq("id", id);
+    if (error) return res.status(500).json({ error });
+    res.json({ success: true });
 });
 
 export default router;

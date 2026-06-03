@@ -1,9 +1,11 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { socket } from "../socket";
+import { useGameResults } from "../hooks/useGameResults";
 
 export default function SocketListener({ children }: { children: React.ReactNode }) {
     const navigate = useNavigate();
+    useGameResults();
 
     useEffect(() => {
         const handleSyncPage = (path: string) => {
