@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import ImagenFondoCelular from "../../assets/fondocelularinstructions.png";
 import { socket } from "../../socket";
@@ -19,16 +19,23 @@ function CalibratingController() {
         return () => { socket.off("syncPage", handleSync); };
     }, [navigate]);
 
+    const sensorDataRef = useRef(sensorData);
+    
+    // Update ref when sensorData changes
+    useEffect(() => {
+        sensorDataRef.current = sensorData;
+    }, [sensorData]);
+
     // Send sensor data every 50ms
     useEffect(() => {
         if (!hasPermission) return;
         
         const interval = setInterval(() => {
-            socket.emit("sensor:data", sensorData);
+            socket.emit("sensor:data", sensorDataRef.current);
         }, 50);
         
         return () => clearInterval(interval);
-    }, [hasPermission, sensorData]);
+    }, [hasPermission]);
 
     // Clear permission screen (Shown at startup)
     if (!hasPermission) {
@@ -56,6 +63,11 @@ function CalibratingController() {
                 <div className="absolute z-10 flex flex-col items-center h-full top-80">
                     <div className="flex flex-col mt-10">
                         <h1 className="text-white text-4xl text-center">Calibrating...</h1>
+                        <p className="text-white text-xl text-center mt-4">
+                            X: {sensorData.orientation.x.toFixed(2)}
+                            <br />
+                            Y: {sensorData.orientation.y.toFixed(2)}
+                        </p>
                     </div>
                 </div>
             </div>

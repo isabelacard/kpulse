@@ -5,9 +5,13 @@ import squarestats from "../../assets/squaregameone.png";
 import LoadingBar from "../../components/LoadingBar";
 import { socket } from "../../socket";
 
+type SensorPayload = {
+    orientation: { x: number; y: number };
+};
+
 function StatsGameOne() {
     const [pos, setPos] = useState({ x: 0, y: 0 });
-    const [inside, setInside] = useState(false);
+    const [showDot, setShowDot] = useState(false);
     const zoneRef = useRef<HTMLDivElement>(null);
     const navigate = useNavigate();
 
@@ -23,6 +27,26 @@ function StatsGameOne() {
         return () => clearTimeout(timer);
     }, [navigate]);
 
+    // Listen for sensor data from the controller
+    useEffect(() => {
+        const moveDot = (data: SensorPayload) => {
+            const zone = zoneRef.current?.getBoundingClientRect();
+            if (!zone) return;
+
+            const percentageX = (data.orientation.x + 45) / 90;
+            const percentageY = (data.orientation.y + 45) / 90;
+
+            setShowDot(true);
+            setPos({
+                x: percentageX * zone.width - 8,
+                y: percentageY * zone.height - 8,
+            });
+        };
+
+        socket.on("screen:data", moveDot);
+        return () => { socket.off("screen:data", moveDot); };
+    }, []);
+
     const formatTime = (ms: number) => {
         const minutes = Math.floor(ms / 60000);
         const seconds = Math.floor((ms % 60000) / 1000);
@@ -30,18 +54,9 @@ function StatsGameOne() {
         return `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}.${milli.toString().padStart(3, "0")}`;
     };
 
-    const handleMouseMove = (e: React.MouseEvent) => {
-        const rect = zoneRef.current?.getBoundingClientRect();
-        if (!rect) return;
-        setPos({
-            x: e.clientX - rect.left - 8,
-            y: e.clientY - rect.top - 8,
-        });
-    };
-
     return (
         <div className="flex items-center justify-center w-full h-screen">
-            <div onMouseMove={handleMouseMove} ref={zoneRef} onMouseEnter={() => setInside(true)} onMouseLeave={() => setInside(false)} className="relative w-294 h-162 shrink-0 overflow-hidden rounded-xl">
+            <div ref={zoneRef} className="relative w-294 h-162 shrink-0 overflow-hidden rounded-xl">
                 <img className="absolute" src={ImagenFondoCalibration} />
                 <div className="relative z-10 flex flex-col items-center mt-20 h-full">
                     <img className="absolute w-62 top-38 right-85" src={squarestats}></img>
@@ -88,12 +103,11 @@ function StatsGameOne() {
                 <div className="flex justify-center absolute top-75 left-147">
                     <LoadingBar></LoadingBar>
                 </div>
-                {inside && (
+                {showDot && (
                     <div
-                        style={{ left: pos.x, top: pos.y }}
-                        className={`absolute w-6 h-6 bg-[#FFB143] rounded-4xl
-                            z-15`}
-                    ></div>
+                        style={{ left: pos.x, top: pos.y, transition: "left 0.05s linear, top 0.05s linear" }}
+                        className="absolute w-6 h-6 bg-[#FFB143] rounded-4xl z-15"
+                    />
                 )}
             </div>
         </div>

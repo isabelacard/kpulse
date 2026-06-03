@@ -29,6 +29,16 @@ export const useSensors = () => {
         }
     }, []);
 
+    // Auto-grant on non-iOS devices (Android doesn't need explicit permission)
+    // This ensures sensors work on ANY page that uses useSensors(), not just
+    // the one where the user clicked "Allow Sensor Access".
+    useEffect(() => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        if (typeof (DeviceOrientationEvent as any).requestPermission !== "function") {
+            setHasPermission(true);
+        }
+    }, []);
+
     useEffect(() => {
         if (!hasPermission) return;
 

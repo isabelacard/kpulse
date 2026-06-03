@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import fondogametwo from "../../../assets/fondotegametwo.png";
 import { socket } from "../../../socket";
@@ -9,6 +9,12 @@ export default function GameTwo() {
 
     // Bring the sensors hook
     const { sensorData, hasPermission } = useSensors();
+
+    // Keep a ref to always have the latest sensorData in the interval
+    const sensorDataRef = useRef(sensorData);
+    useEffect(() => {
+        sensorDataRef.current = sensorData;
+    }, [sensorData]);
 
     // Listen for server sync to switch to the next page
     useEffect(() => {
@@ -25,16 +31,16 @@ export default function GameTwo() {
         };
     }, [navigate]);
 
-    // Send sensor data every 50ms to control the bar and pre-game dot
+    // Send sensor data every 50ms — interval created once, reads latest via ref
     useEffect(() => {
         if (!hasPermission) return;
         
         const interval = setInterval(() => {
-            socket.emit("sensor:data", sensorData);
+            socket.emit("sensor:data", sensorDataRef.current);
         }, 50);
         
         return () => clearInterval(interval);
-    }, [hasPermission, sensorData]);
+    }, [hasPermission]);
 
     return (
         <div className="flex items-center justify-center w-full h-screen p-4 overflow-hidden bg-[#0A3D44]">

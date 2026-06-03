@@ -3,7 +3,17 @@ import { Server as HttpServer } from "http";
 
 export const initSocket = (httpServer: HttpServer) => {
     const io = new Server(httpServer, {
-        cors: { origin: "*" },
+        cors: {
+            origin: (origin, callback) => {
+                // Permitir cualquier origen para facilitar el desarrollo con túneles
+                callback(null, true);
+            },
+            methods: ["GET", "POST"],
+            credentials: true,
+            allowedHeaders: ["x-tunnel-skip-browser-warning"]
+        },
+        transports: ["polling", "websocket"],
+        allowEIO3: true
     });
 
     io.on("connection", (socket) => {

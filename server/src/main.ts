@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
 import cors from "cors";
 import { createServer } from "http";
-import { Server, Socket } from "socket.io";
+import { initSocket } from "./socket";
 
 import sessionRouter from "./routes/session";
 import patientRouter from "./routes/patient";
@@ -10,7 +10,16 @@ import resultsRouter from "./routes/results";
 
 const app = express();
 
-app.use(cors());
+app.use((req, res, next) => {
+    res.setHeader("X-Tunnel-Skip-Browser-Warning", "true");
+    next();
+});
+
+app.use(cors({
+    origin: true,
+    credentials: true,
+    allowedHeaders: ["Content-Type", "Authorization", "x-tunnel-skip-browser-warning"]
+}));
 app.use(express.json());
 
 app.get("/health", (req: Request, res: Response) => {
@@ -23,24 +32,9 @@ app.use("/survey", surveyRouter);
 app.use("/results", resultsRouter);
 
 const httpServer = createServer(app);
-const io = new Server(httpServer, {
-    cors: { origin: "*" },
-});
+initSocket(httpServer);
 
-io.on("connection", (socket: Socket) => {
-    console.log("Cliente conectado:", socket.id);
-
-    socket.on("changePage", (data: string) => {
-        console.log("Recibido changePage con data:", data);
-        socket.broadcast.emit("syncPage", data);
-    });
-
-    socket.on("disconnect", () => {
-        console.log("Cliente desconectado:", socket.id);
-    });
-});
-
-const PORT = 3001;
+const PORT = 3002;
 httpServer.listen(PORT, () => {
     console.log(`Server corriendo en puerto ${PORT}`);
 });

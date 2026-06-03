@@ -18,11 +18,9 @@ function PreGameOne() {
     useEffect(() => {
         const moveDot = (data: SensorPayload) => {
             const zone = zoneRef.current?.getBoundingClientRect();
-            const circle = circleRef.current?.getBoundingClientRect();
+            if (!zone) return;
 
-            if(!zone || !circle) return;
-
-            // Percentage-based calculation
+            // Percentage-based calculation — always update dot position
             const percentageX = (data.orientation.x + 45) / 90;
             const percentageY = (data.orientation.y + 45) / 90;
 
@@ -31,21 +29,20 @@ function PreGameOne() {
 
             setPos({ x: posX, y: posY });
 
-            // Calculate center point coordinates
+            // Calculate center collision only when circleRef is ready
+            const circle = circleRef.current?.getBoundingClientRect();
+            if (!circle) return;
+
             const circleCenterX = circle.left + circle.width / 2 - zone.left;
             const circleCenterY = circle.top + circle.height / 2 - zone.top + 100;
 
             const distance = Math.hypot(posX - circleCenterX, posY - circleCenterY);
 
             // Check if the orange dot is inside the central circle area
-            if (distance < 20) {
-                setIsCentering(true);
-            } else {
-                setIsCentering(false);
-            }
+            setIsCentering(distance < 20);
         };
 
-        socket.on("screen: data", moveDot);
+        socket.on("screen:data", moveDot);
 
         return () => {
             socket.off("screen:data", moveDot);

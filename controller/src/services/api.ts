@@ -1,4 +1,4 @@
-export const BASE_URL = "https://9kjbhqxg-3001.use2.devtunnels.ms";
+export const BASE_URL = "https://55qphc8b-3001.use2.devtunnels.ms";
 
 async function safeJson(res: Response) {
     const text = await res.text();
