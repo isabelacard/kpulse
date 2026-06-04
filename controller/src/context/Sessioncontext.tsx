@@ -25,7 +25,7 @@ export const SessionProvider = ({ children }: { children: React.ReactNode }) => 
 
     const setSessionId = (id: string) => {
         setSession((prev) => {
-            const newState = { ...prev, session_id: id };
+            const newState = { ...prev, session_id: id, survey: [], gameResults: [] };
             localStorage.setItem("kpulse_session", JSON.stringify(newState));
             return newState;
         });
@@ -41,9 +41,17 @@ export const SessionProvider = ({ children }: { children: React.ReactNode }) => 
 
     const addSurveyAnswer = (question: string, answer: string) => {
         setSession((prev) => {
+            const existingIndex = prev.survey.findIndex(s => s.question === question);
+            let newSurvey = [...prev.survey];
+            if (existingIndex >= 0) {
+                newSurvey[existingIndex] = { question, answer };
+            } else {
+                newSurvey.push({ question, answer });
+            }
+            
             const newState = {
                 ...prev,
-                survey: [...prev.survey, { question, answer }],
+                survey: newSurvey,
             };
             localStorage.setItem("kpulse_session", JSON.stringify(newState));
             return newState;

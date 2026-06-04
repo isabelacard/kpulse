@@ -11,6 +11,10 @@ router.post("/", async (req, res) => {
         return res.json({ success: true, warning: "No session_id provided, skipped" });
     }
 
+    // Delete existing responses for this session to prevent duplicates if the request is sent multiple times
+    const { error: deleteError } = await supabase.from("survey_responses").delete().eq("session_id", session_id);
+    if (deleteError) return res.status(500).json({ error: deleteError });
+
     const rows = responses.map((r: { question: string; answer: string }) => ({
         session_id,
         ...r,

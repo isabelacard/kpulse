@@ -63,9 +63,7 @@ function Calibration1() {
                     </div>
                     <div className="absolute border-b-2 w-30 border-white top-132"></div>
                     <p className="flex mt-50 text-white">Waiting for your move</p>
-                    <p className="text-white mt-4 bg-black/50 p-2 rounded">
-                        Debug - X: {pos.x.toFixed(2)}, Y: {pos.y.toFixed(2)}
-                    </p>
+                    
                 </div>
                 
                 <div

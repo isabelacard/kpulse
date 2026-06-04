@@ -44,7 +44,7 @@ router.post("/", async (req, res) => {
             }
         }
 
-        // 1. Obtener resultados de los juegos
+        //Obtener resultados de los juegos
         const { data: gameResults, error: gameError } = await supabase
             .from("game_results")
             .select("*")
@@ -52,7 +52,7 @@ router.post("/", async (req, res) => {
 
         if (gameError) throw gameError;
 
-        // 2. Obtener respuestas de la encuesta
+        // Obtener respuestas de la encuesta
         const { data: surveyResponses, error: surveyError } = await supabase
             .from("survey_responses")
             .select("*")
@@ -60,7 +60,7 @@ router.post("/", async (req, res) => {
 
         if (surveyError) throw surveyError;
 
-        // 3. Obtener info de la sesión (fecha)
+        // Obtener info de la sesión (fecha)
         const { data: sessionData, error: sessionError } = await supabase
             .from("sessions")
             .select("started_at, ended_at")
@@ -69,7 +69,7 @@ router.post("/", async (req, res) => {
 
         if (sessionError) throw sessionError;
 
-        // 4. Calcular puntaje motriz
+        // Calcular puntaje motriz
         let scoreG1 = 0; // Precisión juego 1
         let scoreG2 = 0; // Precisión juego 2
         
@@ -77,7 +77,7 @@ router.post("/", async (req, res) => {
         const g2 = gameResults.find(g => g.game_number === 2);
 
         if (g1) {
-            // Juego 1: score = outMs, duration_seconds = totalMs / 1000
+            // Juego 1 score = outMs, duration_seconds = totalMs / 1000
             const outMs = g1.score;
             const totalMs = g1.duration_seconds * 1000;
             if (totalMs > 0) {
@@ -87,7 +87,7 @@ router.post("/", async (req, res) => {
         }
 
         if (g2) {
-            // Juego 2: score = caughtBalls, duration_seconds = strayBalls
+            // Juego 2 score = caughtBalls, duration_seconds = strayBalls
             const caughtBalls = g2.score;
             const strayBalls = g2.duration_seconds;
             const totalBalls = caughtBalls + strayBalls;
@@ -123,7 +123,7 @@ router.post("/", async (req, res) => {
             recommendation = "Te recomendamos consultar con un especialista para un programa de rehabilitación activa.";
         }
 
-        // 5. Preparar respuestas de la encuesta para el email
+        // Preparar respuestas de la encuesta para el email
         const surveyHtml = surveyResponses.map(r => `
             <tr>
                 <td style="padding: 10px; border-bottom: 1px solid #ddd;"><strong>${r.question}</strong></td>
@@ -133,7 +133,7 @@ router.post("/", async (req, res) => {
 
         const sessionDate = sessionData?.started_at ? new Date(sessionData.started_at).toLocaleDateString() : new Date().toLocaleDateString();
 
-        // 6. Construir Email HTML
+        // Construir Email HTML
         const htmlContent = `
             <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #eaeaea; border-radius: 10px; overflow: hidden;">
                 <div style="background-color: #EA8D1C; padding: 20px; text-align: center;">
@@ -174,8 +174,7 @@ router.post("/", async (req, res) => {
             </div>
         `;
 
-        // 7. Enviar Email
-        // Si no hay configuración SMTP, solo imprimimos en consola (útil para dev)
+        // Enviar Email
         if (!process.env.SMTP_USER) {
             console.warn("⚠️ SMTP_USER no está configurado. Simulación de envío de email:");
             console.log("To:", email);
