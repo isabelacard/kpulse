@@ -60,13 +60,13 @@ export default function Onboarding() {
                 </div>
 
                 <div className="relative shrink-0 lg:mt-40 flex justify-center w-full lg:w-auto lg:translate-x-8">
-                    <Qrcode 
+                    <Qrcode
                         icon={
                             <div className="w-full h-full flex items-center justify-center p-2 bg-white rounded-lg">
                                 <QRCodeSVG value={getControllerUrl()} size={200} className="w-full h-full" />
                             </div>
-                        } 
-                        description="Scan the QR to start your experience" 
+                        }
+                        description="Scan the QR to start your experience"
                     />
                 </div>
             </div>

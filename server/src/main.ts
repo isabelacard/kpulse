@@ -12,19 +12,25 @@ import reportRouter from "./routes/report";
 const app = express();
 
 app.use((req, res, next) => {
-    res.setHeader("X-Tunnel-Skip-Browser-Warning", "true");
-    next();
+  res.setHeader("X-Tunnel-Skip-Browser-Warning", "true");
+  next();
 });
 
-app.use(cors({
+app.use(
+  cors({
     origin: true,
     credentials: true,
-    allowedHeaders: ["Content-Type", "Authorization", "x-tunnel-skip-browser-warning"]
-}));
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+      "x-tunnel-skip-browser-warning",
+    ],
+  }),
+);
 app.use(express.json());
 
 app.get("/health", (req: Request, res: Response) => {
-    res.json({ ok: true, message: "Socket Server Running" });
+  res.json({ ok: true, message: "Socket Server Running" });
 });
 
 app.use("/session", sessionRouter);
@@ -36,7 +42,7 @@ app.use("/report", reportRouter);
 const httpServer = createServer(app);
 initSocket(httpServer);
 
-const PORT = 3001;
+const PORT = 3000;
 httpServer.listen(PORT, () => {
-    console.log(`Server corriendo en puerto ${PORT}`);
+  console.log(`Server corriendo en puerto ${PORT}`);
 });

@@ -4,7 +4,7 @@ const SUPABASE_URL = process.env.SUPABASE_URL!;
 const SUPABASE_KEY = process.env.SUPABASE_PUBLISHABLE_KEY!;
 
 if (!SUPABASE_URL || !SUPABASE_KEY) {
-    throw new Error("Faltan variables de entorno de Supabase");
+  throw new Error("Faltan variables de entorno de Supabase");
 }
 
 export const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);

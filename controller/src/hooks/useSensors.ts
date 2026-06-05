@@ -35,7 +35,7 @@ export const useSensors = () => {
     useEffect(() => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         if (typeof (DeviceOrientationEvent as any).requestPermission !== "function") {
-            setHasPermission(true);
+            Promise.resolve().then(() => setHasPermission(true));
         }
     }, []);
 

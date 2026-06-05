@@ -7,6 +7,6 @@ export const socket = io(URL, {
     transports: ["polling", "websocket"],
     withCredentials: true,
     extraHeaders: {
-        "X-Tunnel-Skip-Browser-Warning": "true"  
-    }
+        "X-Tunnel-Skip-Browser-Warning": "true",
+    },
 });

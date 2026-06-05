@@ -16,11 +16,13 @@ function CalibratingController() {
             }
         };
         socket.on("syncPage", handleSync);
-        return () => { socket.off("syncPage", handleSync); };
+        return () => {
+            socket.off("syncPage", handleSync);
+        };
     }, [navigate]);
 
     const sensorDataRef = useRef(sensorData);
-    
+
     // Update ref when sensorData changes
     useEffect(() => {
         sensorDataRef.current = sensorData;
@@ -29,11 +31,11 @@ function CalibratingController() {
     // Send sensor data every 50ms
     useEffect(() => {
         if (!hasPermission) return;
-        
+
         const interval = setInterval(() => {
             socket.emit("sensor:data", sensorDataRef.current);
         }, 50);
-        
+
         return () => clearInterval(interval);
     }, [hasPermission]);
 
@@ -42,13 +44,8 @@ function CalibratingController() {
         return (
             <div className="flex flex-col items-center justify-center min-h-screen bg-[#0A3D44] text-white p-6">
                 <h1 className="text-3xl font-bold mb-6 text-[#00B4A9]">K-Pulse</h1>
-                <p className="text-center mb-8 text-lg">
-                    To get started, we need to connect your device.
-                </p>
-                <button 
-                    onClick={requestAccess} 
-                    className="bg-[#FF8A00] hover:bg-[#E67A00] text-white px-8 py-4 rounded-full text-xl font-bold"
-                >
+                <p className="text-center mb-8 text-lg">To get started, we need to connect your device.</p>
+                <button onClick={requestAccess} className="bg-[#FF8A00] hover:bg-[#E67A00] text-white px-8 py-4 rounded-full text-xl font-bold">
                     Allow Sensor Access
                 </button>
             </div>
