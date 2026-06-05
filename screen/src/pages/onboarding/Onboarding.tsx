@@ -3,6 +3,7 @@
 import { InfoCard } from "./components/InfoCard";
 import { Qrcode } from "./components/QrCode";
 import { HelpCircle, Target, Trophy } from "lucide-react";
+import { QRCodeSVG } from "qrcode.react";
 
 import fondo from "../../assets/fondo.png";
 
@@ -16,6 +17,15 @@ export default function Onboarding() {
 
     //     return () => clearTimeout(timer);
     // }, [navigate]);
+
+    const getControllerUrl = () => {
+        const { protocol, hostname } = window.location;
+        if (hostname.includes("devtunnels.ms")) {
+            // Reemplaza el puerto en la URL del túnel (ej: 55qphc8b-5173 -> 55qphc8b-5174)
+            return window.location.href.replace("-5173", "-5174");
+        }
+        return `${protocol}//${hostname}:5174/`;
+    };
 
     return (
         <div className="flex items-center justify-center w-full h-screen relative bg-black/5 overflow-hidden">
@@ -50,7 +60,14 @@ export default function Onboarding() {
                 </div>
 
                 <div className="relative shrink-0 lg:mt-40 flex justify-center w-full lg:w-auto lg:translate-x-8">
-                    <Qrcode icon={<div className="w-full h-full flex items-center justify-center text-gray-400 text-sm rounded-lg border-2 border-dashed border-gray-400/50">[Aqui va el qr]</div>} description="Scan the QR to start your experience" />
+                    <Qrcode 
+                        icon={
+                            <div className="w-full h-full flex items-center justify-center p-2 bg-white rounded-lg">
+                                <QRCodeSVG value={getControllerUrl()} size={200} className="w-full h-full" />
+                            </div>
+                        } 
+                        description="Scan the QR to start your experience" 
+                    />
                 </div>
             </div>
         </div>

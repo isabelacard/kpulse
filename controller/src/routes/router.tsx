@@ -7,7 +7,6 @@ import Forms4 from "../pages/form/form4mb";
 import Forms5 from "../pages/form/form5mb";
 import Formsfinal from "../pages/form/formmbfinal";
 import Survey from "../pages/survey/survey";
-import OnboardingMb from "../pages/onboarding/OnboardingMb";
 import OnboardingMb2 from "../pages/onboarding/OnboardingMb2";
 import OnboardingMb3 from "../pages/onboarding/OnboardingMb3";
 import OnboardingMb4 from "../pages/onboarding/OnboardingMb4";
@@ -28,7 +27,7 @@ const router = createBrowserRouter([
             </SocketListener>
         ),
         children: [
-            { path: "/", element: <OnboardingMb /> },
+            { path: "/", element: <OnboardingMb2 /> },
             { path: "/onboarding2", element: <OnboardingMb2 /> },
             { path: "/onboarding3", element: <OnboardingMb3 /> },
             { path: "/onboarding4", element: <OnboardingMb4 /> },

@@ -47,3 +47,11 @@
 .font-mclaren {
     font-family: "McLaren", cursive;
 }
+
+html, body, #root {
+    width: 100%;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    min-width: 1280px; /* Fuerza el layout a comportarse como desktop */
+}

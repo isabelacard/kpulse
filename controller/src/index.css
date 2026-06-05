@@ -30,3 +30,33 @@
 .font-mclaren {
     font-family: "McLaren", cursive;
 }
+
+/* Added layout styles to simulate mobile viewport on desktop */
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    background-color: #1a1a1a;
+    min-height: 100vh;
+}
+
+#root {
+    width: 100%;
+    max-width: 430px;
+    min-height: 100vh;
+    background-color: #ffffff; /* fallback background */
+    box-shadow: 0 0 2rem rgba(0, 0, 0, 0.5);
+    overflow-x: hidden;
+    position: relative;
+}
+
+@media (max-width: 430px) {
+    body {
+        background-color: inherit;
+    }
+    #root {
+        box-shadow: none;
+    }
+}
+
