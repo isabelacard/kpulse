@@ -22,7 +22,7 @@ function PreGameOne() {
 
             // Percentage-based calculation — always update dot position
             const percentageX = (data.orientation.x + 45) / 90;
-            const percentageY = (data.orientation.y + 45) / 90;
+            const percentageY = (-data.orientation.y + 45) / 90;
 
             const posX = percentageX * zone.width;
             const posY = percentageY * zone.height;

@@ -41,7 +41,7 @@ function StatsGameOne() {
             if (!zone) return;
 
             const percentageX = (data.orientation.x + 45) / 90;
-            const percentageY = (data.orientation.y + 45) / 90;
+            const percentageY = (-data.orientation.y + 45) / 90;
 
             setShowDot(true);
             setPos({

@@ -159,7 +159,7 @@ function GameOne() {
             if (!zone || finished) return;
 
             const percentageX = (data.orientation.x + 45) / 90;
-            const percentageY = (data.orientation.y + 45) / 90;
+            const percentageY = (-data.orientation.y + 45) / 90;
 
             // Calculate exact position in pixels minus half the dot size
             const posX = percentageX * zone.width - 10;
