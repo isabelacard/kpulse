@@ -5,8 +5,8 @@ import BreathingCircle from "../../components/BreathingCircle";
 import { socket } from "../../socket";
 
 type SensorPayload = {
-    orientation: {x: number; y: number; };
-}
+    orientation: { x: number; y: number };
+};
 
 function PreGameOne() {
     const [pos, setPos] = useState({ x: 0, y: 0 });
@@ -65,7 +65,6 @@ function PreGameOne() {
         };
     }, [isCentering, navigate]);
 
-
     return (
         <div className="flex items-center justify-center w-full h-screen">
             <div ref={zoneRef} className="relative w-294 h-162 shrink-0 overflow-hidden rounded-xl">
@@ -92,20 +91,18 @@ function PreGameOne() {
                     </div>
 
                     <div className="absolute border-b-2 w-30 border-white top-132"></div>
-                    
-                    <p className={`flex mt-50 font-bold ${isCentering ? "text-[#1FD0D3]" : "text-white"}`}>
-                        {isCentering ? "Hold it there for 6 seconds!" : "Waiting for your move"}
-                    </p>
+
+                    <p className={`flex mt-50 font-bold ${isCentering ? "text-[#1FD0D3]" : "text-white"}`}>{isCentering ? "Hold it there for 6 seconds!" : "Waiting for your move"}</p>
                 </div>
-                
+
                 {/* Orange Dot */}
-                <div 
-                    style={{ 
-                        left: pos.x, 
+                <div
+                    style={{
+                        left: pos.x,
                         top: pos.y,
-                        transition: "left 0.05s linear, top 0.05s linear"
-                    }} 
-                    className="absolute w-5 h-5 bg-[#FFB143] rounded-4xl z-15" 
+                        transition: "left 0.05s linear, top 0.05s linear",
+                    }}
+                    className="absolute w-5 h-5 bg-[#FFB143] rounded-4xl z-15"
                 />
             </div>
         </div>
