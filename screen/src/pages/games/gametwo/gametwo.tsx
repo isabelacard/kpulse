@@ -19,7 +19,7 @@ type Ball = {
 };
 
 type SensorPayload = {
-    orientation: { x: number; y: number };
+    orientation: { x: number; y: number; };
 };
 
 let ballIdCounter = 0;
@@ -30,7 +30,7 @@ function GameTwo() {
     const animFrameRef = useRef<number>(0);
     const lastSpawnRef = useRef<number>(0);
 
-    const [barX, setBarX] = useState(0);
+    const [barX, setBarX] = useState(0); 
     const [balls, setBalls] = useState<Ball[]>([]);
     const [strayBalls, setStrayBalls] = useState(0);
     const [caughtBalls, setCaughtBalls] = useState(0);
@@ -67,15 +67,15 @@ function GameTwo() {
         const handleSensorMove = (data: SensorPayload) => {
             const el = containerRef.current;
             if (!el) return;
-
+            
             if (!started) setStarted(true);
 
             // Map the horizontal orientation (-45 to 45) to container percentages
             const percentageX = (data.orientation.x + 45) / 90;
-
+            
             // Calculate pixel position
             const x = percentageX * el.clientWidth;
-
+            
             // Keep the bar strictly within the container bounds
             setBarX(Math.max(BAR_WIDTH / 2, Math.min(el.clientWidth - BAR_WIDTH / 2, x)));
         };
@@ -207,7 +207,7 @@ function GameTwo() {
                         height: BAR_HEIGHT,
                         left: barX - BAR_WIDTH / 2,
                         top: barY,
-                        transition: "left 0.05s linear",
+                        transition: "left 0.05s linear" 
                     }}
                 />
 

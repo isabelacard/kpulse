@@ -7,18 +7,7 @@ export const useSensors = () => {
         acceleration: { x: 0, y: 0, z: 0 },
     });
 
-    const [hasPermission, setHasPermission] = useState<boolean | null>(() => {
-        // Auto-grant on non-iOS devices (Android doesn't need explicit permission)
-        if (typeof window !== "undefined") {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const DOEvent = (window as any).DeviceOrientationEvent;
-            if (typeof DOEvent !== "undefined" && typeof DOEvent.requestPermission !== "function") {
-                return true;
-            }
-        }
-        return null;
-    });
-
+    const [hasPermission, setHasPermission] = useState<boolean | null>(null);
     //keep track of recent readings and smooth out the movement
     const betaHistory = useRef<number[]>([]);
     const gammaHistory = useRef<number[]>([]);
@@ -36,6 +25,16 @@ export const useSensors = () => {
                 setHasPermission(false);
             }
         } else {
+            setHasPermission(true);
+        }
+    }, []);
+
+    // Auto-grant on non-iOS devices (Android doesn't need explicit permission)
+    // This ensures sensors work on ANY page that uses useSensors(), not just
+    // the one where the user clicked "Allow Sensor Access".
+    useEffect(() => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        if (typeof (DeviceOrientationEvent as any).requestPermission !== "function") {
             setHasPermission(true);
         }
     }, []);

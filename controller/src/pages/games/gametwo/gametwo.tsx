@@ -34,11 +34,11 @@ export default function GameTwo() {
     // Send sensor data every 50ms — interval created once, reads latest via ref
     useEffect(() => {
         if (!hasPermission) return;
-
+        
         const interval = setInterval(() => {
             socket.emit("sensor:data", sensorDataRef.current);
         }, 50);
-
+        
         return () => clearInterval(interval);
     }, [hasPermission]);
 

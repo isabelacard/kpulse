@@ -15,6 +15,7 @@ function StatsTwo() {
     const zoneRef = useRef<HTMLDivElement>(null);
     const navigate = useNavigate();
 
+    
     const location = useLocation();
     const { strayBalls, caughtBalls } = location.state ?? {
         strayBalls: 0,
@@ -25,7 +26,7 @@ function StatsTwo() {
         socket.emit("game:results", {
             game_number: 2,
             score: caughtBalls,
-            duration_seconds: strayBalls,
+            duration_seconds: strayBalls
         });
 
         const timer = setTimeout(() => {
@@ -53,9 +54,7 @@ function StatsTwo() {
         };
 
         socket.on("screen:data", moveDot);
-        return () => {
-            socket.off("screen:data", moveDot);
-        };
+        return () => { socket.off("screen:data", moveDot); };
     }, []);
 
     return (

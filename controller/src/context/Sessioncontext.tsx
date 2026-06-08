@@ -41,14 +41,14 @@ export const SessionProvider = ({ children }: { children: React.ReactNode }) => 
 
     const addSurveyAnswer = (question: string, answer: string) => {
         setSession((prev) => {
-            const existingIndex = prev.survey.findIndex((s) => s.question === question);
-            const newSurvey = [...prev.survey];
+            const existingIndex = prev.survey.findIndex(s => s.question === question);
+            let newSurvey = [...prev.survey];
             if (existingIndex >= 0) {
                 newSurvey[existingIndex] = { question, answer };
             } else {
                 newSurvey.push({ question, answer });
             }
-
+            
             const newState = {
                 ...prev,
                 survey: newSurvey,
@@ -61,7 +61,7 @@ export const SessionProvider = ({ children }: { children: React.ReactNode }) => 
     const addGameResult = (game_number: number, score: number, duration_seconds: number) => {
         setSession((prev) => {
             // Reemplazar si ya existe un resultado para ese juego (por si acaso re-envía)
-            const filteredResults = (prev.gameResults || []).filter((r) => r.game_number !== game_number);
+            const filteredResults = (prev.gameResults || []).filter(r => r.game_number !== game_number);
             const newState = {
                 ...prev,
                 gameResults: [...filteredResults, { game_number, score, duration_seconds }],

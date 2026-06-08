@@ -6,7 +6,7 @@ import { useSensors } from "../../hooks/useSensors";
 
 function GameOneMobile() {
     const navigate = useNavigate();
-
+    
     // Bring the sensors hook
     const { sensorData, hasPermission } = useSensors();
 
@@ -24,7 +24,7 @@ function GameOneMobile() {
             }
         };
         socket.on("syncPage", handleSync);
-
+        
         return () => {
             socket.off("syncPage", handleSync);
         };
@@ -33,11 +33,11 @@ function GameOneMobile() {
     // Send sensor data every 50ms — interval created once, reads latest via ref
     useEffect(() => {
         if (!hasPermission) return;
-
+        
         const interval = setInterval(() => {
             socket.emit("sensor:data", sensorDataRef.current);
         }, 50);
-
+        
         return () => clearInterval(interval);
     }, [hasPermission]);
 

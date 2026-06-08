@@ -5,7 +5,7 @@ import PatronJuegoUno from "../../assets/patronjuego1.png";
 import { socket } from "../../socket";
 
 type SensorPayload = {
-    orientation: { x: number; y: number };
+    orientation: { x: number; y: number; };
 };
 
 function GameOne() {
@@ -214,7 +214,7 @@ function GameOne() {
                         </h1>
                     </div>
                 </div>
-
+                
                 <div
                     ref={finishBallRef}
                     className="absolute w-10 h-10 bg-[#FF9900] rounded-full z-20"
@@ -223,13 +223,13 @@ function GameOne() {
                         right: "204px",
                     }}
                 />
-
+                
                 {showBall && (
                     <div
                         style={{
                             left: pos.x,
                             top: pos.y,
-                            transition: "left 0.05s linear, top 0.05s linear",
+                            transition: "left 0.05s linear, top 0.05s linear"
                         }}
                         className={`absolute w-5 h-5 rounded-full z-20 ${isOut ? "bg-red-500" : "bg-[#FFB143]"}`}
                     />

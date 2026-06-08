@@ -23,7 +23,7 @@ function StatsGameOne() {
         socket.emit("game:results", {
             game_number: 1,
             score: outTime,
-            duration_seconds: Math.round(totalTime / 1000),
+            duration_seconds: Math.round(totalTime / 1000)
         });
 
         const timer = setTimeout(() => {
@@ -51,9 +51,7 @@ function StatsGameOne() {
         };
 
         socket.on("screen:data", moveDot);
-        return () => {
-            socket.off("screen:data", moveDot);
-        };
+        return () => { socket.off("screen:data", moveDot); };
     }, []);
 
     const formatTime = (ms: number) => {
@@ -112,7 +110,12 @@ function StatsGameOne() {
                 <div className="flex justify-center absolute top-75 left-147">
                     <LoadingBar></LoadingBar>
                 </div>
-                {showDot && <div style={{ left: pos.x, top: pos.y, transition: "left 0.05s linear, top 0.05s linear" }} className="absolute w-6 h-6 bg-[#FFB143] rounded-4xl z-15" />}
+                {showDot && (
+                    <div
+                        style={{ left: pos.x, top: pos.y, transition: "left 0.05s linear, top 0.05s linear" }}
+                        className="absolute w-6 h-6 bg-[#FFB143] rounded-4xl z-15"
+                    />
+                )}
             </div>
         </div>
     );

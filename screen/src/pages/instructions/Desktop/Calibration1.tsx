@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { socket } from "../../../socket";
 
 export interface SensorPayload {
-    orientation: { x: number; y: number };
+    orientation: { x: number; y: number; };
 }
 
 function Calibration1() {
@@ -18,10 +18,10 @@ function Calibration1() {
         const moveDot = (data: SensorPayload) => {
             const zone = zoneRef.current?.getBoundingClientRect();
             const circle = circleRef.current?.getBoundingClientRect();
-
+            
             if (!zone || !circle) return;
 
-            const percentageX = (data.orientation.x + 45) / 90;
+            const percentageX = (data.orientation.x + 45) / 90; 
             const percentageY = (data.orientation.y + 45) / 90;
 
             const posX = percentageX * zone.width;
@@ -63,9 +63,13 @@ function Calibration1() {
                     </div>
                     <div className="absolute border-b-2 w-30 border-white top-132"></div>
                     <p className="flex mt-50 text-white">Waiting for your move</p>
+                    
                 </div>
-
-                <div style={{ left: pos.x, top: pos.y }} className="absolute w-5 h-5 bg-[#FFB143] rounded-4xl z-15"></div>
+                
+                <div
+                    style={{ left: pos.x, top: pos.y }}
+                    className="absolute w-5 h-5 bg-[#FFB143] rounded-4xl z-15"
+                ></div>
             </div>
         </div>
     );

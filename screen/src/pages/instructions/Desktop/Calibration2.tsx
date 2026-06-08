@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { socket } from "../../../socket";
 
 export interface SensorPayload {
-    orientation: { x: number; y: number };
+    orientation: { x: number; y: number; };
 }
 
 function Calibration2() {
@@ -62,13 +62,13 @@ function Calibration2() {
                     <img className="w-140 mt-30" src={CalibrationLines} alt="Calibration Lines" />
                     <LoadingBarLines />
                 </div>
-
+                
                 {/* Orange Dot with smooth transition */}
                 <div
-                    style={{
-                        left: pos.x,
+                    style={{ 
+                        left: pos.x, 
                         top: pos.y,
-                        transition: "left 0.05s linear, top 0.05s linear",
+                        transition: 'left 0.05s linear, top 0.05s linear'
                     }}
                     className="absolute w-5 h-5 bg-[#FFB143] rounded-4xl z-15"
                 ></div>
