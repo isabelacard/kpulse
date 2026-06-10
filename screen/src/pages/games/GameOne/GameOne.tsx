@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import ImagenFondoCalibration from "../../../assets/calibration1.webp";
 import { socket } from "../../../socket";
@@ -71,6 +71,9 @@ function GameOne() {
     const [isOut, setIsOut] = useState(false);
     const [finished, setFinished] = useState(false);
 
+    const totalMsRef = useRef(0);
+    const outMsRef = useRef(0);
+
     const scale = useResponsiveScale();
 
     useEffect(() => {
@@ -104,7 +107,7 @@ function GameOne() {
     }, []);
 
     // ballX/ballY = true center in logical 1176x648 space — same coords as collision canvas
-    const isBallInsideLine = (ballX: number, ballY: number): boolean => {
+    const isBallInsideLine = useCallback((ballX: number, ballY: number): boolean => {
         const canvas = collisionCanvasRef.current;
         if (!canvas) return false;
 
@@ -128,13 +131,23 @@ function GameOne() {
         }
 
         return true;
-    };
+    }, []);
 
     useEffect(() => {
         if (!started || finished) return;
         const interval = setInterval(() => {
-            setTotalMs((prev) => prev + 10);
-            if (isOut) setOutMs((prev) => prev + 10);
+            setTotalMs((prev) => {
+                const next = prev + 10;
+                totalMsRef.current = next;
+                return next;
+            });
+            if (isOut) {
+                setOutMs((prev) => {
+                    const next = prev + 10;
+                    outMsRef.current = next;
+                    return next;
+                });
+            }
         }, 10);
         return () => clearInterval(interval);
     }, [started, isOut, finished]);
@@ -146,21 +159,24 @@ function GameOne() {
         return `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}.${milli.toString().padStart(3, "0")}`;
     };
 
-    const checkFinishCollision = (ballCX: number, ballCY: number) => {
-        const finish = finishBallRef.current;
-        if (!finish || finished) return;
+    const checkFinishCollision = useCallback(
+        (ballCX: number, ballCY: number) => {
+            const finish = finishBallRef.current;
+            if (!finish || finished) return;
 
-        const finishX = finish.offsetLeft + finish.clientWidth / 2;
-        const finishY = finish.offsetTop + finish.clientHeight / 2;
-        const distance = Math.hypot(ballCX - finishX, ballCY - finishY);
+            const finishX = finish.offsetLeft + finish.clientWidth / 2;
+            const finishY = finish.offsetTop + finish.clientHeight / 2;
+            const distance = Math.hypot(ballCX - finishX, ballCY - finishY);
 
-        if (distance <= 30) {
-            setFinished(true);
-            navigate("/statsgameone", {
-                state: { totalTime: totalMs, outTime: outMs },
-            });
-        }
-    };
+            if (distance <= 30) {
+                setFinished(true);
+                navigate("/statsgameone", {
+                    state: { totalTime: totalMsRef.current, outTime: outMsRef.current },
+                });
+            }
+        },
+        [navigate, finished]
+    );
 
     useEffect(() => {
         const handleSensorMove = (data: SensorPayload) => {
@@ -186,7 +202,7 @@ function GameOne() {
         return () => {
             socket.off("screen:data", handleSensorMove);
         };
-    }, [finished, started]);
+    }, [finished, started, isBallInsideLine, checkFinishCollision]);
 
     const finishPoint = PATH_POINTS[PATH_POINTS.length - 1];
 
