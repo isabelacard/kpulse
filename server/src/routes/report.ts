@@ -1,23 +1,7 @@
 import { Router } from "express";
 import { supabase } from "../db";
-import nodemailer from "nodemailer";
 
 const router = Router();
-
-// Configuración de nodemailer (SMTP)
-// En producción, estas variables deben estar en .env
-const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST || "smtp.gmail.com",
-  port: parseInt(process.env.SMTP_PORT || "587"),
-  secure: process.env.SMTP_SECURE === "true", // true para 465, false para otros puertos
-  auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS,
-  },
-  connectionTimeout: 10000, // 10 segundos de límite para conectar
-  greetingTimeout: 10000,
-  socketTimeout: 15000,
-});
 
 router.post("/", async (req, res) => {
   let { session_id, email } = req.body;
@@ -191,13 +175,16 @@ router.post("/", async (req, res) => {
             </div>
         `;
 
-    // Enviar Email
-    if (!process.env.SMTP_USER) {
+    // Enviar Email vía Resend HTTPS API (evita bloqueos de puerto SMTP en Render)
+    const resendApiKey =
+      process.env.RESEND_API_KEY || "re_PR2BQsz7_Q63usvnHXU4Pt5Duz4SCK1ig";
+    let mailSent = false;
+    let mailError = null;
+
+    if (!resendApiKey) {
       console.warn(
-        "⚠️ SMTP_USER no está configurado. Simulación de envío de email:",
+        "⚠️ RESEND_API_KEY no está configurado. Simulación de envío de email.",
       );
-      console.log("To:", email);
-      console.log("Score:", motorScore);
       return res.json({
         success: true,
         motorScore,
@@ -206,24 +193,37 @@ router.post("/", async (req, res) => {
       });
     }
 
-    let mailSent = false;
-    let mailError = null;
-
     try {
-      await transporter.sendMail({
-        from: process.env.SMTP_FROM || '"KPulse Reports" <noreply@kpulse.com>',
-        to: email,
-        subject: "Tu Reporte de Evaluación Motriz - KPulse",
-        html: htmlContent,
+      const response = await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${resendApiKey}`,
+        },
+        body: JSON.stringify({
+          from: "KPulse <onboarding@resend.dev>",
+          to: email,
+          subject: "Tu Reporte de Evaluación Motriz - KPulse",
+          html: htmlContent,
+        }),
       });
-      mailSent = true;
-      console.log(`✉️ Reporte enviado exitosamente a ${email}`);
-    } catch (mailErr: any) {
+
+      const resData = (await response.json()) as any;
+      if (response.ok) {
+        mailSent = true;
+        console.log(
+          `✉️ Reporte enviado exitosamente a ${email} vía Resend API. ID: ${resData.id}`,
+        );
+      } else {
+        console.error("❌ Error de Resend API:", resData);
+        mailError = resData.message || JSON.stringify(resData);
+      }
+    } catch (err: any) {
       console.error(
-        "❌ Error al enviar el correo a través de SMTP:",
-        mailErr.message || mailErr,
+        "❌ Error de red al conectar con Resend API:",
+        err.message || err,
       );
-      mailError = mailErr.message || mailErr;
+      mailError = err.message || err;
     }
 
     res.json({
