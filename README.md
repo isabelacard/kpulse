@@ -28,7 +28,7 @@ The system is composed of three main modules:
 
 ---
 
-## Database (¬‿¬" )
+## Database & Schema Backup (¬‿¬" )
 
 ![Supabase Schema](assets/supabase-schema.png)
 
@@ -40,6 +40,42 @@ The system is composed of three main modules:
 | `sessions`         | Each game session, linked to a patient and a unique `room_code`. |
 | `survey_responses` | Answers from the 5-question onboarding form.                     |
 | `game_results`     | Score and duration of each game per session.                     |
+
+### SQL Schema Backup (Supabase / PostgreSQL)
+
+You can find the database creation SQL script in [sql.sql](file:///c:/Users/isaca/Downloads/kpulse-1/server/src/schemas/sql.sql). We also include it here for quick access and reference:
+
+```sql
+CREATE TABLE public.patients (
+  id SERIAL PRIMARY KEY,
+  email TEXT UNIQUE,
+  created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT now()
+);
+
+CREATE TABLE public.sessions (
+  id SERIAL PRIMARY KEY,
+  patient_id INTEGER REFERENCES public.patients(id) ON DELETE SET NULL,
+  room_code TEXT NOT NULL UNIQUE,
+  started_at TIMESTAMP WITHOUT TIME ZONE DEFAULT now(),
+  ended_at TIMESTAMP WITHOUT TIME ZONE
+);
+
+CREATE TABLE public.survey_responses (
+  id SERIAL PRIMARY KEY,
+  session_id INTEGER REFERENCES public.sessions(id) ON DELETE CASCADE,
+  question TEXT NOT NULL,
+  answer TEXT NOT NULL
+);
+
+CREATE TABLE public.game_results (
+  id SERIAL PRIMARY KEY,
+  session_id INTEGER REFERENCES public.sessions(id) ON DELETE CASCADE,
+  game_number INTEGER NOT NULL,
+  score INTEGER,
+  duration_seconds INTEGER,
+  created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT now()
+);
+```
 
 ---
 
@@ -121,59 +157,15 @@ kpulse/
     └── .gitignore
 ```
 
----
+## Running Locally
 
-## Environment Variables ~\_~
-
-You need to configure the following environment variables for each module:
-
-**`controller/.env.development`**
-
-```env
-VITE_SOCKET_URL=http://localhost:3001
-VITE_API_URL=http://localhost:3001
-```
-
-**`controller/.env.production`**
-
-```env
-VITE_SOCKET_URL=https://your-server-url.com
-VITE_API_URL=https://your-server-url.com
-```
-
-**`screen/.env.development`**
-
-```env
-VITE_SOCKET_URL=http://localhost:3001
-VITE_API_URL=http://localhost:3001
-VITE_CONTROLLER_URL=http://localhost:5174
-```
-
-**`screen/.env.production`**
-
-```env
-VITE_SOCKET_URL=https://your-server-url.com
-VITE_API_URL=https://your-server-url.com
-VITE_CONTROLLER_URL=https://your-controller-url.com
-```
-
-**`server/.env.development`** & **`server/.env.production`**
-
-```env
-SUPABASE_URL=https://xxxx.supabase.co
-SUPABASE_ANON_KEY=your_supabase_anon_key
-PORT=3001
-```
-
----
-
-## Setup
+Follow these steps to install and run the project in your local environment:
 
 ### Prerequisites
 
-- Node.js 18+
-- npm 9+
-- A Supabase account
+- Node.js 18 or higher
+- npm 9 or higher
+- A Supabase account to configure the relational database
 
 ### 1. Clone the repository
 
@@ -182,27 +174,39 @@ git clone https://github.com/isabelacard/kpulse.git
 cd kpulse
 ```
 
-### 2. Configure Supabase
+### 2. Configure Local Environment Variables
 
-1. Create a new project on [supabase.com](https://supabase.com)
-2. Go to **Settings → API** and copy your `Project URL` and `anon public key`
-3. Create your `.env` files for each module following the Environment Variables section
+Create your own `.env.development` or `.env.production` files in the `controller/`, `screen/`, and `server/` directories.
+_(Make sure to properly configure your SMTP credentials and Supabase database in the server module)_.
 
-### 3. Install dependencies and run
+> [!WARNING]
+> **Important Security Reminder**: Do NOT commit or upload any `.env` files (like `.env.development`, `.env.production`, or `.env.local`) to the remote repository. They are already included in `.gitignore` to prevent sensitive credentials (e.g., SMTP passwords, database connection strings) from being leaked.
 
-You can run the entire ecosystem with a single command from the root directory:
+### 3. Install Dependencies and Run Locally
+
+You can install all dependencies and spin up the entire ecosystem (Server, Screen, and Controller) with a single command from the root directory:
 
 ```bash
+# Install dependencies for root and submodules
 npm install
+
+# Start all projects in parallel (using concurrently)
 npm run dev
 ```
 
-_(Alternatively, you can run `npm install` and `npm run dev` inside each module's folder separately)._
-
-### Default Ports
+This command will launch the projects on the following default local ports:
 
 | Module         | Port   |
 | :------------- | :----- |
 | **Server**     | `3001` |
 | **Screen**     | `5173` |
 | **Controller** | `5174` |
+
+_(Alternatively, you can navigate into `controller/`, `screen/`, and `server/` folders individually, and run `npm install` followed by `npm run dev` in separate terminals)._
+
+---
+
+## Deployment URL (🚀 Deployment URL)
+
+- **Production Deployment (Server & Apps)**: `[Add the final deployment URL here once deployed to production]`
+- **Current Development Server / Tunnel**: `https://9kjbhqxg-3001.use2.devtunnels.ms/`
