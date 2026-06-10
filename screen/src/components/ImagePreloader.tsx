@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 
-// Import all background and large assets to get their resolved URLs in production
 import fondo from "../assets/fondo.webp";
 import fondocarga from "../assets/fondocarga.webp";
 import fondocarga2 from "../assets/fondocarga2.webp";
@@ -20,20 +19,24 @@ import graciasfondo from "../assets/graciasfondo.webp";
 
 const IMAGES_TO_PRELOAD = [fondo, fondocarga, fondocarga2, fondocarga3, Instrucciones1, pelota1, celular1, pelota2, instrucciones2, esfera1, Abuela1, calibration1, fondote, fondotefinal, allsetfondo, graciasfondo];
 
+function preloadImage(src: string) {
+    const link = document.createElement("link");
+    link.rel = "preload";
+    link.as = "image";
+    link.href = src;
+    link.fetchPriority = "high";
+    document.head.appendChild(link);
+}
+
+IMAGES_TO_PRELOAD.forEach(preloadImage);
+
 export default function ImagePreloader() {
     useEffect(() => {
-        // Wait a tiny bit (100ms) for the initial render of the current screen to finish
-        const timer = setTimeout(() => {
-            console.log("Starting background preloading of screen images...");
-            IMAGES_TO_PRELOAD.forEach((src) => {
-                const img = new Image();
-                img.src = src;
-            });
-            console.log("Background preloading of screen images initialized.");
-        }, 100);
-
-        return () => clearTimeout(timer);
+        IMAGES_TO_PRELOAD.forEach((src) => {
+            const img = new Image();
+            img.src = src;
+        });
     }, []);
 
-    return null; // Renderless component
+    return null;
 }

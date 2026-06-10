@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 
-// Import all background and large assets to get their resolved URLs in production
 import allsetmb from "../assets/allsetmb.webp";
 import asanlogo from "../assets/asanlogo.webp";
 import fondocelularinstructions from "../assets/fondocelularinstructions.webp";
@@ -11,20 +10,24 @@ import fondotegametwo from "../assets/fondotegametwo.webp";
 
 const IMAGES_TO_PRELOAD = [allsetmb, asanlogo, fondocelularinstructions, fondoending1, fondomobile1, fondoteform, fondotegametwo];
 
+function preloadImage(src: string) {
+    const link = document.createElement("link");
+    link.rel = "preload";
+    link.as = "image";
+    link.href = src;
+    link.fetchPriority = "high";
+    document.head.appendChild(link);
+}
+
+IMAGES_TO_PRELOAD.forEach(preloadImage);
+
 export default function ImagePreloader() {
     useEffect(() => {
-        // Wait a tiny bit (100ms) for the initial render of the current screen to finish
-        const timer = setTimeout(() => {
-            console.log("Starting background preloading of controller images...");
-            IMAGES_TO_PRELOAD.forEach((src) => {
-                const img = new Image();
-                img.src = src;
-            });
-            console.log("Background preloading of controller images initialized.");
-        }, 100);
-
-        return () => clearTimeout(timer);
+        IMAGES_TO_PRELOAD.forEach((src) => {
+            const img = new Image();
+            img.src = src;
+        });
     }, []);
 
-    return null; // Renderless component
+    return null;
 }

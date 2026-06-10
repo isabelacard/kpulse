@@ -6,23 +6,23 @@ import Forms3 from "../pages/questionnaire/form3";
 import Forms4 from "../pages/questionnaire/form4";
 import Forms5 from "../pages/questionnaire/form5";
 import Formsfinal from "../pages/questionnaire/formfinal";
-import GameTwo from "../pages/games/gametwo/gametwo";
-import CalibrateTwo from "../pages/games/gametwo/calibratetwo";
-import StatsTwo from "../pages/games/gametwo/statstwo";
+import GameTwo from "../pages/games/GameTwo/GameTwo";
+import Pregametwo from "../pages/games/GameTwo/PreGametwo";
+import StatsTwo from "../pages/games/GameTwo/StatsGameTwo";
 import Survey from "../pages/survey/survey";
 import Onboarding2 from "../pages/onboarding/Onboarding2";
 import Onboarding3 from "../pages/onboarding/Onboarding3";
 import Onboarding4 from "../pages/onboarding/Onboarding4";
-import Instructions1 from "../pages/instructions/Desktop/Instructios1";
-import Instructions2 from "../pages/instructions/Desktop/Instructios2";
-import Instructions3 from "../pages/instructions/Desktop/Instructios3";
-import Instructions4 from "../pages/instructions/Desktop/Instructios4";
-import Calibration1 from "../pages/instructions/Desktop/Calibration1";
-import Calibration2 from "../pages/instructions/Desktop/Calibration2";
-import InstructionsFinal from "../pages/instructions/Desktop/InstructionsFinal";
-import PreGameOne from "../pages/games/PreGameOne";
-import GameOne from "../pages/games/GameOne";
-import StatsGameOne from "../pages/games/StatsGameOne";
+import Instructions1 from "../pages/instructions/Instructions1";
+import Instructions2 from "../pages/instructions/Instructions2";
+import Instructions3 from "../pages/instructions/Instructions3";
+import Instructions4 from "../pages/instructions/Instructions4";
+import Calibration1 from "../pages/instructions/Calibration1";
+import Calibration2 from "../pages/instructions/Calibration2";
+import InstructionsFinal from "../pages/instructions/InstructionsFinal";
+import PreGameOne from "../pages/games/GameOne/PreGameOne";
+import GameOne from "../pages/games/GameOne/GameOne";
+import StatsGameOne from "../pages/games/GameOne/StatsGameOne";
 import AllSet from "../pages/allset/AllSet";
 import Ending from "../pages/ending/Ending";
 
@@ -98,8 +98,8 @@ const router = createBrowserRouter([
                 element: <GameTwo />,
             },
             {
-                path: "/calibratetwo",
-                element: <CalibrateTwo />,
+                path: "/pregametwo",
+                element: <Pregametwo />,
             },
             {
                 path: "/statstwo",

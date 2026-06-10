@@ -15,7 +15,7 @@ export default function Onboarding4() {
 
     return (
         <div className="flex items-center justify-center w-full h-screen relative bg-white overflow-hidden">
-            <img src={fondocarga3} alt="Fondo Carga Final" className="w-full scale-104 h-screen object-contain z-0 absolute" />
+            <img fetchPriority="high" loading="eager" src={fondocarga3} alt="Fondo Carga Final" className="w-full scale-104 h-screen object-contain z-0 absolute" />
 
             <div className="z-10 flex w-full flex-col px-6 md:px-20 lg:px-35">
                 <div className="w-full max-w-lg md:max-w-xl lg:max-w-2xl md:translate-x-8 lg:translate-x-16">

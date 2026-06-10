@@ -52,7 +52,7 @@ export default function Onboarding() {
                     }}
                     className="shrink-0 overflow-hidden"
                 >
-                    <img src={fondo} alt="Fondo Onboarding" className="w-full h-full scale-102 object-cover z-0 absolute top-0 left-0" />
+                    <img fetchPriority="high" loading="eager" src={fondo} alt="Fondo Onboarding" className="w-full h-full scale-102 object-cover z-0 absolute top-0 left-0" />
 
                     {/* Layout fijo: izquierda texto + cards, derecha QR */}
                     <div className="absolute inset-0 z-10 flex flex-row items-center justify-between px-20">

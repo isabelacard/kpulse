@@ -2,7 +2,7 @@ import { useSession } from "../../context/Sessioncontext";
 import { socket } from "../../socket";
 import { useNavigate } from "react-router-dom";
 import { Square, Circle, Triangle, Star } from "lucide-react";
-import fondoform from "../../../assets/fondoteform.webp";
+import fondoform from "../../assets/fondoteform.webp";
 
 const options = [
     { label: "18-30", color: "bg-[#F88888]", icon: Square },

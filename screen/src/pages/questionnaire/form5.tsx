@@ -14,7 +14,7 @@ export default function Forms5() {
 
     return (
         <div className="flex items-center justify-center w-full h-screen">
-            <img src={fondoform} alt="Group 11" className="w-full h-screen scale-98 object-contain z-0 absolute" />
+            <img fetchPriority="high" loading="eager" src={fondoform} alt="Group 11" className="w-full h-screen scale-98 object-contain z-0 absolute" />
 
             <div className="z-1 gap-6 md:gap-10 flex w-full flex-col items-center px-6 md:px-20 lg:px-42">
                 {/* Barra de progreso */}

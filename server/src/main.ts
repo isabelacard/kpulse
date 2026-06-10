@@ -42,7 +42,7 @@ app.use("/report", reportRouter);
 const httpServer = createServer(app);
 initSocket(httpServer);
 
-const PORT = 3000;
+const PORT = 3001;
 httpServer.listen(PORT, () => {
   console.log(`Server corriendo en puerto ${PORT}`);
 });

@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import allsetfondo from "../../assets/allsetfondo.webp";
 import { useEffect } from "react";
 import { useResponsiveScale } from "../../hooks/useResponsiveScale";
+import { socket } from "../../socket";
 
 export default function AllSet() {
     const navigate = useNavigate();
@@ -9,6 +10,7 @@ export default function AllSet() {
 
     useEffect(() => {
         const timer = setTimeout(() => {
+            socket.emit("changePage", "/final");
             navigate("/final");
         }, 10000);
 
@@ -35,7 +37,7 @@ export default function AllSet() {
                     }}
                     className="shrink-0 overflow-hidden"
                 >
-                    <img src={allsetfondo} alt="correo" className="w-full h-full scale-102 object-cover absolute top-0 left-0" />
+                    <img fetchPriority="high" loading="eager" src={allsetfondo} alt="correo" className="w-full h-full scale-102 object-cover absolute top-0 left-0" />
 
                     <div className="absolute inset-0 z-10 flex flex-col items-center justify-center">
                         <header className="text-center font-poppins font-medium text-white">

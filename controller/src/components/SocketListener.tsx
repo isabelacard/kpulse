@@ -19,7 +19,10 @@ export default function SocketListener({ children }: { children: React.ReactNode
                 "/instructions3": "/instructions3mobile",
                 "/calibration1": "/calibratingmobile",
                 "/pregameone": "/gameonemobile",
-                "/calibratetwo": "/gametwo",
+                "/pregametwo": "/gametwo",
+                "/gametwo": "/gametwo",
+                "/allset": "/allset",
+                "/final": "/ending",
                 // Si hay otras rutas que difieran, se agregan aquí
             };
 

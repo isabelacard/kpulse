@@ -43,7 +43,7 @@ The system is composed of three main modules:
 
 ### SQL Schema Backup (Supabase / PostgreSQL)
 
-You can find the database creation SQL script in [sql.sql](file:///c:/Users/isaca/Downloads/kpulse-1/server/src/schemas/sql.sql). We also include it here for quick access and reference:
+You can find the database creation SQL script in `kpulse-1/server/src/schemas/sql.sql`. We also include it here for quick access and reference:
 
 ```sql
 CREATE TABLE public.patients (

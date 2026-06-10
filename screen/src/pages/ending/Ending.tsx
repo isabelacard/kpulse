@@ -24,7 +24,7 @@ export default function Ending() {
                     }}
                     className="shrink-0 overflow-hidden"
                 >
-                    <img src={graciasfondo} alt="Fondo final" className="w-full h-full scale-102 object-cover absolute top-0 left-0" />
+                    <img fetchPriority="high" loading="eager" src={graciasfondo} alt="Fondo final" className="w-full h-full scale-102 object-cover absolute top-0 left-0" />
 
                     <div className="absolute inset-0 z-10 flex items-center px-20">
                         <div className="max-w-2xl">
