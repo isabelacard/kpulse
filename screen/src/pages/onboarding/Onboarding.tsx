@@ -23,6 +23,12 @@ export default function Onboarding() {
             return import.meta.env.VITE_CONTROLLER_URL;
         }
         const { protocol, hostname, port } = window.location;
+        if (hostname.includes("onrender.com")) {
+            if (hostname.includes("screen-kpulse")) {
+                return `https://${hostname.replace("screen-kpulse", "controller-kpulse")}/`;
+            }
+            return "https://controller-kpulse.onrender.com/";
+        }
         if (hostname.includes("devtunnels.ms")) {
             if (hostname.includes("-5173")) return window.location.href.replace("-5173", "-5174");
             if (hostname.includes("-5174")) return window.location.href.replace("-5174", "-5173");
