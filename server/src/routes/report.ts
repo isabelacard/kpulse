@@ -201,9 +201,13 @@ router.post("/", async (req, res) => {
         body: JSON.stringify({
           sender: {
             name: "KPulse",
-            email: "onboarding@resend.dev",
+            email: "sflorezvillaquiran@gmail.com",
           },
           to: [{ email }],
+          replyTo: {
+            email: "sflorezvillaquiran@gmail.com",
+            name: "KPulse",
+          },
           subject: "Tu Reporte de Evaluación Motriz - KPulse",
           htmlContent: htmlContent,
         }),
