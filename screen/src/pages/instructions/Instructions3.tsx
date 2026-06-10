@@ -1,25 +1,31 @@
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import ImagenFondo2 from "../../assets/instrucciones2.webp";
 import Esfera1 from "../../assets/esfera1.webp";
 import Check1 from "../../assets/check1.png";
 import Abuela1 from "../../assets/Abuela1.webp";
 import { useResponsiveScale } from "../../hooks/useResponsiveScale";
+import { socket } from "../../socket";
 
 function Instructions3() {
     const navigate = useNavigate();
     const scale = useResponsiveScale();
 
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            navigate("/instructions4");
-        }, 2000); //10000
-
-        return () => clearTimeout(timer);
+    const handleContinue = useCallback(() => {
+        socket.emit("changePage", "/instructions4");
+        navigate("/instructions4");
     }, [navigate]);
 
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            handleContinue();
+        }, 10000);
+
+        return () => clearTimeout(timer);
+    }, [handleContinue]);
+
     return (
-        <div className="flex items-center justify-center w-full h-screen">
+        <div onClick={handleContinue} className="flex items-center justify-center w-full h-screen cursor-pointer">
             <div
                 style={{
                     width: 1176 * scale,

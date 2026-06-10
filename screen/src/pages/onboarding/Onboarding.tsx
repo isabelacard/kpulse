@@ -1,5 +1,4 @@
-// import { useEffect } from "react";
-// import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 import { InfoCard } from "./components/InfoCard";
 import { Qrcode } from "./components/QrCode";
 import { HelpCircle, Target, Trophy } from "lucide-react";
@@ -9,19 +8,20 @@ import { useResponsiveScale } from "../../hooks/useResponsiveScale";
 import fondo from "../../assets/fondo.webp";
 
 export default function Onboarding() {
-    // const navigate = useNavigate();
-
-    // useEffect(() => {
-    //     const timer = setTimeout(() => {
-    //         navigate("/onboarding2");
-    //     }, 10000);
-
-    //     return () => clearTimeout(timer);
-    // }, [navigate]);
-
     const scale = useResponsiveScale();
 
+    useEffect(() => {
+        const socketUrl = import.meta.env.VITE_SOCKET_URL;
+        if (socketUrl) {
+            const cleanUrl = socketUrl.replace(/\/$/, "");
+            fetch(`${cleanUrl}/health`).catch(() => {});
+        }
+    }, []);
+
     const getControllerUrl = () => {
+        if (import.meta.env.VITE_CONTROLLER_URL) {
+            return import.meta.env.VITE_CONTROLLER_URL;
+        }
         const { protocol, hostname, port } = window.location;
         if (hostname.includes("devtunnels.ms")) {
             if (hostname.includes("-5173")) return window.location.href.replace("-5173", "-5174");
@@ -88,7 +88,6 @@ export default function Onboarding() {
                             </div>
                         </div>
 
-                        {/* Columna derecha — QR */}
                         <div className="flex pl-40 pt-50" style={{ width: 460 }}>
                             <Qrcode
                                 icon={

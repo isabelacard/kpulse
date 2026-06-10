@@ -14,6 +14,7 @@ import Calibration from "../pages/instructions/Calibration";
 import Instructions1 from "../pages/instructions/Instructions1";
 import Instructions2 from "../pages/instructions/Instructions2";
 import Instructions3 from "../pages/instructions/Instructions3";
+import Instructions4 from "../pages/instructions/Instructions4";
 import GameOneMobile from "../pages/games/GameOne/GameOne";
 import GameTwo from "../pages/games/GameTwo/GameTwo";
 import AllSet from "../pages/allset/AllSet";
@@ -34,6 +35,7 @@ const router = createBrowserRouter([
             { path: "/instructions1mobile", element: <Instructions1 /> },
             { path: "/instructions2mobile", element: <Instructions2 /> },
             { path: "/instructions3mobile", element: <Instructions3 /> },
+            { path: "/instructions4mobile", element: <Instructions4 /> },
             { path: "/calibratingmobile", element: <Calibration /> },
             { path: "/gameonemobile", element: <GameOneMobile /> },
             { path: "/gametwo", element: <GameTwo /> },

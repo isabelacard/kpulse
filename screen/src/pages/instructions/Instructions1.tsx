@@ -1,13 +1,30 @@
+import { useEffect, useCallback } from "react";
 import { useResponsiveScale } from "../../hooks/useResponsiveScale";
 import ImagenFondo from "../../assets/Instrucciones1.webp";
 import Pelota1 from "../../assets/pelota1.webp";
 import Celular1 from "../../assets/celular1.webp";
+import { useNavigate } from "react-router";
+import { socket } from "../../socket";
 
 function Instructions1() {
     const scale = useResponsiveScale();
+    const navigate = useNavigate();
+
+    const handleContinue = useCallback(() => {
+        socket.emit("changePage", "/instructions2");
+        navigate("/instructions2");
+    }, [navigate]);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            handleContinue();
+        }, 10000);
+
+        return () => clearTimeout(timer);
+    }, [handleContinue]);
 
     return (
-        <div className="flex items-center justify-center w-full h-screen overflow-hidden bg-white">
+        <div onClick={handleContinue} className="flex items-center justify-center w-full h-screen overflow-hidden bg-white cursor-pointer">
             <div
                 style={{
                     width: 1176 * scale,

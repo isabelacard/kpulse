@@ -17,15 +17,12 @@ export default function Forms4() {
             <img fetchPriority="high" loading="eager" src={fondoform} alt="Group 11" className="w-full h-screen scale-98 object-contain z-0 absolute" />
 
             <div className="z-1 gap-6 md:gap-10 flex w-full flex-col items-center px-6 md:px-20 lg:px-42">
-                {/* Barra de progreso */}
                 <div className="absolute top-16 md:top-25 left-1/2 -translate-x-1/2 w-1/2 md:w-1/3 h-2 md:h-2.5 bg-white/30 rounded-full overflow-hidden">
                     <div className="h-full w-80 bg-yellow-200 rounded-full" />
                 </div>
 
-                {/* Pregunta */}
                 <h1 className="text-white text-2xl md:text-4xl mt-16 md:mt-20 w-full md:w-200 font-medium text-center mb-2 md:mb-3 max-w-lg leading-tight">Have you used any digital or game-based therapy before?</h1>
 
-                {/* Botones */}
                 <div className="grid w-full max-w-sm md:max-w-screen-2xl grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 z-1">
                     {options.map(({ label, color, icon: Icon }) => (
                         <button

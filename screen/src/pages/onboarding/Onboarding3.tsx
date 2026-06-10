@@ -12,13 +12,8 @@ export default function Onboarding3() {
             setProgress(50);
         }, 100);
 
-        // const navigationTimer = setTimeout(() => {
-        //     navigate("/onboarding4");
-        // }, 10000);
-
         return () => {
             clearTimeout(animationTimer);
-            // clearTimeout(navigationTimer);
         };
     }, [navigate]);
 

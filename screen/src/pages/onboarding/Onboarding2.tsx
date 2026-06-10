@@ -1,19 +1,7 @@
-// import { useEffect } from "react";
-// import { useNavigate } from "react-router-dom";
 import { ProgressBar } from "./components/ProgressBar";
 import fondocarga from "../../assets/fondocarga.webp";
 
 export default function Onboarding2() {
-    // const navigate = useNavigate();
-
-    // useEffect(() => {
-    //     const timer = setTimeout(() => {
-    //         navigate("/onboarding3");
-    //     }, 10000);
-
-    //     return () => clearTimeout(timer);
-    // }, [navigate]);
-
     return (
         <div className="flex items-center justify-center w-full h-screen relative bg-white overflow-hidden">
             <img fetchPriority="high" loading="eager" src={fondocarga} alt="Fondo Carga" className="w-full h-screen scale-104 object-contain z-0 absolute" />

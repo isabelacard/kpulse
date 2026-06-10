@@ -17,6 +17,7 @@ export default function SocketListener({ children }: { children: React.ReactNode
                 "/instructions1": "/instructions1mobile",
                 "/instructions2": "/instructions2mobile",
                 "/instructions3": "/instructions3mobile",
+                "/instructions4": "/instructions4mobile",
                 "/calibration1": "/calibratingmobile",
                 "/pregameone": "/gameonemobile",
                 "/pregametwo": "/gametwo",

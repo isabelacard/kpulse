@@ -73,6 +73,7 @@ function GameOne() {
 
     const totalMsRef = useRef(0);
     const outMsRef = useRef(0);
+    const startedRef = useRef(false);
 
     const scale = useResponsiveScale();
 
@@ -189,20 +190,33 @@ function GameOne() {
             const ballCX = percentageX * 1176;
             const ballCY = percentageY * 648;
 
-            if (!started) setStarted(true);
             setShowBall(true);
             setPos({ x: ballCX, y: ballCY });
 
-            const inside = isBallInsideLine(ballCX, ballCY);
-            setIsOut(!inside);
-            checkFinishCollision(ballCX, ballCY);
+            let currentlyStarted = startedRef.current;
+            if (!currentlyStarted) {
+                const startX = PATH_POINTS[0][0];
+                const startY = PATH_POINTS[0][1];
+                const distToStart = Math.hypot(ballCX - startX, ballCY - startY);
+                if (distToStart <= 30) {
+                    setStarted(true);
+                    startedRef.current = true;
+                    currentlyStarted = true;
+                }
+            }
+
+            if (currentlyStarted) {
+                const inside = isBallInsideLine(ballCX, ballCY);
+                setIsOut(!inside);
+                checkFinishCollision(ballCX, ballCY);
+            }
         };
 
         socket.on("screen:data", handleSensorMove);
         return () => {
             socket.off("screen:data", handleSensorMove);
         };
-    }, [finished, started, isBallInsideLine, checkFinishCollision]);
+    }, [finished, isBallInsideLine, checkFinishCollision]);
 
     const finishPoint = PATH_POINTS[PATH_POINTS.length - 1];
 
@@ -253,7 +267,13 @@ function GameOne() {
                                 Level <span className="text-[#1FD0D3] font-bold">One</span>
                             </h1>
                             <p className="text-white text-[15px]">
-                                Reach the <span className="font-bold">end</span> of the line
+                                {!started ? (
+                                    <span className="text-yellow-300 font-bold animate-pulse">Move the ball to START to begin!</span>
+                                ) : (
+                                    <span>
+                                        Reach the <span className="font-bold">end</span> of the line
+                                    </span>
+                                )}
                             </p>
                         </div>
                     </div>

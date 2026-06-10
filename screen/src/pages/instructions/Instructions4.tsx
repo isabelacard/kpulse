@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import ImagenFondo from "../../assets/Instrucciones1.webp";
 import Check1 from "../../assets/check1.png";
 import LoadingBar from "../../components/LoadingBar";
@@ -10,17 +10,21 @@ function Instructions4() {
     const navigate = useNavigate();
     const scale = useResponsiveScale();
 
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            socket.emit("changePage", "/calibration1");
-            navigate("/calibration1");
-        }, 7000);
-
-        return () => clearTimeout(timer);
+    const handleContinue = useCallback(() => {
+        socket.emit("changePage", "/calibration1");
+        navigate("/calibration1");
     }, [navigate]);
 
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            handleContinue();
+        }, 10000);
+
+        return () => clearTimeout(timer);
+    }, [handleContinue]);
+
     return (
-        <div className="flex items-center justify-center w-full h-screen">
+        <div onClick={handleContinue} className="flex items-center justify-center w-full h-screen cursor-pointer">
             <div
                 style={{
                     width: 1176 * scale,

@@ -24,7 +24,6 @@ function Calibration2() {
         return () => clearTimeout(timer);
     }, [navigate]);
 
-    // 3. Sensor movement logic
     useEffect(() => {
         const moveDot = (data: SensorPayload) => {
             const unscaledWidth = 1176;
@@ -39,7 +38,6 @@ function Calibration2() {
             setPos({ x: posX, y: posY });
         };
 
-        // Listen for the sensor data coming from the server
         socket.on("screen:data", moveDot);
 
         return () => {
@@ -74,7 +72,6 @@ function Calibration2() {
                     <LoadingBarLines />
                 </div>
 
-                {/* Orange Dot with smooth transition */}
                 <div
                     style={{
                         left: pos.x,

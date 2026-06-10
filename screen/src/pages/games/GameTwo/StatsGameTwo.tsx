@@ -23,7 +23,6 @@ function StatsTwo() {
         caughtBalls: 0,
     };
     useEffect(() => {
-        // Emitir resultados del juego 2 al cargar la pantalla de stats
         socket.emit("game:results", {
             game_number: 2,
             score: caughtBalls,
@@ -38,7 +37,6 @@ function StatsTwo() {
         return () => clearTimeout(timer);
     }, [navigate, caughtBalls, strayBalls]);
 
-    // Listen for sensor data from the controller
     useEffect(() => {
         const moveDot = (data: SensorPayload) => {
             const percentageX = (data.orientation.x + 45) / 90;
@@ -93,7 +91,6 @@ function StatsTwo() {
                             </h1>
                         </div>
 
-                        {/* Label Stats */}
                         <div className="flex flex-col absolute top-42 left-100">
                             <h1 className="text-white text-[55px] text-left font-medium">
                                 <span className="font-bold">Stats</span>
@@ -106,7 +103,6 @@ function StatsTwo() {
                             </h1>
                         </div>
 
-                        {/* Stats labels + valores */}
                         <div>
                             <div className="absolute top-49 right-140">
                                 <h1 className="text-white font-medium text-[20px] absolute w-200">Total</h1>
@@ -121,7 +117,6 @@ function StatsTwo() {
                                 <p className="text-white text-[20px] absolute w-50 font-bold">Balls Outside</p>
                             </div>
 
-                            {/* Valores */}
                             <div className="absolute">
                                 <h1 className="flex items-baseline gap-2 text-white absolute left-40 top-50 whitespace-nowrap">
                                     <span className="font-medium text-[30px]">{caughtBalls}</span> <span className="text-[20px] text-white font-medium">balls</span>

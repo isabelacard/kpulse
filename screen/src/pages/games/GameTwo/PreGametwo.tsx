@@ -34,7 +34,6 @@ function PreGameTwo() {
 
             setPos({ x: posX, y: posY });
 
-            // Centro del círculo en coordenadas lógicas (espacio 1176×648)
             const circleCenterX = (circle.left + circle.width / 2 - zone.left) / scale;
             const circleCenterY = (circle.top + circle.height / 2 - zone.top) / scale;
 

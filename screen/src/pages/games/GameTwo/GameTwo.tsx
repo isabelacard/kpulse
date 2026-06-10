@@ -40,7 +40,6 @@ function GameTwo() {
     const [containerSize, setContainerSize] = useState({ w: 0, h: 0 });
     const scale = useResponsiveScale();
 
-    // Measure container
     useEffect(() => {
         const el = containerRef.current;
         if (!el) return;
@@ -51,7 +50,6 @@ function GameTwo() {
         return () => ro.disconnect();
     }, []);
 
-    // Timer
     useEffect(() => {
         if (!started) return;
         if (timeLeft <= 0) {
@@ -62,13 +60,11 @@ function GameTwo() {
         return () => clearTimeout(id);
     }, [started, timeLeft, navigate, strayBalls, caughtBalls]);
 
-    // Handle incoming socket messages for bar movement
     useEffect(() => {
         const handleSensorMove = (data: SensorPayload) => {
             const el = containerRef.current;
             if (!el) return;
 
-            // Constrain movement within the container bounds
             const percentageX = (data.orientation.x + 45) / 90;
             const newBarX = percentageX * el.clientWidth;
 
@@ -82,7 +78,6 @@ function GameTwo() {
         };
     }, [started]);
 
-    // Game loop for ball physics
     useEffect(() => {
         if (!started || timeLeft <= 0) return;
 
@@ -161,8 +156,7 @@ function GameTwo() {
                     {/* Background */}
                     <img fetchPriority="high" loading="eager" className="absolute scale-98 inset-0 w-full h-full object-cover" src={ImagenFondo} alt="Background" />
 
-                    {/* Top UI */}
-                    <div className="relative z-1 flex flex-col items-center pt-20">
+                    <div className="relative z-1 flex flex-col items-center pt-15">
                         <h1 className="text-white text-[50px] font-medium text-center">
                             Level <span className="text-[#FFB143] font-bold">Two</span>
                         </h1>
@@ -208,7 +202,6 @@ function GameTwo() {
                         }}
                     />
 
-                    {/* Waiting message if not started */}
                     {!started && (
                         <div className="absolute inset-0 flex items-center justify-center z-30">
                             <p className="text-white text-2xl animate-pulse">Move your device to start</p>
