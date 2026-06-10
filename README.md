@@ -1,6 +1,12 @@
 # K-Pulse: Smart Rehab System ( •̀ ω •́ )✧
 
-An interactive rehabilitation experience powered by mobile sensors and WebSockets. The user places their smartphone inside a physical ball, and their physical movements are translated into real-time actions within a game displayed on an external screen.
+K-Pulse is an interactive rehabilitation experience powered by mobile sensors and WebSockets. The user places their smartphone inside a physical therapy ball, allowing wrist and arm movements to be translated into real-time actions within a game displayed on an external screen.
+
+Developed in collaboration with Asan Medical Center in South Korea, K-Pulse aims to support upper-limb rehabilitation by helping therapists and patients assess movement accuracy, coordination, and motor control through engaging game-based exercises.
+
+The platform combines a mobile controller, a real-time communication server, and a screen-based game experience to create a seamless rehabilitation ecosystem that encourages participation while providing meaningful movement data.
+
+Developed with <3 by Samuel, Isabela, and Mariana.
 
 ---
 
@@ -43,7 +49,7 @@ The system is composed of three main modules:
 
 ### SQL Schema Backup (Supabase / PostgreSQL)
 
-You can find the database creation SQL script in `kpulse-1/server/src/schemas/sql.sql`. We also include it here for quick access and reference:
+You can find the database creation SQL script in [server/schema.sql](./server/schema.sql). We also include it here for quick access and reference:
 
 ```sql
 CREATE TABLE public.patients (
@@ -107,9 +113,10 @@ kpulse/
 │   │   ├── hooks/
 │   │   ├── pages/
 │   │   │   ├── onboarding/
-│   │   │   ├── form/
-│   │   │   ├── instructions/
-│   │   │   ├── games/
+│   │   │   ├── questionnaire/    # Questionnaire screens (1-5 + final)
+│   │   │   ├── survey/           # Post-game feedback survey
+│   │   │   ├── instructions/     # Tutorial screens
+│   │   │   ├── games/            # Mobile controller game components
 │   │   │   ├── allset/
 │   │   │   └── ending/
 │   │   ├── routes/
@@ -118,8 +125,6 @@ kpulse/
 │   │   │   └── api.ts
 │   │   ├── socket.ts
 │   │   └── main.tsx
-│   ├── .env.development
-│   ├── .env.production
 │   └── package.json
 │
 ├── screen/                      # Large Screen App
@@ -129,6 +134,8 @@ kpulse/
 │   │   │   └── SocketListener.tsx
 │   │   ├── pages/
 │   │   │   ├── onboarding/
+│   │   │   ├── questionnaire/
+│   │   │   ├── survey/
 │   │   │   ├── instructions/
 │   │   │   ├── games/
 │   │   │   ├── allset/
@@ -139,8 +146,6 @@ kpulse/
 │   │   │   └── api.ts
 │   │   ├── socket.ts
 │   │   └── main.tsx
-│   ├── .env.development
-│   ├── .env.production
 │   └── package.json
 │
 └── server/                      # Backend API & WebSockets
@@ -149,12 +154,13 @@ kpulse/
     │   │   ├── session.ts
     │   │   ├── patient.ts
     │   │   ├── survey.ts
-    │   │   └── results.ts
+    │   │   ├── results.ts
+    │   │   └── report.ts
     │   ├── socket.ts
     │   ├── db.ts
     │   └── main.ts
-    ├── package.json
-    └── .gitignore
+    ├── schema.sql                # Relational database backup script
+    └── package.json
 ```
 
 ## Running Locally
@@ -206,7 +212,9 @@ _(Alternatively, you can navigate into `controller/`, `screen/`, and `server/` f
 
 ---
 
-## Deployment URL (🚀 Deployment URL)
+## Deployment URLs (🚀 Deployment URLs)
 
-- **Production Deployment (Server & Apps)**: `[Add the final deployment URL here once deployed to production]`
-- **Current Development Server / Tunnel**: `https://9kjbhqxg-3001.use2.devtunnels.ms/`
+- **Production Server (Backend API & WebSockets)**: [https://kpulse-1.onrender.com](https://kpulse-1.onrender.com)
+- **Production Desktop Screen App**: [https://screen-kpulse.onrender.com/](https://screen-kpulse.onrender.com/)
+- **Production Mobile Controller App**: [https://controller-kpulse.onrender.com/](https://controller-kpulse.onrender.com)
+- **Development Server / DevTunnel Fallback**: `https://9kjbhqxg-3001.use2.devtunnels.ms/`
