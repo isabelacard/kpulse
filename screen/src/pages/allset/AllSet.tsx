@@ -1,9 +1,11 @@
 import { useNavigate } from "react-router-dom";
-import allsetfondo from "../../assets/allsetfondo.png";
+import allsetfondo from "../../assets/allsetfondo.webp";
 import { useEffect } from "react";
+import { useResponsiveScale } from "../../hooks/useResponsiveScale";
 
 export default function AllSet() {
     const navigate = useNavigate();
+    const scale = useResponsiveScale();
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -14,16 +16,36 @@ export default function AllSet() {
     }, [navigate]);
 
     return (
-        <div className="flex items-center justify-center w-full h-screen relative bg-black/5 overflow-hidden">
-            <img src={allsetfondo} alt="correo" className="w-full h-screen object-contain z-0 absolute" />
+        <div className="flex items-center justify-center w-full h-screen overflow-hidden bg-black/5">
+            <div
+                style={{
+                    width: 1176 * scale,
+                    height: 648 * scale,
+                    position: "relative",
+                }}
+                className="flex items-center justify-center overflow-hidden"
+            >
+                <div
+                    style={{
+                        width: 1176,
+                        height: 648,
+                        transform: `scale(${scale})`,
+                        transformOrigin: "center",
+                        position: "absolute",
+                    }}
+                    className="shrink-0 overflow-hidden"
+                >
+                    <img src={allsetfondo} alt="correo" className="w-full h-full scale-102 object-cover absolute top-0 left-0" />
 
-            <div className="z-10 flex w-full flex-col items-center justify-center px-6 md:px-20 lg:px-42">
-                <div className="w-full max-w-2xl flex justify-center">
-                    <header className="mb-6 md:mb-10 text-center font-poppins font-medium text-white text-2xl">
-                        <p className="bg-linear-to-b from-white to-yellow-400 bg-clip-text text-transparent">You're all set!</p>
-                        <p>enter your email to</p>
-                        <p>recieve your results.</p>
-                    </header>
+                    <div className="absolute inset-0 z-10 flex flex-col items-center justify-center">
+                        <header className="text-center font-poppins font-medium text-white">
+                            <p className="bg-linear-to-b from-white to-yellow-400 bg-clip-text text-transparent text-[48px]">You're all set!</p>
+
+                            <p className="text-[36px]">enter your email to</p>
+
+                            <p className="text-[36px]">recieve your results.</p>
+                        </header>
+                    </div>
                 </div>
             </div>
         </div>

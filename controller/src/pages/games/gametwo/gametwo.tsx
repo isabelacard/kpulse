@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import fondogametwo from "../../../assets/fondotegametwo.png";
+import fondogametwo from "../../../assets/fondotegametwo.webp";
 import { socket } from "../../../socket";
 import { useSensors } from "../../../hooks/useSensors";
 

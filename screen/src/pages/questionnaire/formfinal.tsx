@@ -1,9 +1,9 @@
-import fondoform from "../../assets/fondotefinal.png";
+import fondoform from "../../assets/fondotefinal.webp";
 
 export default function Formsfinal() {
     return (
         <div className="flex items-center justify-center w-full h-screen">
-            <img src={fondoform} alt="Group 12" className="w-full h-screen object-contain z-0 absolute" />
+            <img src={fondoform} alt="Group 12" className="w-full h-screen scale-98 object-contain z-0 absolute" />
 
             <div className="z-1 gap-0 md:gap-0 flex w-full flex-col items-center px-6 md:px-20 lg:px-42">
                 {/* Barra de progreso */}

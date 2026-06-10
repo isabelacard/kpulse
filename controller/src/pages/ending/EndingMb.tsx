@@ -1,4 +1,4 @@
-import fondoending from "../../assets/fondoending1.png";
+import fondoending from "../../assets/fondoending1.webp";
 
 export default function EndindMb() {
     return (

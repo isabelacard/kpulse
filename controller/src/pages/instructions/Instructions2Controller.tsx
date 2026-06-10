@@ -1,4 +1,4 @@
-import ImagenFondoCelular from "../../assets/fondocelularinstructions.png";
+import ImagenFondoCelular from "../../assets/fondocelularinstructions.webp";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 

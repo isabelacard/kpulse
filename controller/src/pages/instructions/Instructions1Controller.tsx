@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import ImagenFondoCelular from "../../assets/fondocelularinstructions.png";
+import ImagenFondoCelular from "../../assets/fondocelularinstructions.webp";
 import { socket } from "../../socket";
 
 function Instructions1Controller() {

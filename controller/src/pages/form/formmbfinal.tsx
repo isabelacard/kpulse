@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import fondoform from "../../assets/fondoteform.png";
+import fondoform from "../../assets/fondoteform.webp";
 import { socket } from "../../socket";
 
 export default function MobileFormFinal() {

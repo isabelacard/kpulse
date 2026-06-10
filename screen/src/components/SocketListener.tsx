@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { socket } from "../socket";
+import ImagePreloader from "./ImagePreloader";
 
 export default function SocketListener({ children }: { children: React.ReactNode }) {
     const navigate = useNavigate();
@@ -18,5 +19,10 @@ export default function SocketListener({ children }: { children: React.ReactNode
         };
     }, [navigate]);
 
-    return <>{children}</>;
+    return (
+        <>
+            <ImagePreloader />
+            {children}
+        </>
+    );
 }

@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import ImagenFondoCalibration from "../../assets/calibration1.png";
+import ImagenFondoCalibration from "../../assets/calibration1.webp";
 import PatronJuegoUno from "../../assets/patronjuego1.png";
 import { socket } from "../../socket";
+import { useResponsiveScale } from "../../hooks/useResponsiveScale";
 
 type SensorPayload = {
     orientation: { x: number; y: number };
@@ -25,6 +26,7 @@ function GameOne() {
 
     const [isOut, setIsOut] = useState(false);
     const [finished, setFinished] = useState(false);
+    const scale = useResponsiveScale();
 
     const buildCollisionMap = () => {
         const img = patternImgRef.current;
@@ -59,9 +61,8 @@ function GameOne() {
     const isBallInsideLine = (ballX: number, ballY: number) => {
         const img = patternImgRef.current;
         const canvas = canvasRef.current;
-        const zone = zoneRef.current;
 
-        if (!img || !canvas || !zone) return false;
+        if (!img || !canvas) return false;
 
         const ctx = canvas.getContext("2d", {
             willReadFrequently: true,
@@ -69,16 +70,13 @@ function GameOne() {
 
         if (!ctx) return false;
 
-        const imgRect = img.getBoundingClientRect();
-        const zoneRect = zone.getBoundingClientRect();
-
         const radius = 10;
 
         for (let x = -radius; x <= radius; x++) {
             for (let y = -radius; y <= radius; y++) {
                 if (x * x + y * y <= radius * radius) {
-                    const px = ballX + radius + x - (imgRect.left - zoneRect.left);
-                    const py = ballY + radius + y - (imgRect.top - zoneRect.top);
+                    const px = ballX + radius + x - img.offsetLeft;
+                    const py = ballY + radius + y - img.offsetTop;
 
                     if (px < 0 || py < 0 || px >= canvas.width || py >= canvas.height) {
                         return false;
@@ -125,15 +123,11 @@ function GameOne() {
 
     const checkFinishCollision = (ballX: number, ballY: number) => {
         const finish = finishBallRef.current;
-        const zone = zoneRef.current;
 
-        if (!finish || !zone || finished) return;
+        if (!finish || finished) return;
 
-        const finishRect = finish.getBoundingClientRect();
-        const zoneRect = zone.getBoundingClientRect();
-
-        const finishX = finishRect.left - zoneRect.left + finishRect.width / 2;
-        const finishY = finishRect.top - zoneRect.top + finishRect.height / 2;
+        const finishX = finish.offsetLeft + finish.clientWidth / 2;
+        const finishY = finish.offsetTop + finish.clientHeight / 2;
 
         const playerX = ballX + 12;
         const playerY = ballY + 12;
@@ -155,15 +149,14 @@ function GameOne() {
     // Connection with the Controller's physical sensors
     useEffect(() => {
         const handleSensorMove = (data: SensorPayload) => {
-            const zone = zoneRef.current?.getBoundingClientRect();
-            if (!zone || finished) return;
+            if (finished) return;
 
             const percentageX = (data.orientation.x + 45) / 90;
             const percentageY = (-data.orientation.y + 45) / 90;
 
-            // Calculate exact position in pixels minus half the dot size
-            const posX = percentageX * zone.width - 10;
-            const posY = percentageY * zone.height - 10;
+            // Calculate exact position in pixels minus half the dot size (virtual bounds 1176 x 648)
+            const posX = percentageX * 1176 - 10;
+            const posY = percentageY * 648 - 10;
 
             if (!started) setStarted(true);
 
@@ -185,55 +178,74 @@ function GameOne() {
     }, [started, finished, totalMs, outMs, isOut]);
 
     return (
-        <div className="flex items-center justify-center w-full h-screen">
-            <div ref={zoneRef} className="relative w-294 h-162 shrink-0 overflow-hidden rounded-xl">
-                <img className="absolute" src={ImagenFondoCalibration} alt="Background" />
-
-                <img ref={patternImgRef} className="absolute w-235 top-40 left-30" src={PatronJuegoUno} onLoad={buildCollisionMap} alt="Level Map" />
-
-                <canvas ref={canvasRef} className="hidden" />
-
-                <div className="relative z-10 flex flex-col items-center mt-20 h-full">
-                    <div className="absolute w-48 right-30 top-8 text-right">
-                        <h1 className="text-white text-[15px] font-bold">Time Out of the Line</h1>
-                        <h1 className="text-white text-[18px]">{formatTime(outMs)}</h1>
-                    </div>
-
-                    <div className="absolute w-48 left-30 top-8">
-                        <h1 className="text-white text-[15px] font-bold">Total Time</h1>
-                        <h1 className="text-white text-[18px]">{formatTime(totalMs)}</h1>
-                    </div>
-
-                    <div className="absolute -top-10">
-                        <h1 className="text-white text-[50px] text-center font-medium">
-                            Level <span className="text-[#1FD0D3] font-bold">One</span>
-                        </h1>
-
-                        <h1 className="text-white text-[15px] text-center absolute self-center top-15 left-1/2 -translate-x-1/2 whitespace-nowrap">
-                            Reach the <span className="font-bold">end</span> of the line
-                        </h1>
-                    </div>
-                </div>
-
+        <div className="flex items-center justify-center w-screen h-screen overflow-hidden">
+            <div
+                style={{
+                    width: 1176 * scale,
+                    height: 648 * scale,
+                    position: "relative",
+                }}
+                className="flex items-center justify-center overflow-hidden"
+            >
                 <div
-                    ref={finishBallRef}
-                    className="absolute w-10 h-10 bg-[#FF9900] rounded-full z-20"
+                    ref={zoneRef}
                     style={{
-                        top: "225px",
-                        right: "204px",
+                        width: 1176,
+                        height: 648,
+                        transform: `scale(${scale})`,
+                        transformOrigin: "center",
+                        position: "absolute",
                     }}
-                />
+                    className="shrink-0 overflow-hidden rounded-xl"
+                >
+                    <img className="absolute scale-98 inset-0 w-full h-full object-cover" src={ImagenFondoCalibration} alt="Background" />
 
-                {showBall && (
+                    <img ref={patternImgRef} className="absolute w-235 top-40 left-30" src={PatronJuegoUno} onLoad={buildCollisionMap} alt="Level Map" />
+
+                    <canvas ref={canvasRef} className="hidden" />
+
+                    <div className="relative z-10 flex flex-col items-center mt-20 h-full">
+                        <div className="absolute w-48 right-30 top-8 text-right">
+                            <h1 className="text-white text-[15px] font-bold">Time Out of the Line</h1>
+                            <h1 className="text-white text-[18px]">{formatTime(outMs)}</h1>
+                        </div>
+
+                        <div className="absolute w-48 left-30 top-8">
+                            <h1 className="text-white text-[15px] font-bold">Total Time</h1>
+                            <h1 className="text-white text-[18px]">{formatTime(totalMs)}</h1>
+                        </div>
+
+                        <div className="absolute -top-10">
+                            <h1 className="text-white text-[50px] text-center font-medium">
+                                Level <span className="text-[#1FD0D3] font-bold">One</span>
+                            </h1>
+
+                            <h1 className="text-white text-[15px] text-center absolute self-center top-15 left-1/2 -translate-x-1/2 whitespace-nowrap">
+                                Reach the <span className="font-bold">end</span> of the line
+                            </h1>
+                        </div>
+                    </div>
+
                     <div
+                        ref={finishBallRef}
+                        className="absolute w-10 h-10 bg-[#FF9900] rounded-full z-20"
                         style={{
-                            left: pos.x,
-                            top: pos.y,
-                            transition: "left 0.05s linear, top 0.05s linear",
+                            top: "225px",
+                            right: "204px",
                         }}
-                        className={`absolute w-5 h-5 rounded-full z-20 ${isOut ? "bg-red-500" : "bg-[#FFB143]"}`}
                     />
-                )}
+
+                    {showBall && (
+                        <div
+                            style={{
+                                left: pos.x,
+                                top: pos.y,
+                                transition: "left 0.05s linear, top 0.05s linear",
+                            }}
+                            className={`absolute w-5 h-5 rounded-full z-20 ${isOut ? "bg-red-500" : "bg-[#FFB143]"}`}
+                        />
+                    )}
+                </div>
             </div>
         </div>
     );

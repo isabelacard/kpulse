@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import ImagenFondoCelular from "../../assets/fondocelularinstructions.png";
+import ImagenFondoCelular from "../../assets/fondocelularinstructions.webp";
 import { socket } from "../../socket";
 import { useSensors } from "../../hooks/useSensors";
 

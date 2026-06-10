@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Square, Circle, Triangle, Star } from "lucide-react";
-import fondoform from "../../assets/fondoteform.png";
+import fondoform from "../../assets/fondoteform.webp";
 import { socket } from "../../socket";
 import { useSession } from "../../context/Sessioncontext";
 

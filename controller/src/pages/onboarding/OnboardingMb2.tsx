@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import fondomobile from "../../assets/fondomobile1.png";
+import fondomobile from "../../assets/fondomobile1.webp";
 import { socket } from "../../socket";
 
 import { useSession } from "../../context/Sessioncontext";

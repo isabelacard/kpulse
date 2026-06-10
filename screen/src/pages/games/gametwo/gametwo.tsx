@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import ImagenFondo from "../../../assets/fondote.png";
+import ImagenFondo from "../../../assets/fondote.webp";
 import { socket } from "../../../socket";
+import { useResponsiveScale } from "../../../hooks/useResponsiveScale";
 
 const GAME_DURATION = 15;
 const BALL_RADIUS = 22;
@@ -37,6 +38,7 @@ function GameTwo() {
     const [timeLeft, setTimeLeft] = useState(GAME_DURATION);
     const [started, setStarted] = useState(false);
     const [containerSize, setContainerSize] = useState({ w: 0, h: 0 });
+    const scale = useResponsiveScale();
 
     // Measure container
     useEffect(() => {
@@ -44,7 +46,6 @@ function GameTwo() {
         if (!el) return;
         const ro = new ResizeObserver(() => {
             setContainerSize({ w: el.clientWidth, h: el.clientHeight });
-            setBarX(el.clientWidth / 2);
         });
         ro.observe(el);
         return () => ro.disconnect();
@@ -59,94 +60,72 @@ function GameTwo() {
         }
         const id = setTimeout(() => setTimeLeft((t) => t - 1), 1000);
         return () => clearTimeout(id);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [started, timeLeft, navigate]);
+    }, [started, timeLeft, navigate, strayBalls, caughtBalls]);
 
-    // Controller movement -> move bar
+    // Handle incoming socket messages for bar movement
     useEffect(() => {
         const handleSensorMove = (data: SensorPayload) => {
             const el = containerRef.current;
             if (!el) return;
 
-            if (!started) setStarted(true);
-
-            // Map the horizontal orientation (-45 to 45) to container percentages
+            // Constrain movement within the container bounds
             const percentageX = (data.orientation.x + 45) / 90;
+            const newBarX = percentageX * el.clientWidth;
 
-            // Calculate pixel position
-            const x = percentageX * el.clientWidth;
-
-            // Keep the bar strictly within the container bounds
-            setBarX(Math.max(BAR_WIDTH / 2, Math.min(el.clientWidth - BAR_WIDTH / 2, x)));
+            if (!started) setStarted(true);
+            setBarX(newBarX);
         };
 
         socket.on("screen:data", handleSensorMove);
-
         return () => {
             socket.off("screen:data", handleSensorMove);
         };
     }, [started]);
 
-    // Mutable ref for barX (accessible inside the loop without stale closure)
-    const barXRef = useRef(barX);
-    useEffect(() => {
-        barXRef.current = barX;
-    }, [barX]);
-
-    // Game loop — spawn + physics
+    // Game loop for ball physics
     useEffect(() => {
         if (!started || timeLeft <= 0) return;
 
-        const { w, h } = containerSize;
-        if (!w || !h) return;
-
-        const barY = h - 60; // Fixed Y position of the bar
-
         const loop = (timestamp: number) => {
-            // Spawn new ball every ~1.2s if below MAX_BALLS_ALIVE
-            if (timestamp - lastSpawnRef.current > 1200) {
+            // Spawn balls periodically
+            if (timestamp - lastSpawnRef.current > 2000 && balls.length < MAX_BALLS_ALIVE) {
                 lastSpawnRef.current = timestamp;
-                setBalls((prev) => {
-                    if (prev.length >= MAX_BALLS_ALIVE) return prev;
-                    const newBall: Ball = {
-                        id: ballIdCounter++,
-                        x: BALL_RADIUS + Math.random() * (w - BALL_RADIUS * 2),
-                        y: -BALL_RADIUS,
-                        speed: BALL_SPEED_MIN + Math.random() * (BALL_SPEED_MAX - BALL_SPEED_MIN),
-                    };
-                    return [...prev, newBall];
-                });
+                const newBall: Ball = {
+                    id: ballIdCounter++,
+                    x: Math.random() * (containerSize.w - BALL_RADIUS * 2) + BALL_RADIUS,
+                    y: 40,
+                    speed: Math.random() * (BALL_SPEED_MAX - BALL_SPEED_MIN) + BALL_SPEED_MIN,
+                };
+                setBalls((prev) => [...prev, newBall]);
             }
 
-            // Move balls and detect collisions
+            // Move and collide
             setBalls((prev) => {
-                const surviving: Ball[] = [];
-                let dropped = 0;
+                const next: Ball[] = [];
+                prev.forEach((ball) => {
+                    const nextY = ball.y + ball.speed;
 
-                for (const ball of prev) {
-                    const newY = ball.y + ball.speed;
+                    // Check if it reached the bar collision zone
+                    const barY = containerSize.h - 60;
+                    if (nextY >= barY && nextY <= barY + BAR_HEIGHT) {
+                        const barLeft = barX - BAR_WIDTH / 2;
+                        const barRight = barX + BAR_WIDTH / 2;
 
-                    // Collides with the bar?
-                    const barLeft = barXRef.current - BAR_WIDTH / 2;
-                    const barRight = barXRef.current + BAR_WIDTH / 2;
-                    const hitBar = newY + BALL_RADIUS >= barY && newY - BALL_RADIUS <= barY + BAR_HEIGHT && ball.x >= barLeft && ball.x <= barRight;
-
-                    if (hitBar) {
-                        setCaughtBalls((c) => c + 1);
-                        continue;
+                        if (ball.x >= barLeft && ball.x <= barRight) {
+                            setCaughtBalls((c) => c + 1);
+                            return; // Caught, remove from list
+                        }
                     }
 
-                    if (newY - BALL_RADIUS > h) {
-                        // Fell to the ground
-                        dropped++;
-                        continue;
+                    // Check if it went off screen bottom
+                    if (nextY > containerSize.h) {
+                        setStrayBalls((s) => s + 1);
+                        return; // Missed, remove
                     }
 
-                    surviving.push({ ...ball, y: newY });
-                }
-
-                if (dropped > 0) setStrayBalls((s) => s + dropped);
-                return surviving;
+                    next.push({ ...ball, y: nextY });
+                });
+                return next;
             });
 
             animFrameRef.current = requestAnimationFrame(loop);
@@ -154,69 +133,88 @@ function GameTwo() {
 
         animFrameRef.current = requestAnimationFrame(loop);
         return () => cancelAnimationFrame(animFrameRef.current);
-    }, [started, timeLeft, containerSize]);
+    }, [started, timeLeft, containerSize, balls.length, barX]);
 
     const barY = containerSize.h - 60;
 
     return (
-        <div className="flex items-center justify-center w-full h-screen">
-            <div ref={containerRef} className="relative w-294 h-162 shrink-0 overflow-hidden rounded-xl cursor-none">
-                {/* Background */}
-                <img className="absolute" src={ImagenFondo} alt="Background" />
+        <div className="flex items-center justify-center w-screen h-screen overflow-hidden">
+            <div
+                style={{
+                    width: 1176 * scale,
+                    height: 648 * scale,
+                    position: "relative",
+                }}
+                className="flex items-center justify-center overflow-hidden"
+            >
+                <div
+                    ref={containerRef}
+                    style={{
+                        width: 1176,
+                        height: 648,
+                        transform: `scale(${scale})`,
+                        transformOrigin: "center",
+                        position: "absolute",
+                    }}
+                    className="shrink-0 overflow-hidden rounded-xl cursor-none"
+                >
+                    {/* Background */}
+                    <img className="absolute scale-98 inset-0 w-full h-full object-cover" src={ImagenFondo} alt="Background" />
 
-                {/* Top UI */}
-                <div className="relative z-1 flex flex-col items-center pt-15">
-                    <h1 className="text-white text-[50px] font-medium text-center">
-                        Level <span className="text-[#FFB143] font-bold">Two</span>
-                    </h1>
-                    <p className="text-white text-[15px] text-center -mt-2">Don't drop the balls</p>
+                    {/* Top UI */}
+                    <div className="relative z-1 flex flex-col items-center pt-15">
+                        <h1 className="text-white text-[50px] font-medium text-center">
+                            Level <span className="text-[#FFB143] font-bold">Two</span>
+                        </h1>
+                        <p className="text-white text-[15px] text-center -mt-2">Don't drop the balls</p>
 
-                    {/* Stats */}
-                    <div className="absolute top-30 left-8 text-white">
-                        <p className="font-bold text-lg">Time Remaining</p>
-                        <p>{timeLeft} Seg</p>
+                        {/* Stats */}
+                        <div className="absolute top-30 left-8 text-white">
+                            <p className="font-bold text-lg">Time Remaining</p>
+                            <p>{timeLeft} Seg</p>
+                        </div>
+                        <div className="absolute top-30 right-8 text-white text-right">
+                            <p className="font-bold text-lg">Stray Balls</p>
+                            <p>{strayBalls}</p>
+                        </div>
+
+                        {/* Divider line */}
+                        <div className="absolute top-50 left-8 right-8 border-t border-white/40" />
                     </div>
-                    <div className="absolute top-30 right-8 text-white text-right">
-                        <p className="font-bold text-lg">Stray Balls</p>
-                        <p>{strayBalls}</p>
-                    </div>
 
-                    {/* Divider line */}
-                    <div className="absolute top-50 left-8 right-8 border-t border-white/40" />
-                </div>
+                    {/* Balls */}
+                    {balls.map((ball) => (
+                        <div
+                            key={ball.id}
+                            className="absolute rounded-full bg-[#FFB143] z-20"
+                            style={{
+                                width: BALL_RADIUS * 2,
+                                height: BALL_RADIUS * 2,
+                                left: ball.x - BALL_RADIUS,
+                                top: ball.y - BALL_RADIUS,
+                            }}
+                        />
+                    ))}
 
-                {/* Balls */}
-                {balls.map((ball) => (
+                    {/* Bar */}
                     <div
-                        key={ball.id}
-                        className="absolute rounded-full bg-[#FFB143] z-20"
+                        className="absolute z-20 rounded-full bg-[#FFB143]"
                         style={{
-                            width: BALL_RADIUS * 2,
-                            height: BALL_RADIUS * 2,
-                            left: ball.x - BALL_RADIUS,
-                            top: ball.y - BALL_RADIUS,
+                            width: BAR_WIDTH,
+                            height: BAR_HEIGHT,
+                            left: barX - BAR_WIDTH / 2,
+                            top: barY,
+                            transition: "left 0.05s linear",
                         }}
                     />
-                ))}
 
-                {/* Bar */}
-                <div
-                    className="absolute z-20 rounded-full bg-[#FFB143]"
-                    style={{
-                        width: BAR_WIDTH,
-                        height: BAR_HEIGHT,
-                        left: barX - BAR_WIDTH / 2,
-                        top: barY,
-                        transition: "left 0.05s linear",
-                    }}
-                />
-
-                {/* Waiting message if not started */}
-                {!started && (
-                    <div className="absolute inset-0 flex items-center justify-center z-30">
-                        <p className="text-white text-2xl animate-pulse">Move your device to start</p>
-                    </div>
-                )}
+                    {/* Waiting message if not started */}
+                    {!started && (
+                        <div className="absolute inset-0 flex items-center justify-center z-30">
+                            <p className="text-white text-2xl animate-pulse">Move your device to start</p>
+                        </div>
+                    )}
+                </div>
             </div>
         </div>
     );

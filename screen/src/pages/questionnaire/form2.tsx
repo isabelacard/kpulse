@@ -1,4 +1,4 @@
-import fondoform from "../../assets/fondote.png";
+import fondoform from "../../assets/fondote.webp";
 import { useState } from "react";
 import { Square, Circle, Triangle, Star } from "lucide-react";
 
@@ -14,7 +14,7 @@ export default function Forms2() {
 
     return (
         <div className="flex items-center justify-center w-full h-screen">
-            <img src={fondoform} alt="Group 11" className="w-full h-screen object-contain z-0 absolute" />
+            <img src={fondoform} alt="Group 11" className="w-full h-screen scale-98 object-contain z-0 absolute" />
 
             <div className="z-1 gap-6 md:gap-10 flex w-full flex-col items-center px-6 md:px-20 lg:px-42">
                 {/* Barra de progreso */}

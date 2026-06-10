@@ -55,5 +55,4 @@ body,
     min-height: 100vh;
     margin: 0;
     padding: 0;
-    min-width: 1280px; /* Fuerza el layout a comportarse como desktop */
 }

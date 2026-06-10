@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Mail } from "lucide-react";
-import allsetmb from "../../assets/allsetmb.png";
+import allsetmb from "../../assets/allsetmb.webp";
 import { useSession } from "../../context/Sessioncontext";
 import { api } from "../../services/api";
 import { socket } from "../../socket";
