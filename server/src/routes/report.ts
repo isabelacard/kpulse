@@ -14,6 +14,9 @@ const transporter = nodemailer.createTransport({
     user: process.env.SMTP_USER,
     pass: process.env.SMTP_PASS,
   },
+  connectionTimeout: 10000, // 10 segundos de límite para conectar
+  greetingTimeout: 10000,
+  socketTimeout: 15000,
 });
 
 router.post("/", async (req, res) => {
@@ -24,7 +27,6 @@ router.post("/", async (req, res) => {
   }
 
   try {
-    // Fallback: Si no hay session_id en el front (ej. al recargar), buscar el paciente y su última sesión
     if (!session_id) {
       const { data: patient } = await supabase
         .from("patients")
