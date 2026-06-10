@@ -1,21 +1,8 @@
-import { useNavigate } from "react-router-dom";
 import allsetfondo from "../../assets/allsetfondo.webp";
-import { useEffect } from "react";
 import { useResponsiveScale } from "../../hooks/useResponsiveScale";
-import { socket } from "../../socket";
 
 export default function AllSet() {
-    const navigate = useNavigate();
     const scale = useResponsiveScale();
-
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            socket.emit("changePage", "/final");
-            navigate("/final");
-        }, 10000);
-
-        return () => clearTimeout(timer);
-    }, [navigate]);
 
     return (
         <div className="flex items-center justify-center w-full h-screen overflow-hidden bg-black/5">

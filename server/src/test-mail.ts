@@ -13,15 +13,24 @@ const transporter = nodemailer.createTransport({
 
 console.log("Checking SMTP config...");
 console.log("SMTP_USER:", process.env.SMTP_USER);
-console.log(
-  "SMTP_PASS length:",
-  process.env.SMTP_PASS ? process.env.SMTP_PASS.length : 0,
-);
 
-transporter.verify((error, success) => {
-  if (error) {
-    console.error("SMTP Verification Failed:", error);
-  } else {
-    console.log("SMTP Verification Succeeded! Server is ready to send emails.");
-  }
-});
+const testEmail = "isacardonaval@gmail.com";
+
+console.log("Sending a real test email to:", testEmail);
+
+transporter.sendMail(
+  {
+    from: process.env.SMTP_FROM || '"KPulse Reports" <noreply@kpulse.com>',
+    to: testEmail,
+    subject: "Prueba de Envío KPulse",
+    text: "Hola! Si recibes este correo, el envío de emails de KPulse funciona al 100%.",
+  },
+  (error, info) => {
+    if (error) {
+      console.error("❌ SMTP Send Failed:", error);
+    } else {
+      console.log("✅ SMTP Send Succeeded! Message ID:", info.messageId);
+    }
+    process.exit(0);
+  },
+);
