@@ -175,15 +175,13 @@ router.post("/", async (req, res) => {
             </div>
         `;
 
-    // Enviar Email vía Resend HTTPS API (evita bloqueos de puerto SMTP en Render)
-    const resendApiKey =
-      process.env.RESEND_API_KEY || "re_PR2BQsz7_Q63usvnHXU4Pt5Duz4SCK1ig";
+    const brevoApiKey = process.env.SENDINBLUE_API_KEY ?? "";
     let mailSent = false;
     let mailError = null;
 
-    if (!resendApiKey) {
+    if (!brevoApiKey) {
       console.warn(
-        "⚠️ RESEND_API_KEY no está configurado. Simulación de envío de email.",
+        "⚠️ SENDINBLUE_API_KEY no está configurado. Simulación de envío de email.",
       );
       return res.json({
         success: true,
@@ -194,17 +192,20 @@ router.post("/", async (req, res) => {
     }
 
     try {
-      const response = await fetch("https://api.resend.com/emails", {
+      const response = await fetch("https://api.brevo.com/v3/smtp/email", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${resendApiKey}`,
+          "api-key": brevoApiKey,
         },
         body: JSON.stringify({
-          from: "KPulse <onboarding@resend.dev>",
-          to: email,
+          sender: {
+            name: "KPulse",
+            email: "onboarding@resend.dev",
+          },
+          to: [{ email }],
           subject: "Tu Reporte de Evaluación Motriz - KPulse",
-          html: htmlContent,
+          htmlContent: htmlContent,
         }),
       });
 
@@ -212,15 +213,15 @@ router.post("/", async (req, res) => {
       if (response.ok) {
         mailSent = true;
         console.log(
-          `✉️ Reporte enviado exitosamente a ${email} vía Resend API. ID: ${resData.id}`,
+          `✉️ Reporte enviado exitosamente a ${email} vía Brevo. ID: ${resData.messageId || resData.id}`,
         );
       } else {
-        console.error("❌ Error de Resend API:", resData);
+        console.error("❌ Error de Brevo API:", resData);
         mailError = resData.message || JSON.stringify(resData);
       }
     } catch (err: any) {
       console.error(
-        "❌ Error de red al conectar con Resend API:",
+        "❌ Error de red al conectar con Brevo API:",
         err.message || err,
       );
       mailError = err.message || err;
