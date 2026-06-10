@@ -1,6 +1,10 @@
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
+import dns from "dns";
+
+// Forzar a Node.js a preferir direcciones IPv4 sobre IPv6 para evitar problemas de ruteo ENETUNREACH en la nube
+dns.setDefaultResultOrder("ipv4first");
 
 // Cargar variables de entorno localmente de forma compatible con cualquier versión de Node
 const __filename = fileURLToPath(import.meta.url);

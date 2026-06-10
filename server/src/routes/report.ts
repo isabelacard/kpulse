@@ -206,14 +206,33 @@ router.post("/", async (req, res) => {
       });
     }
 
-    await transporter.sendMail({
-      from: process.env.SMTP_FROM || '"KPulse Reports" <noreply@kpulse.com>',
-      to: email,
-      subject: "Tu Reporte de Evaluación Motriz - KPulse",
-      html: htmlContent,
-    });
+    let mailSent = false;
+    let mailError = null;
 
-    res.json({ success: true, motorScore, classification });
+    try {
+      await transporter.sendMail({
+        from: process.env.SMTP_FROM || '"KPulse Reports" <noreply@kpulse.com>',
+        to: email,
+        subject: "Tu Reporte de Evaluación Motriz - KPulse",
+        html: htmlContent,
+      });
+      mailSent = true;
+      console.log(`✉️ Reporte enviado exitosamente a ${email}`);
+    } catch (mailErr: any) {
+      console.error(
+        "❌ Error al enviar el correo a través de SMTP:",
+        mailErr.message || mailErr,
+      );
+      mailError = mailErr.message || mailErr;
+    }
+
+    res.json({
+      success: true,
+      motorScore,
+      classification,
+      mailSent,
+      mailError,
+    });
   } catch (error: any) {
     console.error("Error generating report:", error);
     res.status(500).json({ error: error.message });

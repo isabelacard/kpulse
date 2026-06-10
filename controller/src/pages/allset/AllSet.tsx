@@ -27,7 +27,14 @@ export default function AllSet() {
             await api.linkPatient(session.session_id, email);
 
             // Generar y enviar reporte
-            await api.sendReport(session.session_id, email);
+            const reportRes = await api.sendReport(session.session_id, email);
+            console.log("Report response:", reportRes);
+            if (reportRes.simulated) {
+                console.warn("⚠️ El correo se simuló porque SMTP_USER no está configurado en el servidor.");
+            }
+            if (reportRes.mailSent === false) {
+                console.warn("⚠️ El correo no se pudo enviar por SMTP. Detalle:", reportRes.mailError);
+            }
 
             await api.endSession(session.session_id);
 
@@ -35,7 +42,8 @@ export default function AllSet() {
             navigate("/ending");
         } catch (err) {
             console.error("Error detallado al enviar datos:", err);
-            setError("Something went wrong. Please try again.");
+            const msg = err instanceof Error ? err.message : String(err);
+            setError(`Error: ${msg}`);
         } finally {
             setLoading(false);
         }

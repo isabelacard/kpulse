@@ -25,8 +25,16 @@ export const BASE_URL = getBaseUrl();
 async function safeJson(res: Response) {
     const text = await res.text();
     try {
-        return JSON.parse(text);
-    } catch {
+        const data = JSON.parse(text);
+        if (!res.ok) {
+            throw new Error(data.error || data.message || `Server returned ${res.status}`);
+        }
+        return data;
+    } catch (err) {
+        if (!res.ok) {
+            const msg = err instanceof Error ? err.message : String(err);
+            throw new Error(msg || `Server error ${res.status}`);
+        }
         throw new Error(`Server error ${res.status}: ${text.slice(0, 200)}`);
     }
 }
